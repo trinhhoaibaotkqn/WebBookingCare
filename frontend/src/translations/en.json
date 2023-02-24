@@ -1,0 +1,18 @@
+{
+    "homeheader": {
+        "speciality": "Speciality",
+        "searchdoctor": "Search doctor by speciality",
+        "health-facility": "Health facility",
+        "hospotal-clinic": "Choose hospital clinic",
+        "doctor": "Doctor",
+        "choose-doctor": "Choose a good doctor",
+        "package": "Checkup package",
+        "check-health": "General health check",
+        "support": "Support"
+    },
+    "homebanner": {
+        "title1": "Medical service",
+        "title2": "Comprehensive health care",
+        "text-search": "Search doctor"
+    }
+}

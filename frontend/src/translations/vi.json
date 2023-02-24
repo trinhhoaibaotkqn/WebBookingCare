@@ -1,0 +1,18 @@
+{
+    "homeheader": {
+        "speciality": "Chuyên khoa",
+        "searchdoctor": "Tìm bác sĩ theo chuyên khoa",
+        "health-facility": "Cơ sở y tế",
+        "hospotal-clinic": "Chọn bệnh viện phòng khám",
+        "doctor": "Bác sĩ",
+        "choose-doctor": "Chọn bác sĩ giỏi",
+        "package": "Gói khám",
+        "check-health": "Khám sức khỏe tổng quát",
+        "support": "Hỗ trợ"
+    },
+    "homebanner": {
+        "title1": "Nền tảng y tế",
+        "title2": "Chăm sóc sức khỏe toàn diện",
+        "text-search": "Tìm bác sĩ"
+    }
+}
