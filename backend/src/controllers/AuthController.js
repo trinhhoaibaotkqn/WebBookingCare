@@ -53,11 +53,19 @@ class AuthController {
                 raw: true
             });
             if (!user) {
-                return res.status(404).json("Wrong email");
+                return res.status(404).json({
+                    errCode: 1,
+                    message: "Wrong email",
+                    user: {}
+                });
             }
             const validPassword = await bcrypt.compare(req.body.password, user.password);
             if (!validPassword) {
-                return res.status(404).json("Wrong password");
+                return res.status(404).json({
+                    errCode: 1,
+                    message: "Wrong password",
+                    user: {}
+                });
             }
             if (user && validPassword) {
                 delete user.password;

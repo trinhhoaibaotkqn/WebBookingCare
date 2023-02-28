@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const LeftMenu = () => {
     const dispatch = useDispatch();
     const isOpenMenu = useSelector((state) => state.common.openMenu);
-    const user = null;
+    const user = useSelector((state) => state.auth.login.currentUser);
 
     const preventParent = (e) => {
         e.stopPropagation();
@@ -29,7 +29,7 @@ const LeftMenu = () => {
                 </div>
                 <div className="item-container">
                     {user ?
-                        <NavLink className="menu-item">Tài khoản cá nhân</NavLink>
+                        <NavLink className="menu-item" to="personal-page">Tài khoản cá nhân</NavLink>
                         :
                         <>
                             <NavLink className="menu-item" to="/login">Đăng nhập</NavLink>

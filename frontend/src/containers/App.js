@@ -8,9 +8,11 @@ import '@formatjs/intl-relativetimeformat/locale-data/vi';
 import Login from "./Auth/Login";
 import Register from './Auth/Register';
 import HomePage from './HomePage/HomePage';
+import PatientHome from './PatientPage/PatientHome';
 import LanguageUtils from "../utils/LanguageUtil";
 import { IntlProvider } from "react-intl";
 import { useSelector } from "react-redux";
+import { ToastContainer } from 'react-toastify';
 import {
   BrowserRouter,
   Routes,
@@ -30,7 +32,20 @@ function App() {
               <Route exact path="/" element={<HomePage />} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/register" element={<Register />} />
+              <Route exact path="/personal-page" element={<PatientHome />} />
             </Routes>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
           </BrowserRouter>
         </div>
       </div>

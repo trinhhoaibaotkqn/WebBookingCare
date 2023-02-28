@@ -1,0 +1,64 @@
+.patient-container {
+    background-color: #a2dcef;
+    width: 100vw;
+    height: 100vh;
+
+    .patient-background {
+        padding-top: 5vh;
+
+        .patient-content {
+            display: flex;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            width: 95vw;
+            margin: auto;
+            height: 90vh;
+            position: relative;
+
+            .home-btn {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                padding: 0 5px;
+                color: #2b3e51;
+                font-size: 25px;
+            }
+
+            .patient-menu {
+                box-sizing: border-box;
+                width: 200px;
+                height: 200px;
+                background-color: #fff;
+                margin: 50px 20px 20px 100px;
+                border-radius: 10px;
+
+                .menu-item {
+                    height: 40px;
+                    line-height: 40px;
+                    padding-left: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    cursor: pointer;
+                }
+
+                .menu-item:first-child {
+                    border-bottom: 2px solid #efeef5;
+                }
+
+                .active {
+                    background-color: #f5f5f5;
+                    border-left: 3px solid green;
+                }
+            }
+
+            .patient-page {
+                flex-grow: 1;
+                background-color: #fff;
+                margin: 50px 20px 20px 20px;
+                border-radius: 10px;
+            }
+        }
+    }
+
+
+}

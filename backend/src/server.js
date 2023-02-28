@@ -16,7 +16,8 @@ app.use(express.urlencoded({
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.REACT_APP_URL
+    origin: process.env.REACT_APP_URL,
+    credentials: true,
 }));
 
 //connect database
