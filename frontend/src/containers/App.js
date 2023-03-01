@@ -5,6 +5,8 @@ import '@formatjs/intl-pluralrules/locale-data/en';
 import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/locale-data/en';
 import '@formatjs/intl-relativetimeformat/locale-data/vi';
+import IsAuthenticated from '../components/IsAuthenticated';
+import IsNotAuthenticated from '../components/IsNotAuthenticated';
 import Login from "./Auth/Login";
 import Register from './Auth/Register';
 import HomePage from './HomePage/HomePage';
@@ -30,9 +32,9 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route exact path="/" element={<HomePage />} />
-              <Route exact path="/login" element={<Login />} />
-              <Route exact path="/register" element={<Register />} />
-              <Route exact path="/personal-page" element={<PatientHome />} />
+              <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
+              <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
+              <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
             </Routes>
             <ToastContainer
               position="top-center"
