@@ -11,10 +11,16 @@ import Login from "./Auth/Login";
 import Register from './Auth/Register';
 import HomePage from './HomePage/HomePage';
 import PatientHome from './PatientPage/PatientHome';
+import AdminHome from './AdminPage/AdminHome';
+import AdminUser from './AdminPage/Section/AdminUser/AdminUser';
+import AdminFacility from './AdminPage/Section/AdminFacility';
+import AdminSpecialty from './AdminPage/Section/AdminSpecialty';
+import AdminHandbook from './AdminPage/Section/AdminHandbook';
 import LanguageUtils from "../utils/LanguageUtil";
 import { IntlProvider } from "react-intl";
 import { useSelector } from "react-redux";
 import { ToastContainer } from 'react-toastify';
+
 import {
   BrowserRouter,
   Routes,
@@ -35,6 +41,12 @@ function App() {
               <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
+              <Route exact path="/system/admin/" element={<AdminHome />}>
+                <Route path="user" element={<AdminUser />} />
+                <Route path="facility" element={<AdminFacility />} />
+                <Route path="specialty" element={<AdminSpecialty />} />
+                <Route path="handbook" element={<AdminHandbook />} />
+              </Route>
             </Routes>
             <ToastContainer
               position="top-center"
