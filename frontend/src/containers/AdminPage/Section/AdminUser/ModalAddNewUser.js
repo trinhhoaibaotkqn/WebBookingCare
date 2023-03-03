@@ -1,9 +1,19 @@
-import { AiOutlineMail, AiOutlinePicture, AiOutlineFileProtect } from "react-icons/ai";
+import { AiOutlineMail, AiOutlineFileProtect } from "react-icons/ai";
 import { FaRegAddressBook } from 'react-icons/fa';
 import { BsPerson, BsGenderAmbiguous, BsTelephone } from "react-icons/bs";
-import { RiLockPasswordLine, RiAdminLine } from "react-icons/ri";
+import { RiLockPasswordLine, RiAdminLine, RiFolderUploadLine } from "react-icons/ri";
+import { useState } from "react";
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 
 const ModalAddNewUser = (props) => {
+    const [previewImgUrl, setPreviewImgUrl] = useState();
+    const handleOnChangeImage = (e) => {
+        let data = e.target.files;
+        let file = data[0];
+        let objectUrl = URL.createObjectURL(file);
+        setPreviewImgUrl(objectUrl);
+    }
 
     const { modalAdd, handleModalAdd, handleAddUser } = props;
     return (
@@ -30,6 +40,7 @@ const ModalAddNewUser = (props) => {
                         <span className="modal-icon-label"><RiLockPasswordLine /></span>
                         <input type="password" placeholder="Confirm password" />
                     </div>
+
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsGenderAmbiguous /></span>
                         <select>
@@ -41,6 +52,27 @@ const ModalAddNewUser = (props) => {
                     <div className="modal-element element-address">
                         <span className="modal-icon-label"><FaRegAddressBook /></span>
                         <input type="text" placeholder="Address" />
+                    </div>
+                    <div className="modal-element element-image">
+                        <div id="image-user">
+                            <input id="previewImg" type="file" style={{ display: "none" }}
+                                onChange={(e) => handleOnChangeImage(e)}
+                            />
+                            <label className="label-upload" htmlFor="previewImg"><RiFolderUploadLine /> Upload</label>
+                            <div className="preview-image">
+                                <Gallery>
+                                    <Item
+                                        original={previewImgUrl}
+                                        width="1024"
+                                        height="768"
+                                    >
+                                        {({ ref, open }) => (
+                                            <img alt="avatar" ref={ref} onClick={open} src={previewImgUrl} height="60px" />
+                                        )}
+                                    </Item>
+                                </Gallery>
+                            </div>
+                        </div>
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsTelephone /></span>
@@ -62,10 +94,7 @@ const ModalAddNewUser = (props) => {
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <div className="modal-element">
-                        <span className="modal-icon-label"><AiOutlinePicture /></span>
-                        <input type="text" placeholder="Image" />
-                    </div>
+
                     <div className="modal-element element-cancel-btn">
                         <button className="cancel-btn" onClick={() => handleModalAdd()}>cancel</button>
                     </div>
@@ -74,6 +103,7 @@ const ModalAddNewUser = (props) => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
