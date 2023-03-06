@@ -1,12 +1,17 @@
-import { AiOutlineMail, AiOutlineFileProtect } from "react-icons/ai";
 import { FaRegAddressBook } from 'react-icons/fa';
+import { AiOutlineMail, AiOutlineFileProtect } from "react-icons/ai";
 import { BsPerson, BsGenderAmbiguous, BsTelephone } from "react-icons/bs";
 import { RiLockPasswordLine, RiAdminLine, RiFolderUploadLine } from "react-icons/ri";
 import { useState } from "react";
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
+import { handleApiCreateUser } from "../../../../services/adminService";
+import { useDispatch } from 'react-redux';
+// import { useNavigate } from "react-router-dom";
 
 const ModalAddNewUser = (props) => {
+    const dispatch = useDispatch();
+
     const [previewImgUrl, setPreviewImgUrl] = useState();
     const handleOnChangeImage = (e) => {
         let data = e.target.files;
@@ -15,7 +20,46 @@ const ModalAddNewUser = (props) => {
         setPreviewImgUrl(objectUrl);
     }
 
-    const { modalAdd, handleModalAdd, handleAddUser } = props;
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [gender, setGender] = useState("M");
+    const [address, setAddress] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [roleid, setRoleid] = useState("R1");
+    const [positionId, setPositionId] = useState("P0");
+
+    const handleCreateUser = (handleModalAdd) => {
+        const user = {
+            name,
+            email,
+            password,
+            passwordConfirm,
+            gender,
+            address,
+            phoneNumber,
+            roleid,
+            positionId
+        };
+        handleApiCreateUser(user, dispatch, handleListenChange);
+        clearModal();
+        handleModalAdd();
+    }
+
+    const clearModal = () => {
+        setName("");
+        setEmail("");
+        setPassword("");
+        setPasswordConfirm("");
+        setGender("M");
+        setAddress("");
+        setPhoneNumber("");
+        setRoleid("R1");
+        setPositionId("P0");
+    }
+
+    const { modalAdd, handleModalAdd, handleListenChange } = props;
     return (
         <div style={modalAdd ? { display: "block" } : { display: "none" }} className="modal-user">
             <div className="modal-content">
@@ -26,32 +70,31 @@ const ModalAddNewUser = (props) => {
                 <div className="modal-body">
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsPerson /></span>
-                        <input type="text" placeholder="Name" />
+                        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><AiOutlineMail /></span>
-                        <input type="email" placeholder="Email" />
+                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><RiLockPasswordLine /></span>
-                        <input type="password" placeholder="Password" />
+                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><RiLockPasswordLine /></span>
-                        <input type="password" placeholder="Confirm password" />
+                        <input type="password" placeholder="Confirm password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} />
                     </div>
-
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsGenderAmbiguous /></span>
-                        <select>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                        <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
                         </select>
                     </div>
                     <div className="modal-element element-address">
                         <span className="modal-icon-label"><FaRegAddressBook /></span>
-                        <input type="text" placeholder="Address" />
+                        <input type="text" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                     </div>
                     <div className="modal-element element-image">
                         <div id="image-user">
@@ -76,22 +119,24 @@ const ModalAddNewUser = (props) => {
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsTelephone /></span>
-                        <input type="text" placeholder="Phone number" />
+                        <input type="text" placeholder="Phone number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><RiAdminLine /></span>
-                        <select>
-                            <option value="male">Admin</option>
-                            <option value="female">Doctor</option>
-                            <option value="other">Other</option>
+                        <select value={roleid} onChange={(e) => setRoleid(e.target.value)}>
+                            <option value="R1">Admin</option>
+                            <option value="R2">Doctor</option>
+                            <option value="R3">Patient</option>
                         </select>
                     </div>
                     <div className="modal-element">
                         <span className="modal-icon-label"><AiOutlineFileProtect /></span>
-                        <select>
-                            <option value="male">Professor</option>
-                            <option value="female">Master</option>
-                            <option value="other">Other</option>
+                        <select value={positionId} onChange={(e) => setPositionId(e.target.value)}>
+                            <option value="P0">None</option>
+                            <option value="P1">Master</option>
+                            <option value="P2">Doctor</option>
+                            <option value="P3">Associate Professor</option>
+                            <option value="P4">Professor</option>
                         </select>
                     </div>
 
@@ -99,7 +144,7 @@ const ModalAddNewUser = (props) => {
                         <button className="cancel-btn" onClick={() => handleModalAdd()}>cancel</button>
                     </div>
                     <div className="modal-element element-add-btn">
-                        <button className="add-btn" onClick={() => handleAddUser({ username: "bao", email: "das" })}>add</button>
+                        <button className="add-btn" onClick={() => handleCreateUser(handleModalAdd)}>add</button>
                     </div>
                 </div>
             </div>

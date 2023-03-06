@@ -22,7 +22,7 @@ class AdminController {
             const user = await db.User.findAll({
                 where: {
                     roleid: roleid
-                }
+                }, attributes: { exclude: ['password'] },
             })
             res.json(user);
         } catch (err) {
@@ -52,6 +52,35 @@ class AdminController {
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    //[GET] get-role-position/:type
+    getAllcode = async (req, res) => {
+        try {
+            const type = req.params.type;
+
+            const objCode = await db.Allcode.findAll({
+                where: {
+                    type: type
+                }
+            })
+            if (!objCode) {
+                res.json({
+                    errCode: 1,
+                    message: `Type is not valid`,
+                    objCode: []
+                });
+            }
+            if (objCode) {
+                res.json({
+                    errCode: 0,
+                    message: `Get ${type} successfully`,
+                    objCode: objCode
+                });
+            }
         } catch (err) {
             res.status(500).json("Server error");
         }
