@@ -6,7 +6,7 @@ import urlImage from "../../../assets/images/bsckii-tran-minh-khuyen.jpg";
 const OutStandingDoctor = () => {
     let settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 4,

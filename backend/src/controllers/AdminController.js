@@ -57,27 +57,25 @@ class AdminController {
         }
     }
 
-    //[GET] get-role-position/:type
-    getAllcode = async (req, res) => {
+    //[GET] get-role
+    getRole = async (req, res) => {
         try {
-            const type = req.params.type;
-
             const objCode = await db.Allcode.findAll({
                 where: {
-                    type: type
+                    type: "ROLE"
                 }
-            })
+            });
             if (!objCode) {
                 res.json({
                     errCode: 1,
-                    message: `Type is not valid`,
+                    message: `Get role fail`,
                     objCode: []
                 });
             }
             if (objCode) {
                 res.json({
                     errCode: 0,
-                    message: `Get ${type} successfully`,
+                    message: `Get Role successfully`,
                     objCode: objCode
                 });
             }

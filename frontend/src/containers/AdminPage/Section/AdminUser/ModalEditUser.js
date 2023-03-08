@@ -1,17 +1,23 @@
-import { AiOutlineMail, AiOutlinePicture, AiOutlineFileProtect } from "react-icons/ai";
+import { AiOutlineMail, AiOutlineFileProtect } from "react-icons/ai";
 import { FaRegAddressBook } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 import { MdEdit } from 'react-icons/md';
 import { BsPerson, BsGenderAmbiguous, BsTelephone } from "react-icons/bs";
-import { RiLockPasswordLine, RiAdminLine } from "react-icons/ri";
+import { RiLockPasswordLine, RiAdminLine, RiFolderUploadLine } from "react-icons/ri";
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Buffer } from "buffer";
+import CommonUtils from "../../../../utils/CommonUtils";
 
 import { handleApiEditUser } from "../../../../services/adminService";
 
 const ModalEditUser = (props) => {
     const { modalEdit, handleModalEdit, dataEdit, handleListenChange } = props;
     const dispatch = useDispatch();
+    const listRole = useSelector((state) => state.admin.role.listRole);
+    const language = useSelector((state) => state.common.language);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -24,6 +30,7 @@ const ModalEditUser = (props) => {
     const [positionId, setPositionId] = useState();
     const [isUpdateEmail, setIsUpdateEmail] = useState();
     const [isUpdatePassword, setIsUpdatePassword] = useState();
+    const [image, setImage] = useState();
 
     const handleEditUser = () => {
         const userEdit = {
@@ -37,10 +44,25 @@ const ModalEditUser = (props) => {
             address,
             phoneNumber,
             roleid,
-            positionId
+            positionId,
+        }
+        if (image) {
+            userEdit.image = image;
         }
         handleApiEditUser(dataEdit.id, userEdit, dispatch, handleListenChange);
         handleModalEdit();
+    }
+
+    const [previewImgUrl, setPreviewImgUrl] = useState();
+    const handleOnChangeImage = async (e) => {
+        let data = e.target.files;
+        let file = data[0];
+        if (file) {
+            let base64 = await CommonUtils.getBase64(file);
+            let objectUrl = URL.createObjectURL(file);
+            setPreviewImgUrl(objectUrl);
+            setImage(base64);
+        }
     }
 
     useEffect(() => {
@@ -53,6 +75,12 @@ const ModalEditUser = (props) => {
         setPositionId(dataEdit?.positionId);
         setIsUpdateEmail(false);
         setIsUpdatePassword(false);
+        if (dataEdit && dataEdit.image && dataEdit.image.data) {
+            let imageBase64 = new Buffer(dataEdit.image, 'base64').toString('binary');
+            setPreviewImgUrl(imageBase64);
+        } else {
+            setPreviewImgUrl();
+        }
     }, [dataEdit])
 
     return (
@@ -65,8 +93,25 @@ const ModalEditUser = (props) => {
                 {dataEdit ?
                     <div className="modal-body">
                         <div className="modal-element element-image-edit">
-                            <span className="modal-icon-label"><AiOutlinePicture /></span>
-                            <input type="text" placeholder="Image" />
+                            <div id="image-user">
+                                <input id="previewImgEdit" type="file" style={{ display: "none" }}
+                                    onChange={(e) => handleOnChangeImage(e)}
+                                />
+                                <label className="label-upload" htmlFor="previewImgEdit"><RiFolderUploadLine /> Upload</label>
+                                <div className="preview-image">
+                                    <Gallery>
+                                        <Item
+                                            original={previewImgUrl}
+                                            width="1024"
+                                            height="768"
+                                        >
+                                            {({ ref, open }) => (
+                                                <img alt="avatar" ref={ref} onClick={open} src={previewImgUrl} height="200px" />
+                                            )}
+                                        </Item>
+                                    </Gallery>
+                                </div>
+                            </div>
                         </div>
                         <div className="modal-element">
                             <span className="modal-icon-label"><BsPerson /></span>
@@ -77,9 +122,13 @@ const ModalEditUser = (props) => {
                         <div className="modal-element">
                             <span className="modal-icon-label"><RiAdminLine /></span>
                             <select defaultValue={dataEdit.roleid} onChange={(e) => { setRoleid(e.target.value) }}>
-                                <option value="R1">Admin</option>
-                                <option value="R2">Doctor</option>
-                                <option value="R3">Patient</option>
+                                {listRole && listRole.map(item => {
+                                    return (
+                                        <option key={item.id} value={item.key}>
+                                            {language === "vi" ? item.valueVi : item.valueEn}
+                                        </option>
+                                    )
+                                })}
                             </select>
                         </div>
                         <div className="modal-element">

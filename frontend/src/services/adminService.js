@@ -13,7 +13,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const handleApiCreateUser = async (user, dispatch, handleListenChange) => {
+export const handleApiCreateUser = async (user, dispatch, handleListenChange, handleModalAdd, clearModal) => {
     dispatch(CREATE_USER_START());
     try {
         const res = await axios.post("http://localhost:8080/admin/create-new-user", user,
@@ -24,6 +24,8 @@ export const handleApiCreateUser = async (user, dispatch, handleListenChange) =>
             dispatch(CREATE_USER_SUCCESS(res.data.user));
             toast.success(res.data.message);
             handleListenChange();
+            clearModal();
+            handleModalAdd();
         }
     } catch (err) {
         dispatch(CREATE_USER_FAILED());

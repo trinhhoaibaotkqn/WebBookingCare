@@ -5,7 +5,7 @@ import urlImage from "../../../assets/images/bv-viet-duc.jpg";
 const Facility = () => {
     let settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 1,

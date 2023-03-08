@@ -34,24 +34,36 @@ const createUser = (userData) => {
                 if (!existUser && position && gender && role) {
                     const salt = await bcrypt.genSalt(10);
                     const hashed = await bcrypt.hash(userData.password, salt);
-                    const newUser = {
-                        name: userData.name,
-                        email: userData.email,
-                        password: hashed,
-                        gender: userData.gender,
-                        phoneNumber: userData.phoneNumber,
-                        address: userData.address,
-                        image: userData.image,
-                        roleid: userData.roleid,
-                        positionId: userData.positionId
+                    let isValidImage = true;
+                    if (userData?.image?.length > 10000000) {
+                        res.status = 404;
+                        res.errCode = 7;
+                        res.message = "Image size is too large";
+                        res.user = {};
+                        isValidImage = false;
+                        resolve(res);
+                    } else {
+                        const newUser = {
+                            name: userData.name,
+                            email: userData.email,
+                            password: hashed,
+                            gender: userData.gender,
+                            phoneNumber: userData.phoneNumber,
+                            address: userData.address,
+                            image: userData.image,
+                            roleid: userData.roleid,
+                            positionId: userData.positionId,
+                            image: userData.image
+                        }
+                        const user = await db.User.create(newUser, { raw: true });
+                        delete user.dataValues.password;
+                        res.status = 200;
+                        res.errCode = 0;
+                        res.message = "User already is created";
+                        res.user = user;
+                        resolve(res);
                     }
-                    const user = await db.User.create(newUser, { raw: true });
-                    delete user.dataValues.password;
-                    res.status = 200;
-                    res.errCode = 0;
-                    res.message = "User already is created";
-                    res.user = user;
-                    resolve(res);
+
                 }
             }
 
@@ -102,7 +114,19 @@ const editUser = async (id, dataUpdate) => {
                         address: dataUpdate.address,
                         phoneNumber: dataUpdate.phoneNumber,
                         roleid: dataUpdate.roleid,
-                        positionId: dataUpdate.positionId
+                        positionId: dataUpdate.positionId,
+                    }
+                    let isValidImage = true;
+                    if (dataUpdate && dataUpdate.image) {
+                        newData.image = dataUpdate.image;
+                        if (dataUpdate.image.length > 10000000) {
+                            res.status = 404;
+                            res.errCode = 7;
+                            res.message = "Image size is too large";
+                            res.user = {};
+                            isValidImage = false;
+                            resolve(res);
+                        }
                     }
                     let existEmail;
                     if (dataUpdate.isUpdateEmail) {
@@ -139,7 +163,7 @@ const editUser = async (id, dataUpdate) => {
                             newData.password = hashed;
                         }
                     }
-                    if (!existEmail && validPassword) {
+                    if (!existEmail && validPassword && isValidImage) {
                         await userExist.update(newData);
                         delete userExist.dataValues.password;
                         res.status = 200;

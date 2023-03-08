@@ -1,25 +1,32 @@
 // import urlImage from "../../../assets/images/avatar.jpg";
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import { GrAddCircle } from "react-icons/gr";
+import 'photoswipe/dist/photoswipe.css';
+// import { Gallery, Item } from 'react-photoswipe-gallery';
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
+
 import ModalAddNewUser from "./ModalAddNewUser";
 import ModalEditUser from "./ModalEditUser";
 import ModalDeleteUser from "./ModalDeleteUser";
-// import { handleApiGetAdmin, handleApiGetPatient, handleApiGetRole } from "../../../../services/adminService";
+
 import {
     GET_ADMIN_FAILED, GET_ADMIN_START, GET_ADMIN_SUCCESS,
     GET_DOCTOR_START, GET_DOCTOR_SUCCESS, GET_DOCTOR_FAILED,
     GET_PATIENT_FAILED, GET_PATIENT_START, GET_PATIENT_SUCCESS,
     OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT,
-    // GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED
+    GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED,
 } from "../../../../store/slice/adminSlice";
+import CommonUtils from "../../../../utils/CommonUtils";
+// import CommonUtils from "../../../../utils/CommonUtils";
 
 const AdminUser = () => {
     const dispatch = useDispatch();
+    const listRole = useSelector((state) => state.admin.role.listRole);
+    const language = useSelector((state) => state.common.language);
 
     const [listAdmin, setListAdmin] = useState();
     const [listPatient, setListPatient] = useState();
@@ -109,6 +116,25 @@ const AdminUser = () => {
             handleApiGetData("R1", optionAdmin, optionDoctor, optionPatient);
     }, [dispatch, listenUpdate, optionAdmin, optionDoctor, optionPatient]);
 
+    useEffect(() => {
+        console.log(">>>>>call api role");
+        const handleLoadRoleFromDB = async () => {
+            dispatch(GET_ROLE_START());
+            try {
+                const res = await axios.get("http://localhost:8080/admin/get-role",
+                    {
+                        "withCredentials": true
+                    });
+                if (res.data.errCode === 0) {
+                    dispatch(GET_ROLE_SUCCESS(res.data.objCode));
+                }
+            } catch (err) {
+                dispatch(GET_ROLE_FAILED());
+            }
+        }
+        handleLoadRoleFromDB();
+    }, [dispatch]);
+
     return (
         <div className="user-admin-container">
             <div className="user-admin-content">
@@ -145,7 +171,7 @@ const AdminUser = () => {
                                 <th>Phone number</th>
                                 <th>Role</th>
                                 <th>Position</th>
-                                <th>Image</th>
+                                {/* <th>Image</th> */}
                                 <th>Action</th>
                             </tr>
                             {data && data.map((item, index) => {
@@ -156,10 +182,29 @@ const AdminUser = () => {
                                     <td>{item.gender}</td>
                                     <td>{item.address}</td>
                                     <td>{item.phoneNumber}</td>
-                                    <td>{item.roleid}</td>
+                                    <td>
+                                        {language === "vi" ?
+                                            CommonUtils.getRoleByKey(listRole, item.roleid).valueVi :
+                                            CommonUtils.getRoleByKey(listRole, item.roleid).valueEn
+                                        }
+                                    </td>
                                     <td>{item.positionId}</td>
-                                    <td></td>
-                                    {/* <img src={urlImage} alt="Girl in a jacket" width="50px" height="60px" /> */}
+                                    {/* <td>{CommonUtils.getPreviewImgfromDatabase(item.image) ?
+                                        <Gallery>
+                                            <Item
+                                                original={CommonUtils.getPreviewImgfromDatabase(item.image)}
+                                                width="1024"
+                                                height="768"
+                                            >
+                                                {({ ref, open }) => (
+                                                    <img alt="avatar" ref={ref} onClick={open} style={{ cursor: "pointer" }}
+                                                        src={CommonUtils.getPreviewImgfromDatabase(item.image)} height="25px"
+                                                    />
+                                                )}
+                                            </Item>
+                                        </Gallery> :
+                                        <></>}
+                                    </td> */}
                                     <td>
                                         <button className="btn-edit"
                                             onClick={() => handleModalEdit(item)}

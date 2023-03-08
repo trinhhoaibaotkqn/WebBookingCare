@@ -6,18 +6,25 @@ import { useState } from "react";
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import { handleApiCreateUser } from "../../../../services/adminService";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CommonUtils from '../../../../utils/CommonUtils';
 // import { useNavigate } from "react-router-dom";
 
 const ModalAddNewUser = (props) => {
     const dispatch = useDispatch();
+    const listRole = useSelector((state) => state.admin.role.listRole);
+    const language = useSelector((state) => state.common.language);
 
     const [previewImgUrl, setPreviewImgUrl] = useState();
-    const handleOnChangeImage = (e) => {
+    const handleOnChangeImage = async (e) => {
         let data = e.target.files;
         let file = data[0];
-        let objectUrl = URL.createObjectURL(file);
-        setPreviewImgUrl(objectUrl);
+        if (file) {
+            let base64 = await CommonUtils.getBase64(file);
+            let objectUrl = URL.createObjectURL(file);
+            setPreviewImgUrl(objectUrl);
+            setImage(base64);
+        }
     }
 
     const [name, setName] = useState("");
@@ -29,6 +36,7 @@ const ModalAddNewUser = (props) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [roleid, setRoleid] = useState("R1");
     const [positionId, setPositionId] = useState("P0");
+    const [image, setImage] = useState();
 
     const handleCreateUser = (handleModalAdd) => {
         const user = {
@@ -40,11 +48,10 @@ const ModalAddNewUser = (props) => {
             address,
             phoneNumber,
             roleid,
-            positionId
+            positionId,
+            image
         };
-        handleApiCreateUser(user, dispatch, handleListenChange);
-        clearModal();
-        handleModalAdd();
+        handleApiCreateUser(user, dispatch, handleListenChange, handleModalAdd, clearModal);
     }
 
     const clearModal = () => {
@@ -124,9 +131,13 @@ const ModalAddNewUser = (props) => {
                     <div className="modal-element">
                         <span className="modal-icon-label"><RiAdminLine /></span>
                         <select value={roleid} onChange={(e) => setRoleid(e.target.value)}>
-                            <option value="R1">Admin</option>
-                            <option value="R2">Doctor</option>
-                            <option value="R3">Patient</option>
+                            {listRole && listRole.map(item => {
+                                return (
+                                    <option key={item.id} value={item.key}>
+                                        {language === "vi" ? item.valueVi : item.valueEn}
+                                    </option>
+                                )
+                            })}
                         </select>
                     </div>
                     <div className="modal-element">

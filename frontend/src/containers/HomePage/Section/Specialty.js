@@ -7,7 +7,7 @@ import urlImage2 from "../../../assets/images/than-kinh.jpg";
 const Specialty = () => {
     let settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 4,

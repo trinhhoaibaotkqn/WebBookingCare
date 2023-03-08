@@ -5,7 +5,7 @@ import urlImage from "../../../assets/images/cam-nang-1.png";
 const Handbook = () => {
     let settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 2,
         slidesToScroll: 2,
