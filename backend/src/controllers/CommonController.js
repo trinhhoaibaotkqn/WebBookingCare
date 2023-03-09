@@ -1,4 +1,3 @@
-const adminService = require("../services/adminService");
 const db = require("../models/index");
 
 class CommonController {

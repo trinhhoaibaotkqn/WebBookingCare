@@ -3,6 +3,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import commonReducer from "./slice/commonSlice";
 import authReducer from "./slice/authSlice";
 import adminReducer from "./slice/adminSlice";
+import userSlice from './slice/userSlice';
 // import {
 //     persistStore,
 //     persistReducer,
@@ -19,7 +20,7 @@ import adminReducer from "./slice/adminSlice";
 //     version: 1,
 //     storage,
 // }
-const rootReducer = combineReducers({ common: commonReducer, auth: authReducer, admin: adminReducer });
+const rootReducer = combineReducers({ common: commonReducer, auth: authReducer, admin: adminReducer, user: userSlice });
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

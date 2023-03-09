@@ -1,6 +1,7 @@
 // import urlImage from "../../../assets/images/avatar.jpg";
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import { GrAddCircle } from "react-icons/gr";
+import { RiFileEditFill } from "react-icons/ri";
 import 'photoswipe/dist/photoswipe.css';
 // import { Gallery, Item } from 'react-photoswipe-gallery';
 
@@ -216,6 +217,14 @@ const AdminUser = () => {
                                         >
                                             <MdDeleteForever />
                                         </button>
+                                        {listRole && item.roleid === "R2" ?
+                                            <button className="btn-edit-markdown"
+                                            // onClick={() => handleModalDelete(item)}
+                                            >
+                                                <RiFileEditFill />
+                                            </button>
+                                            : <></>
+                                        }
                                     </td>
                                 </tr>)
                             })}

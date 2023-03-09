@@ -1,15 +1,24 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import urlImage from "../../../assets/images/bsckii-tran-minh-khuyen.jpg";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    GET_TOP_DOCTORS_FAILED,
+    GET_TOP_DOCTORS_START,
+    GET_TOP_DOCTORS_SUSSCESS,
+} from "../../../store/slice/userSlice";
+import CommonUtils from "../../../utils/CommonUtils";
 
 const OutStandingDoctor = () => {
+
     let settings = {
         dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         responsive: [
             {
                 breakpoint: 450,
@@ -22,6 +31,30 @@ const OutStandingDoctor = () => {
         ]
     };
 
+    const dispatch = useDispatch();
+    const language = useSelector(state => state.common.language);
+
+    const [listDoctors, setListDoctors] = useState();
+
+    useEffect(() => {
+        const handleGetTopDoctor = async (limit) => {
+            dispatch(GET_TOP_DOCTORS_START());
+            try {
+                const res = await axios.get(`http://localhost:8080/user/get-top-doctor-home/${limit}`,
+                    {
+                        "withCredentials": true
+                    });
+                if (res.data) {
+                    setListDoctors(res.data);
+                    dispatch(GET_TOP_DOCTORS_SUSSCESS(res.data));
+                }
+            } catch (err) {
+                dispatch(GET_TOP_DOCTORS_FAILED());
+            }
+        }
+        handleGetTopDoctor(5);
+    }, [dispatch])
+
     return (
         <div className="section-share section-doctor">
             <div className="section-content">
@@ -30,78 +63,26 @@ const OutStandingDoctor = () => {
                     <div className="header-button">xem thêm</div>
                 </div>
                 <Slider {...settings}>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
+                    {listDoctors && listDoctors.map(item => {
+                        let title;
+                        if (language === "vi") {
+                            title = `${item.positionData.valueVi}, ${item.roleData.valueVi} ${item.name}`
+                        }
+                        if (language === "en") {
+                            title = `${item.positionData.valueEn}, ${item.roleData.valueEn} ${item.name}`
+                        }
+                        return (
+                            <div key={item.id}>
+                                <div className="item-content">
+                                    <div className="item-image-doctor" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
+                                    <div className="title-doctor">
+                                        <div className="subs-title">{title}</div>
+                                        <div className="subs-title-doctor-2">Nam học</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Hiếm muộn - Hỗ trợ sinh sản, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Hiếm muộn</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image-doctor" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="title-doctor">
-                                <div className="subs-title">Khám Nam học, Bệnh viện Nam học và Hiếm muộn Hà Nội</div>
-                                <div className="subs-title-doctor-2">Nam học</div>
-                            </div>
-                        </div>
-                    </div>
+                        )
+                    })}
                 </Slider>
             </div>
         </div>

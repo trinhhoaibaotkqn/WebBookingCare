@@ -195,6 +195,16 @@
                         font-size: 20px;
                         cursor: pointer;
                     }
+
+                    .btn-edit-markdown {
+                        width: 25px;
+                        border: none;
+                        outline: none;
+                        background: transparent;
+                        color: #18885c;
+                        font-size: 20px;
+                        cursor: pointer;
+                    }
                 }
 
                 tr:nth-child(odd) {
