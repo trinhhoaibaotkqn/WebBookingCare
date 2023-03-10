@@ -8,6 +8,12 @@ import {
     EDIT_USER_FAILED,
     EDIT_USER_START,
     EDIT_USER_SUCCESS,
+    SAVE_INFO_DOCTOR_FAILED,
+    SAVE_INFO_DOCTOR_START,
+    SAVE_INFO_DOCTOR_SUCCESS,
+    GET_INFO_DOCTOR_FAILED,
+    GET_INFO_DOCTOR_START,
+    GET_INFO_DOCTOR_SUCCESS
 } from "../store/slice/adminSlice";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -68,5 +74,40 @@ export const handleApiDeleteUser = async (id, dispatch, handleListenChange) => {
     } catch (err) {
         dispatch(DELETE_USER_FAILED());
         toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiSaveInfoDoctor = async (data, dispatch, navigate) => {
+    dispatch(SAVE_INFO_DOCTOR_START());
+    try {
+        const res = await axios.post(`http://localhost:8080/admin/save-info-doctor`, data,
+            {
+                "withCredentials": true
+            }
+        );
+        if (res.data && res.data.errCode === 0) {
+            dispatch(SAVE_INFO_DOCTOR_SUCCESS(res.data.info));
+            toast.success(res.data.message);
+            navigate("/system/admin/user");
+        }
+    } catch (err) {
+        dispatch(SAVE_INFO_DOCTOR_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiGetInfoDoctor = async (doctorId, dispatch) => {
+    dispatch(GET_INFO_DOCTOR_START());
+    try {
+        const res = await axios.get(`http://localhost:8080/admin/get-info-doctor/${doctorId}`,
+            {
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            dispatch(GET_INFO_DOCTOR_SUCCESS(res.data.info));
+            return res.data.info;
+        }
+    } catch (err) {
+        dispatch(GET_INFO_DOCTOR_FAILED());
     }
 }

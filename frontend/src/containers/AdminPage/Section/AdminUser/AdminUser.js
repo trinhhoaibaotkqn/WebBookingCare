@@ -2,6 +2,7 @@
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import { GrAddCircle } from "react-icons/gr";
 import { RiFileEditFill } from "react-icons/ri";
+import Select from 'react-select';
 import 'photoswipe/dist/photoswipe.css';
 // import { Gallery, Item } from 'react-photoswipe-gallery';
 
@@ -18,16 +19,21 @@ import {
     GET_ADMIN_FAILED, GET_ADMIN_START, GET_ADMIN_SUCCESS,
     GET_DOCTOR_START, GET_DOCTOR_SUCCESS, GET_DOCTOR_FAILED,
     GET_PATIENT_FAILED, GET_PATIENT_START, GET_PATIENT_SUCCESS,
-    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT,
-    GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED,
+    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT, CLEAR_ALL_LIST,
 } from "../../../../store/slice/adminSlice";
 import CommonUtils from "../../../../utils/CommonUtils";
-// import CommonUtils from "../../../../utils/CommonUtils";
+import { useNavigate } from "react-router-dom";
+import { handleApiGetInfoDoctor } from "../../../../services/adminService";
 
 const AdminUser = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const listRole = useSelector((state) => state.admin.role.listRole);
     const language = useSelector((state) => state.common.language);
+
+    const [listOptionSelect, setListOptionSelect] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(null);
+    // console.log(">>>>>selected: ", selectedOption);
 
     const [listAdmin, setListAdmin] = useState();
     const [listPatient, setListPatient] = useState();
@@ -42,7 +48,7 @@ const AdminUser = () => {
     const [modalDelete, setModaDelete] = useState(false);
     const [listenUpdate, setListenUpdate] = useState(false);
 
-    const [data, setData] = useState(listAdmin);
+    const [data, setData] = useState();
     const [dataEdit, setDataEdit] = useState();
     const [dataDelete, setDataDelete] = useState();
 
@@ -74,25 +80,41 @@ const AdminUser = () => {
         setListenUpdate(!listenUpdate);
     }
 
+    const handleClickEditMarkdown = async (doctor) => {
+        const infoDoctor = await handleApiGetInfoDoctor(doctor.id, dispatch);
+        navigate("/system/admin/user/edit-info-doctor", {
+            state: {
+                doctor: doctor,
+                infoDoctor: infoDoctor
+            }
+        })
+    }
+
     useEffect(() => {
         const handleApiGetData = async (keyRole, optionAdmin, optionDoctor, optionPatient) => {
-            console.log(">>>>>>call api");
             keyRole === "R1" ?
                 dispatch(GET_ADMIN_START()) : (keyRole === "R2" ?
                     dispatch(GET_DOCTOR_START()) :
                     dispatch(GET_PATIENT_START()));
             try {
+                console.log(">>>>>>call api");
                 const res = await axios.get(`http://localhost:8080/admin/get-user/${keyRole}`,
                     {
                         "withCredentials": true
                     });
                 if (res.data) {
-                    if (optionAdmin && keyRole === "R1")
+                    if (optionAdmin && keyRole === "R1") {
                         setData(res.data);
-                    if (optionDoctor && keyRole === "R2")
+                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
+                    }
+                    if (optionDoctor && keyRole === "R2") {
                         setData(res.data);
-                    if (optionPatient && keyRole === "R3")
+                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
+                    }
+                    if (optionPatient && keyRole === "R3") {
                         setData(res.data);
+                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
+                    }
                     keyRole === "R1" ?
                         setListAdmin(res.data) : (keyRole === "R2" ?
                             setListDoctor(res.data) :
@@ -115,27 +137,25 @@ const AdminUser = () => {
             handleApiGetData("R3", optionAdmin, optionDoctor, optionPatient);
         if (optionAdmin)
             handleApiGetData("R1", optionAdmin, optionDoctor, optionPatient);
+
+        return () => {
+            console.log(">>>>>>clean up")
+            dispatch(CLEAR_ALL_LIST());
+        }
     }, [dispatch, listenUpdate, optionAdmin, optionDoctor, optionPatient]);
 
-    useEffect(() => {
-        console.log(">>>>>call api role");
-        const handleLoadRoleFromDB = async () => {
-            dispatch(GET_ROLE_START());
-            try {
-                const res = await axios.get("http://localhost:8080/admin/get-role",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_ROLE_SUCCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_ROLE_FAILED());
-            }
-        }
-        handleLoadRoleFromDB();
-    }, [dispatch]);
 
+
+    // useEffect(() => {
+    //     const handleFindUserByEmail = () => {
+    //         console.log(">>>>>>re-render");
+    //         if (selectedOption) {
+    //             const newData = CommonUtils.sortListDataByEmail(selectedOption.value, data)
+    //             setData(newData);
+    //         }
+    //     }
+    //     handleFindUserByEmail()
+    // }, [selectedOption])
     return (
         <div className="user-admin-container">
             <div className="user-admin-content">
@@ -144,6 +164,15 @@ const AdminUser = () => {
                         onClick={() => handleModalAdd()}
                     >
                         <GrAddCircle /> Add new user
+                    </div>
+                    <div className="select-user">
+                        <Select
+                            defaultValue={selectedOption}
+                            onChange={setSelectedOption}
+                            options={listOptionSelect}
+                            isClearable={true}
+                            placeholder={"Chọn người dùng"}
+                        />
                     </div>
                 </div>
                 <div className="option-choose">
@@ -219,7 +248,7 @@ const AdminUser = () => {
                                         </button>
                                         {listRole && item.roleid === "R2" ?
                                             <button className="btn-edit-markdown"
-                                            // onClick={() => handleModalDelete(item)}
+                                                onClick={() => handleClickEditMarkdown(item)}
                                             >
                                                 <RiFileEditFill />
                                             </button>

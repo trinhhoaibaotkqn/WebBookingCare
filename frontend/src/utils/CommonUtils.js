@@ -24,5 +24,35 @@ class CommonUtils {
             return item.key === key;
         })
     }
+
+    static getListSelectUserName(listData) {
+        let listSelect = [];
+        listData.forEach((item) => {
+            let obj = {
+                value: item.email,
+                label: item.name,
+            }
+            listSelect.push(obj);
+        })
+        return listSelect;
+    }
+
+    static getDataByEmail(email, listData) {
+        return listData.find((item) => {
+            return item.email === email;
+        })
+    }
+
+    static sortListDataByEmail(email, listData) {
+        let newList = [{ a: "a" }];
+        listData.forEach((item) => {
+            if (item.email === email) {
+                newList[0] = item;
+            } else {
+                newList.push(item)
+            }
+        })
+        return newList;
+    }
 }
 export default CommonUtils;

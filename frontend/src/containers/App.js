@@ -26,6 +26,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import MarkdownInfoDoctor from './AdminPage/Section/AdminUser/MarkdownInfoDoctor';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -42,7 +43,8 @@ function App() {
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
               <Route exact path="/system/admin/" element={<AdminHome />}>
-                <Route path="user" element={<AdminUser />} />
+                <Route exact path="user/" element={<AdminUser />} />
+                <Route path="user/edit-info-doctor" element={<MarkdownInfoDoctor />} />
                 <Route path="facility" element={<AdminFacility />} />
                 <Route path="specialty" element={<AdminSpecialty />} />
                 <Route path="handbook" element={<AdminHandbook />} />

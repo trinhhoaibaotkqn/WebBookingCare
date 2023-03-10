@@ -24,7 +24,7 @@ class AdminController {
                     roleid: roleid
                 }, attributes: { exclude: ['password'] },
             })
-            res.json(user);
+            res.status(200).json(user);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -79,6 +79,37 @@ class AdminController {
                     objCode: objCode
                 });
             }
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    //[POST] save-info-doctor/:id
+    saveInfoDoctor = async (req, res) => {
+        try {
+            const data = await adminService.saveInfoDoctor(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    //[GET] get-info-doctor/:doctorId
+    getInfoDoctor = async (req, res) => {
+        try {
+            const doctorId = req.params.doctorId;
+            const info = await db.Markdown.findOne({
+                where: {
+                    doctorId: doctorId
+                }
+            })
+            res.status(200).json({
+                errCode: 0,
+                message: "Get information doctor successfully",
+                info: info
+            });
         } catch (err) {
             res.status(500).json("Server error");
         }

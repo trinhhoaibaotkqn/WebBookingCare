@@ -35,6 +35,11 @@ const adminSlice = createSlice({
             isFetching: false,
             error: false
         },
+        infoDoctor: {
+            info: null,
+            isFetching: false,
+            error: false
+        },
         role: {
             listRole: null,
             isFetching: false,
@@ -135,6 +140,38 @@ const adminSlice = createSlice({
             state.patient.isOpen = true;
         },
 
+        CLEAR_ALL_LIST: (state) => {
+            state.admin.listAdmin = null;
+            state.doctor.listDoctor = null;
+            state.patient.listPatient = null;
+        },
+
+        SAVE_INFO_DOCTOR_START: (state) => {
+            state.infoDoctor.isFetching = true;
+        },
+        SAVE_INFO_DOCTOR_SUCCESS: (state, action) => {
+            state.infoDoctor.isFetching = false;
+            state.infoDoctor.info = action.payload;
+            state.infoDoctor.error = false;
+        },
+        SAVE_INFO_DOCTOR_FAILED: (state) => {
+            state.infoDoctor.isFetching = false;
+            state.infoDoctor.error = true;
+        },
+
+        GET_INFO_DOCTOR_START: (state) => {
+            state.infoDoctor.isFetching = true;
+        },
+        GET_INFO_DOCTOR_SUCCESS: (state, action) => {
+            state.infoDoctor.isFetching = false;
+            state.infoDoctor.info = action.payload;
+            state.infoDoctor.error = false;
+        },
+        GET_INFO_DOCTOR_FAILED: (state) => {
+            state.infoDoctor.isFetching = false;
+            state.infoDoctor.error = true;
+        },
+
         GET_ROLE_START: (state) => {
             state.role.isFetching = true;
         },
@@ -157,7 +194,9 @@ export const {
     CREATE_USER_START, CREATE_USER_SUCCESS, CREATE_USER_FAILED,
     EDIT_USER_START, EDIT_USER_SUCCESS, EDIT_USER_FAILED,
     DELETE_USER_START, DELETE_USER_SUCCESS, DELETE_USER_FAILED,
-    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT,
+    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT, CLEAR_ALL_LIST,
+    SAVE_INFO_DOCTOR_START, SAVE_INFO_DOCTOR_SUCCESS, SAVE_INFO_DOCTOR_FAILED,
+    GET_INFO_DOCTOR_START, GET_INFO_DOCTOR_SUCCESS, GET_INFO_DOCTOR_FAILED,
     GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED,
 } = adminSlice.actions;
 

@@ -208,6 +208,51 @@ const deleteUser = (id) => {
     })
 }
 
+const saveInfoDoctor = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing data input";
+                res.info = {};
+                resolve(res);
+            } else {
+                const existData = await db.Markdown.findOne({
+                    where: {
+                        doctorId: data.doctorId
+                    }
+                })
+                const newInfo = {
+                    doctorId: data.doctorId,
+                    contentHTML: data.contentHTML,
+                    contentMarkdown: data.contentMarkdown,
+                    description: data.description
+                };
+                if (!existData) {
+                    const content = await db.Markdown.create(newInfo);
+                    res.status = 200;
+                    res.errCode = 0;
+                    res.message = "Content already is created";
+                    res.info = content;
+                    resolve(res);
+                }
+                if (existData) {
+                    const content = await existData.update(newInfo);
+                    res.status = 200;
+                    res.errCode = 0;
+                    res.message = "Content already is updated";
+                    res.info = content;
+                    resolve(res);
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const isValidValue = async (type, key,) => {
     let value = await db.Allcode.findOne({
         where: {
@@ -222,4 +267,4 @@ const isValidValue = async (type, key,) => {
     }
 }
 
-module.exports = { createUser, editUser, deleteUser }
+module.exports = { createUser, editUser, deleteUser, saveInfoDoctor }
