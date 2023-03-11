@@ -10,7 +10,7 @@ import IsNotAuthenticated from '../components/IsNotAuthenticated';
 import Login from "./Auth/Login";
 import Register from './Auth/Register';
 import HomePage from './HomePage/HomePage';
-import PatientHome from './PatientPage/PatientHome';
+import PatientHome from './PatientPage/PersonalPage/PatientHome';
 import AdminHome from './AdminPage/AdminHome';
 import AdminUser from './AdminPage/Section/AdminUser/AdminUser';
 import AdminFacility from './AdminPage/Section/AdminFacility';
@@ -27,6 +27,7 @@ import {
   Route,
 } from "react-router-dom";
 import MarkdownInfoDoctor from './AdminPage/Section/AdminUser/MarkdownInfoDoctor';
+import DetailDoctor from './PatientPage/Doctor/DetailDoctor';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -42,6 +43,7 @@ function App() {
               <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
+              <Route exact path="/detail-doctor/:name" element={<DetailDoctor />} />
               <Route exact path="/system/admin/" element={<AdminHome />}>
                 <Route exact path="user/" element={<AdminUser />} />
                 <Route path="user/edit-info-doctor" element={<MarkdownInfoDoctor />} />

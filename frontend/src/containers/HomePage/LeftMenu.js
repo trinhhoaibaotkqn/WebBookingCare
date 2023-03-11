@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MENU } from "../../store/slice/commonSlice";
 import { RxExit } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
+import "./LeftMenu.scss"
 
 const LeftMenu = () => {
     const dispatch = useDispatch();

@@ -5,7 +5,7 @@ import { AiOutlineSchedule } from "react-icons/ai";
 import { ImHome } from "react-icons/im";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { handleApiLogOut } from "../../services/authService";
+import { handleApiLogOut } from "../../../services/authService";
 
 const PatientHome = () => {
     const dispatch = useDispatch();

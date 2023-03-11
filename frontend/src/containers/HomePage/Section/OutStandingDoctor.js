@@ -9,6 +9,7 @@ import {
     GET_TOP_DOCTORS_START,
     GET_TOP_DOCTORS_SUSSCESS,
 } from "../../../store/slice/userSlice";
+import { useNavigate } from "react-router-dom";
 import CommonUtils from "../../../utils/CommonUtils";
 
 const OutStandingDoctor = () => {
@@ -32,6 +33,7 @@ const OutStandingDoctor = () => {
     };
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const language = useSelector(state => state.common.language);
 
     const [listDoctors, setListDoctors] = useState();
@@ -66,13 +68,18 @@ const OutStandingDoctor = () => {
                     {listDoctors && listDoctors.map(item => {
                         let title;
                         if (language === "vi") {
-                            title = `${item.positionData.valueVi}, ${item.roleData.valueVi} ${item.name}`
+                            title = `${item.positionData.valueVi === "Không" ? "" : `${item.positionData.valueVi}, `}${item.roleData.valueVi} ${item.name}`
                         }
                         if (language === "en") {
-                            title = `${item.positionData.valueEn}, ${item.roleData.valueEn} ${item.name}`
+                            title = `${item.positionData.valueEn === "None" ? "" : `${item.positionData.valueEn}, `}${item.roleData.valueEn} ${item.name}`
                         }
                         return (
-                            <div key={item.id}>
+                            <div key={item.id}
+                                onClick={() => navigate(`/detail-doctor/${item.name}`, {
+                                    state: {
+                                        doctor: item,
+                                    }
+                                })}>
                                 <div className="item-content">
                                     <div className="item-image-doctor" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
                                     <div className="title-doctor">
