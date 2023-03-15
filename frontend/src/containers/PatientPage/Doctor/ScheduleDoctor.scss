@@ -1,0 +1,91 @@
+.schedule-container {
+    margin: 20px 0;
+
+    .schedule-content {
+        width: 1100px;
+        margin: auto;
+
+        .schedule-content-up {
+            .date {
+                margin: 5px 0;
+
+                select {
+                    width: 160px;
+                    height: 25px;
+                    border: none;
+                    border-bottom: 1px solid #000;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #337ab7;
+
+                    option {
+                        font-weight: 200;
+                    }
+                }
+            }
+
+            .icon-schedule {
+                text-transform: uppercase;
+                font-weight: 500;
+                margin: 10px 0;
+            }
+        }
+
+        .schedule-content-down {
+            display: flex;
+
+            .time-option {
+                display: grid;
+                height: fit-content;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                padding-right: 30px;
+                border-right: 1px solid #eee;
+                min-width: 710px;
+
+                .child-time-option {
+                    width: 160px;
+                    height: 40px;
+                    margin: 5px 10px 5px 0;
+                    text-align: center;
+                    line-height: 40px;
+                    font-weight: 600;
+                    background-color: #eee;
+                }
+            }
+
+            .more-info-booking {
+                margin-left: 20px;
+
+                .adrress-clinic-container {
+                    .title-clinic {
+                        color: #666666;
+                        font-size: 15px;
+                        font-weight: 600;
+                    }
+
+                    .name-clinic {
+                        padding: 5px 0;
+                        color: #000;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+
+                    .address-clinic {
+                        padding: 5px 0 10px 0;
+                        color: #000;
+                        font-size: 14px;
+                        font-weight: 300;
+                    }
+                }
+
+                .price {
+                    border-top: 1px solid #eee;
+                    padding-top: 20px;
+                    color: #666666;
+                    font-size: 15px;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

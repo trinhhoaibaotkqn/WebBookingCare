@@ -4,6 +4,7 @@ import commonReducer from "./slice/commonSlice";
 import authReducer from "./slice/authSlice";
 import adminReducer from "./slice/adminSlice";
 import userSlice from './slice/userSlice';
+import doctorSlice from './slice/doctorSlice';
 // import {
 //     persistStore,
 //     persistReducer,
@@ -20,7 +21,7 @@ import userSlice from './slice/userSlice';
 //     version: 1,
 //     storage,
 // }
-const rootReducer = combineReducers({ common: commonReducer, auth: authReducer, admin: adminReducer, user: userSlice });
+const rootReducer = combineReducers({ common: commonReducer, auth: authReducer, admin: adminReducer, user: userSlice, doctor: doctorSlice });
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

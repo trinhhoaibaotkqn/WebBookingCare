@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const HeaderDetail = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    let { doctor } = props;
+    let { title } = props;
     return (
         <div className="header-detail-container">
             <div className="header-detail-container">
@@ -20,7 +20,7 @@ const HeaderDetail = (props) => {
                     >
                         <FaBars />
                     </div>
-                    <div className="title-detail">Phó giáo sư, tiến sĩ, bác sĩ {doctor.name}</div>
+                    <div className="title-detail">{title}</div>
                 </div>
                 <div className="icon-back" onClick={() => navigate("/")}>
                     <ImArrowRight />

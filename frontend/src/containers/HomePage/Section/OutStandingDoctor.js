@@ -42,6 +42,7 @@ const OutStandingDoctor = () => {
         const handleGetTopDoctor = async (limit) => {
             dispatch(GET_TOP_DOCTORS_START());
             try {
+                console.log("call api get top doctor")
                 const res = await axios.get(`http://localhost:8080/user/get-top-doctor-home/${limit}`,
                     {
                         "withCredentials": true

@@ -65,6 +65,31 @@ class UserController {
             res.status(500).json("Server error");
         }
     }
+
+    getScheduleDoctor = async (req, res) => {
+        try {
+            let doctorId = req.query.doctorId;
+            let date = req.query.date;
+            const data = await db.Schedule.findAll({
+                where: {
+                    doctorId: doctorId,
+                    date: date
+                },
+                include: [
+                    { model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }
+                ],
+                raw: true,
+                nest: true
+            });
+            res.status(200).json({
+                errCode: 0,
+                message: "Get schedule successfully",
+                data: data
+            })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
 }
 
 module.exports = new UserController;

@@ -54,5 +54,9 @@ class CommonUtils {
         })
         return newList;
     }
+
+    static capitalizeFirstLetter(string) {
+        return string[0].toUpperCase() + string.slice(1);
+    }
 }
 export default CommonUtils;

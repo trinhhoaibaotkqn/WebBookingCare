@@ -3,6 +3,7 @@ import HeaderDetail from "../HeaderDetail";
 import "./DetailDoctor.scss";
 import CommonUtils from "../../../utils/CommonUtils";
 import { useSelector } from "react-redux";
+import ScheduleDoctor from "./ScheduleDoctor";
 
 const DetailDoctor = () => {
     const language = useSelector(state => state.common.language);
@@ -20,7 +21,7 @@ const DetailDoctor = () => {
     return (
         <div className="detail-doctor-container">
             <HeaderDetail
-                doctor={doctor}
+                title={`Phó giáo sư, tiến sĩ, bác sĩ ${doctor.name}`}
             />
             <div className="description-doctor-container">
                 <div className="avatar" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(doctor.image)})` }}></div>
@@ -33,6 +34,11 @@ const DetailDoctor = () => {
                     </div>
                 </div>
             </div>
+
+            <ScheduleDoctor
+                doctor={doctor}
+            />
+
             <div className="more-information-doctor-container">
                 <div className="more-information-doctor-content" dangerouslySetInnerHTML={{ __html: doctor.doctorData.contentHTML }}></div>
             </div>

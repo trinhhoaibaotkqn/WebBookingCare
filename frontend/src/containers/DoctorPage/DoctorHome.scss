@@ -1,0 +1,195 @@
+.doctor-header-container {
+    height: 60px;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: #18885c;
+    z-index: 100;
+
+    .doctor-header-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+        .left-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .header-logo {
+                background: url('../../assets/logo.svg') center center no-repeat;
+                width: 160px;
+                height: 40px;
+                margin: 0 10px;
+            }
+        }
+
+        .center-content {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 0 20px;
+
+            .child-center-content {
+                width: 20%;
+                height: 60px;
+                margin: 0 2.5%;
+                cursor: pointer;
+                line-height: 60px;
+                box-sizing: border-box;
+                color: #fff;
+                text-decoration: none;
+
+                .title {
+                    font-weight: 500;
+                    font-size: 16px;
+                }
+
+                &.active {
+                    border-top: 3px solid #ffc10e;
+                    color: #ffc10e;
+                }
+            }
+
+        }
+
+        .right-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .avatar-container {
+                display: flex;
+                align-items: center;
+
+                .avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+
+                .icon-dropdown {
+                    font-size: 30px;
+                    color: #fff;
+                    cursor: pointer;
+                }
+            }
+
+            .language {
+                margin: 0 15px;
+                font-weight: 500;
+                cursor: pointer;
+                color: #fff;
+            }
+        }
+
+        @media (min-width: 740px) {
+
+            .left-content,
+            .right-content {
+                width: 25%;
+            }
+        }
+
+        @media (max-width: 740px) {
+            .center-content {
+                width: 80%;
+            }
+
+            .left-content {
+                display: none;
+            }
+
+            .right-content {
+                width: 20%;
+            }
+        }
+    }
+}
+
+.doctor-schedule-container {
+
+    .doctor-schedule-content {
+        width: 1100px;
+        margin: 20px auto;
+
+        .time-content {
+            display: flex;
+
+            .select-date {
+                display: flex;
+                flex-direction: column;
+                width: 210px;
+
+                label {
+                    width: 100%;
+                    font-size: 16px;
+                    font-weight: 700;
+                    margin-bottom: 5px;
+                }
+
+                input {
+                    border: 3px solid #000;
+                    border-radius: 5px;
+                    width: 200px;
+                    height: 25px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    padding-left: 10px;
+                }
+            }
+
+            .select-time {
+                padding: 0 20px;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+
+                .time-child {
+                    border: 3px solid #000;
+                    margin: 10px;
+                    width: 150px;
+                    height: 50px;
+                    border-radius: 15px;
+                    text-align: center;
+                    line-height: 50px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: #FFC419;
+                        border: 3px solid #45c3d2;
+                    }
+                }
+            }
+
+            .btn-save-schedule {
+                button {
+                    width: 120px;
+                    height: 50px;
+                    margin: 10px 10px;
+                    background-color: #18885c;
+                    box-sizing: border-box;
+                    display: inline-block;
+                    line-height: 50px;
+                    outline: none;
+                    border-radius: 4px;
+                    border: none;
+                    color: #fff;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    -webkit-transition: all 0.2s ease;
+                    transition: all 0.2s ease;
+                    font-size: 18px;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+}
