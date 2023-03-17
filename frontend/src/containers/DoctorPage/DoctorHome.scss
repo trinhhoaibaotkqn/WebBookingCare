@@ -113,7 +113,7 @@
 
     .doctor-schedule-content {
         width: 1100px;
-        margin: 20px auto;
+        margin: 40px auto;
 
         .time-content {
             display: flex;
@@ -191,5 +191,89 @@
                 }
             }
         }
+    }
+}
+
+.infor-checkup-container {
+    width: 1100px;
+    margin: 20px auto;
+
+    .infor-checkup-content {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+
+        .input-element {
+            margin: 10px;
+            height: 60px;
+
+            .title-input {
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            input,
+            select {
+                width: 100%;
+                height: 40px;
+                box-sizing: border-box;
+                font-size: 16px;
+                font-weight: 400;
+            }
+
+            .edit-btn {
+                width: 100%;
+                height: 70px;
+                margin: 10px 10px;
+                background-color: #18885c;
+                box-sizing: border-box;
+                display: inline-block;
+                line-height: 70px;
+                outline: none;
+                border-radius: 4px;
+                border: none;
+                color: #fff;
+                font-weight: bold;
+                text-transform: uppercase;
+                -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            .two-btn {
+                width: 100%;
+                height: 60px;
+                margin: 10px 10px;
+                box-sizing: border-box;
+                display: inline-block;
+                line-height: 60px;
+                outline: none;
+                border-radius: 4px;
+                border: none;
+                color: #fff;
+                font-weight: bold;
+                text-transform: uppercase;
+                -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+                font-size: 18px;
+                cursor: pointer;
+
+                &.save-btn {
+                    background-color: #18885c;
+                }
+
+                &.cancel-btn {
+                    background-color: rgb(241, 53, 53);
+                }
+            }
+
+            &.element-note {
+                grid-column: 1/4;
+            }
+        }
+
     }
 }

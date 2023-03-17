@@ -1,13 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { CHANGE_LANGUAGE } from "../../store/slice/commonSlice";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import "./DoctorHome.scss"
-import { useNavigate } from "react-router-dom";
+import "./DoctorHome.scss";
 import urlImage from "../../assets/images/avatar.jpg";
+import { NavLink } from "react-router-dom";
 
 const DoctorHeader = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const language = useSelector((state) => state.common.language);
 
     const handleChangeLanguage = (lang) => {
@@ -22,18 +21,22 @@ const DoctorHeader = () => {
                 </div>
 
                 <div className="center-content">
-                    <div className="child-center-content active">
-                        <div className="title" onClick={() => navigate("/system/doctor/schedule")}>Schedule</div>
-                    </div>
-                    <div className="child-center-content">
-                        <div className="title" onClick={() => navigate("/system/doctor/facility")}>Facility</div>
-                    </div>
-                    <div className="child-center-content">
-                        <div className="title">Specialty</div>
-                    </div>
-                    <div className="child-center-content">
-                        <div className="title">Handbook</div>
-                    </div>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? "child-center-content active" : "child-center-content"
+                        }
+                        to="/system/doctor/schedule"
+                    >
+                        <div className="title">Schedule</div>
+                    </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? "child-center-content active" : "child-center-content"
+                        }
+                        to="/system/doctor/info-checkup"
+                    >
+                        <div className="title">Info Checkup</div>
+                    </NavLink>
                 </div>
 
                 <div className="right-content">

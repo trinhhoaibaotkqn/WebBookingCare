@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import axios from "axios";
 import {
+    GET_DOCTOR_INFO_FAILED,
+    GET_DOCTOR_INFO_START,
+    GET_DOCTOR_INFO_SUSSCESS,
     GET_SCHEDULE_DOCTOR_FAILED,
     GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS
 } from "../../../store/slice/userSlice";
@@ -16,10 +19,12 @@ const ScheduleDoctor = (props) => {
     let { doctor } = props;
     const dispatch = useDispatch();
     const language = useSelector(state => state.common.language);
+    const [isShowMorePrice, setIsShowMorePrice] = useState(false);
 
     const [selectedDay, setSelectedDay] = useState();
     const [listDays, setListDays] = useState([]);
     const [listTime, setListTime] = useState([]);
+    const [info, setInfo] = useState();
 
     useEffect(() => {
         console.log("render list day")
@@ -41,7 +46,6 @@ const ScheduleDoctor = (props) => {
     }, [language])
 
     useEffect(() => {
-
         const handleApiGetScheduleByDay = async (data) => {
             dispatch(GET_SCHEDULE_DOCTOR_START());
             try {
@@ -71,7 +75,25 @@ const ScheduleDoctor = (props) => {
             }
             handleApiGetScheduleByDay(data);
         }
-    }, [selectedDay, doctor, dispatch, listDays])
+    }, [selectedDay, doctor, dispatch, listDays]);
+
+    useEffect(() => {
+        const handleApiGetScheduleByDay = async () => {
+            dispatch(GET_DOCTOR_INFO_START());
+            try {
+                console.log(">>>>>call api info doctor");
+                const res = await axios.get(`http://localhost:8080/user/get-doctor-info-price-address-clinic/${doctor.id}`);
+                if (res.data && res.data.errCode === 0) {
+                    dispatch(GET_DOCTOR_INFO_SUSSCESS(res.data.data));
+                    setInfo(res.data.data);
+                }
+            } catch (err) {
+                dispatch(GET_DOCTOR_INFO_FAILED());
+            }
+        }
+
+        handleApiGetScheduleByDay();
+    }, [dispatch, doctor])
 
     return (
         <div className="schedule-container">
@@ -98,16 +120,59 @@ const ScheduleDoctor = (props) => {
                             )
                         })
                             :
-                            <div>Không có lịch hẹn nào</div>
+                            <div style={{ gridColumn: "1/5" }}>Không có lịch hẹn nào, vui lòng chọn những ngày khác</div>
                         }
                     </div>
                     <div className="more-info-booking">
-                        <div className="adrress-clinic-container">
-                            <div className="title-clinic">ĐỊA CHỈ KHÁM</div>
-                            <div className="name-clinic">Phòng khám Chuyên khoa Yên Hòa</div>
-                            <div className="address-clinic">số 11 i4, ngõ 37 Trần Kim Xuyến, khu Đô Thị Mới Yên Hoà, Yên Hoà, Cầu Giấy, Hà Nội</div>
-                        </div>
-                        <div className="price">GIÁ KHÁM: 300.000đ - 360.000đ. Xem chi tiết</div>
+                        {info ?
+                            <>
+                                <div className="adrress-clinic-container">
+                                    <div className="title-clinic">ĐỊA CHỈ KHÁM</div>
+                                    <div className="name-clinic">{info.nameClinic}</div>
+                                    <div className="address-clinic">
+                                        {info.addressClinic}, {language === languages.EN ? info.provinceData.valueEn : info.provinceData.valueVi}
+                                    </div>
+                                </div>
+                                <div className="price-container">
+                                    {!isShowMorePrice ?
+                                        <div className='price-content-common'>
+                                            <div className='label-price'>GIÁ KHÁM: </div>
+                                            <div className='price'>
+                                                {language === languages.EN ? `${info.priceData.valueEn}$.` : `${info.priceData.valueVi}đ.`}
+                                            </div>
+                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(true)}>Xem chi tiết</div>
+                                        </div>
+                                        :
+                                        <div className='price-content-detail'>
+                                            <div className='label-price'>GIÁ KHÁM: </div>
+                                            <div className='more-info-price'>
+                                                <div className='price-content'>
+                                                    <div className='price'>
+                                                        <span>GIÁ KHÁM</span>
+                                                        <span>
+                                                            {language === languages.EN ? `${info.priceData.valueEn}$` : `${info.priceData.valueVi}đ`}
+                                                        </span>
+                                                    </div>
+                                                    <div className='note'>{info.note}</div>
+                                                </div>
+                                                <div className='method-payment'>
+                                                    {
+                                                        language === languages.EN ?
+                                                            `The patient can pay the cost in the form of: ${info.paymentData.valueEn}`
+                                                            :
+                                                            `Người bệnh có thể thanh toán chi phí bằng hình thức: ${info.paymentData.valueVi}`
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(false)}>Ẩn bảng giá</div>
+                                        </div>
+                                    }
+                                </div>
+                            </>
+                            :
+                            <></>
+                        }
+
                     </div>
                 </div>
             </div>

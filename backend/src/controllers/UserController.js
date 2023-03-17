@@ -90,6 +90,31 @@ class UserController {
             res.status(500).json("Server error");
         }
     }
+
+    getDoctorInfoPriceAddressClinic = async (req, res) => {
+        try {
+            let doctorId = req.params.id;
+            const data = await db.DoctorInfo.findOne({
+                where: {
+                    doctorId: doctorId,
+                },
+                include: [
+                    { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] }
+                ],
+                raw: true,
+                nest: true
+            });
+            res.status(200).json({
+                errCode: 0,
+                message: "Get schedule successfully",
+                data: data
+            })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
 }
 
 module.exports = new UserController;

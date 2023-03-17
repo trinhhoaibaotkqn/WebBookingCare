@@ -12,6 +12,11 @@ const userSlice = createSlice({
             schedule: null,
             isFetching: false,
             error: false
+        },
+        doctorInfo: {
+            infoAdressPriceNameClinic: null,
+            isFetching: false,
+            error: false
         }
     },
     reducers: {
@@ -38,12 +43,26 @@ const userSlice = createSlice({
         GET_SCHEDULE_DOCTOR_FAILED: (state) => {
             state.scheduleDoctor.error = true;
         },
+
+        GET_DOCTOR_INFO_START: (state) => {
+            state.doctorInfo.isFetching = true;
+        },
+        GET_DOCTOR_INFO_SUSSCESS: (state, action) => {
+            state.doctorInfo.isFetching = false;
+            state.doctorInfo.infoAdressPriceNameClinic = action.payload;
+            state.doctorInfo.error = false;
+        },
+        GET_DOCTOR_INFO_FAILED: (state) => {
+            state.doctorInfo.error = true;
+        },
     },
 })
 
 export const {
     GET_TOP_DOCTORS_START, GET_TOP_DOCTORS_SUSSCESS, GET_TOP_DOCTORS_FAILED,
-    GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS, GET_SCHEDULE_DOCTOR_FAILED
+    GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS, GET_SCHEDULE_DOCTOR_FAILED,
+    GET_DOCTOR_INFO_START, GET_DOCTOR_INFO_SUSSCESS, GET_DOCTOR_INFO_FAILED,
+
 } = userSlice.actions;
 
 export default userSlice.reducer;

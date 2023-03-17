@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleApiSaveSheduleDoctor } from "../../../services/doctorService";
 import axios from "axios";
 import {
-    SAVE_LIST_SELECTED_TIME_START, SAVE_LIST_SELECTED_TIME_SUSSCESS, SAVE_LIST_SELECTED_TIME_FAILED
+    GET_LIST_SELECTED_TIME_START, GET_LIST_SELECTED_TIME_SUSSCESS, GET_LIST_SELECTED_TIME_FAILED
 } from "../../../store/slice/doctorSlice"
 
 const Schedule = () => {
@@ -48,7 +48,7 @@ const Schedule = () => {
 
     useEffect(() => {
         const handleApiLoadScheduleFromDB = async () => {
-            dispatch(SAVE_LIST_SELECTED_TIME_START());
+            dispatch(GET_LIST_SELECTED_TIME_START());
             try {
                 console.log(">>>>>call api schedule");
                 const res = await axios.get("http://localhost:8080/doctor/get-schedule",
@@ -59,14 +59,14 @@ const Schedule = () => {
                         }
                     });
                 if (res.data.errCode === 0) {
-                    dispatch(SAVE_LIST_SELECTED_TIME_SUSSCESS(res.data.data));
+                    dispatch(GET_LIST_SELECTED_TIME_SUSSCESS(res.data.data));
                     const temp = res.data.data.map(element => {
                         return element.timeType
                     });
                     setListSelectedTime(temp);
                 }
             } catch (err) {
-                dispatch(SAVE_LIST_SELECTED_TIME_FAILED());
+                dispatch(GET_LIST_SELECTED_TIME_FAILED());
             }
         }
         handleApiLoadScheduleFromDB();

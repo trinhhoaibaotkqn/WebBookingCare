@@ -30,6 +30,7 @@ import MarkdownInfoDoctor from './AdminPage/Section/AdminUser/MarkdownInfoDoctor
 import DetailDoctor from './PatientPage/Doctor/DetailDoctor';
 import DoctorHome from './DoctorPage/DoctorHome';
 import Schedule from './DoctorPage/Section/Schedule';
+import InformationCheckup from './DoctorPage/Section/InformationCheckup';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -55,7 +56,7 @@ function App() {
               </Route>
               <Route exact path="/system/doctor/" element={<DoctorHome />}>
                 <Route exact path="schedule" element={<Schedule />} />
-                <Route path="facility" element={<AdminFacility />} />
+                <Route path="info-checkup" element={<InformationCheckup />} />
               </Route>
             </Routes>
             <ToastContainer

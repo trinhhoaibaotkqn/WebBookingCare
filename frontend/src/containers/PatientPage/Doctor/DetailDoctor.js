@@ -9,7 +9,7 @@ const DetailDoctor = () => {
     const language = useSelector(state => state.common.language);
     const location = useLocation();
     const doctor = location.state.doctor;
-    console.log(doctor)
+    console.log(doctor);
     let name;
     if (language === "vi") {
         name = `${doctor.positionData.valueVi === "Không" ? "" : `${doctor.positionData.valueVi}, `}${doctor.roleData.valueVi} ${doctor.name}`

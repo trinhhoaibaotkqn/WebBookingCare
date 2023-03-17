@@ -64,4 +64,52 @@ const saveSchedule = (data) => {
     })
 }
 
-module.exports = { saveSchedule };
+const saveDataDoctorInfo = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.doctorId || !data.priceId || !data.provinceId
+                || !data.paymentId || !data.addressClinic || !data.nameClinic) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing required parameters";
+                res.data = {};
+                resolve(res);
+            } else {
+                const existData = await db.DoctorInfo.findOne({
+                    where: {
+                        doctorId: data.doctorId
+                    }
+                })
+                newData = {
+                    doctorId: data.doctorId,
+                    priceId: data.priceId,
+                    provinceId: data.provinceId,
+                    paymentId: data.paymentId,
+                    addressClinic: data.addressClinic,
+                    nameClinic: data.nameClinic,
+                    note: data.note
+                }
+                if (!existData) {
+                    const info = await db.DoctorInfo.create(newData);
+                    res.status = 200;
+                    res.errCode = 0;
+                    res.message = "Create information doctor successfully";
+                    res.data = info;
+                    resolve(res);
+                } else {
+                    const info = await existData.update(newData);
+                    res.status = 200;
+                    res.errCode = 0;
+                    res.message = "Update information doctor successfully";
+                    res.data = info;
+                    resolve(res);
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+module.exports = { saveSchedule, saveDataDoctorInfo };

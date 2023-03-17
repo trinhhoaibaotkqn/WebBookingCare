@@ -73,6 +73,36 @@ class DocTorController {
             res.status(500).json("Server error");
         }
     }
+
+    saveDataDoctorInfo = async (req, res) => {
+        try {
+            let data = await doctorSevice.saveDataDoctorInfo(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getDataDoctorInfo = async (req, res) => {
+        try {
+            const doctorId = req.params.id;
+            const data = await db.DoctorInfo.findOne({
+                where: {
+                    doctorId: doctorId,
+                }
+            })
+            res.status(200).json({
+                errCode: 0,
+                message: "Get doctor information susscessfully",
+                data: data
+            })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
 }
 
 module.exports = new DocTorController;

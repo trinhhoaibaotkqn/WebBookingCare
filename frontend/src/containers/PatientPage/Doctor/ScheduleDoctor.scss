@@ -39,7 +39,6 @@
                 height: fit-content;
                 grid-template-columns: 1fr 1fr 1fr 1fr;
                 padding-right: 30px;
-                border-right: 1px solid #eee;
                 min-width: 710px;
 
                 .child-time-option {
@@ -50,11 +49,14 @@
                     line-height: 40px;
                     font-weight: 600;
                     background-color: #eee;
+                    cursor: pointer;
                 }
             }
 
             .more-info-booking {
-                margin-left: 20px;
+                padding-left: 20px;
+                border-left: 1px solid #eee;
+                flex-grow: 1;
 
                 .adrress-clinic-container {
                     .title-clinic {
@@ -78,12 +80,84 @@
                     }
                 }
 
-                .price {
+                .price-container {
                     border-top: 1px solid #eee;
-                    padding-top: 20px;
-                    color: #666666;
-                    font-size: 15px;
-                    font-weight: 600;
+
+
+                    .price-content-common {
+                        display: flex;
+                        padding-top: 20px;
+
+                        .hide-detail {
+                            color: #45c3d2;
+                            font-size: 15px;
+                            margin-left: 5px;
+                            cursor: pointer;
+                        }
+
+                        .label-price {
+                            color: #666666;
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+
+                        .price {
+                            margin-left: 5px;
+                            color: #000;
+                            font-size: 16px;
+                            font-weight: 400;
+                        }
+                    }
+
+                    .price-content-detail {
+                        padding-top: 10px;
+
+                        .label-price {
+                            color: #666666;
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+
+                        .more-info-price {
+                            width: 300px;
+                            margin: 10px auto;
+                            border: 1px solid #ddd;
+
+                            .price-content {
+                                padding: 5px;
+                                height: 60px;
+                                border-bottom: 1px solid #ddd;
+
+                                .price {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    padding-bottom: 5px;
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                }
+
+                                .note {
+                                    font-size: 12px;
+                                    font-weight: 300;
+                                }
+                            }
+
+                            .method-payment {
+                                height: 60px;
+                                padding: 5px;
+                                font-size: 14px;
+                                font-weight: 400;
+                            }
+                        }
+
+                        .hide-detail {
+                            color: #45c3d2;
+                            font-size: 15px;
+                            width: 300px;
+                            margin: 0 auto;
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }
