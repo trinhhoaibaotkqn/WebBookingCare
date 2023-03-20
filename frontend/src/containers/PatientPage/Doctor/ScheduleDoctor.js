@@ -16,7 +16,7 @@ import {
 import CommonUtils from '../../../utils/CommonUtils';
 
 const ScheduleDoctor = (props) => {
-    let { doctor } = props;
+    let { doctor, setTimeSelected, setIsShow, toggleBooked } = props;
     const dispatch = useDispatch();
     const language = useSelector(state => state.common.language);
     const [isShowMorePrice, setIsShowMorePrice] = useState(false);
@@ -25,6 +25,11 @@ const ScheduleDoctor = (props) => {
     const [listDays, setListDays] = useState([]);
     const [listTime, setListTime] = useState([]);
     const [info, setInfo] = useState();
+
+    const handleOpenModal = (item) => {
+        setTimeSelected(item);
+        setIsShow(true);
+    }
 
     useEffect(() => {
         console.log("render list day")
@@ -75,10 +80,10 @@ const ScheduleDoctor = (props) => {
             }
             handleApiGetScheduleByDay(data);
         }
-    }, [selectedDay, doctor, dispatch, listDays]);
+    }, [selectedDay, doctor, dispatch, listDays, toggleBooked]);
 
     useEffect(() => {
-        const handleApiGetScheduleByDay = async () => {
+        const handleApiGetInfoDoctor = async () => {
             dispatch(GET_DOCTOR_INFO_START());
             try {
                 console.log(">>>>>call api info doctor");
@@ -92,7 +97,7 @@ const ScheduleDoctor = (props) => {
             }
         }
 
-        handleApiGetScheduleByDay();
+        handleApiGetInfoDoctor();
     }, [dispatch, doctor])
 
     return (
@@ -103,7 +108,12 @@ const ScheduleDoctor = (props) => {
                         <select onChange={(e) => setSelectedDay(e.target.value)}>
                             {listDays && listDays.length > 0 && listDays.map((item, index) => {
                                 return (
-                                    <option value={item.value} key={index}>{item.label}</option>
+                                    <option
+                                        value={item.value}
+                                        key={index}
+                                    >
+                                        {item.label}
+                                    </option>
                                 )
                             })}
                         </select>
@@ -114,7 +124,11 @@ const ScheduleDoctor = (props) => {
                     <div className="time-option">
                         {listTime && listTime.length > 0 ? listTime.map((item, index) => {
                             return (
-                                <div key={index} className="child-time-option">
+                                <div
+                                    key={index}
+                                    className="child-time-option"
+                                    onClick={() => { handleOpenModal(item) }}
+                                >
                                     {language === languages.EN ? item.timeData.valueEn : item.timeData.valueVi}
                                 </div>
                             )

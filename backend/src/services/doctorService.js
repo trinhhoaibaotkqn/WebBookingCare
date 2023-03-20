@@ -18,7 +18,9 @@ const saveSchedule = (data) => {
                         return {
                             doctorId: data.doctorId,
                             date: moment(data.date).format('YYYY-MM-DD'),
-                            timeType: item
+                            timeType: item,
+                            currentNumber: 0,
+                            maxNumber: parseInt(process.env.MAX_NUMBER_PATIENT_BOOKING)
                         }
                     })
                 }
@@ -27,12 +29,11 @@ const saveSchedule = (data) => {
                         doctorId: data.doctorId,
                         date: data.date
                     },
-                    attributes: ['doctorId', "date", "timeType"],
+                    attributes: ['doctorId', "date", "timeType", "currentNumber", "maxNumber"],
                     raw: true
                 })
                 const dataCreate = _.differenceWith(dataRequest, dataExist, _.isEqual);
                 const dataDelete = _.differenceWith(dataExist, dataRequest, _.isEqual);
-
                 if (dataCreate && dataCreate.length > 0) {
                     await db.Schedule.bulkCreate(dataCreate);
                 }
@@ -55,7 +56,7 @@ const saveSchedule = (data) => {
                 res.status = 200;
                 res.errCode = 0;
                 res.message = "Update schedule successfully";
-                res.data = dataDB
+                res.data = dataDB;
                 resolve(res);
             }
         } catch (err) {

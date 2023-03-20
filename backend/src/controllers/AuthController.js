@@ -31,7 +31,7 @@ class AuthController {
                 address: req.body.address,
                 phoneNumber: req.body.phoneNumber,
                 image: req.body.image,
-                roleid: "R1",
+                roleid: "R3",
             };
             const user = await db.User.create(newUser, { raw: true });
             delete user.dataValues.password;

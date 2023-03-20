@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { ImHome } from 'react-icons/im';
 import "./Login.scss";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
@@ -12,6 +12,8 @@ const Login = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const doctor = location?.state?.doctor;
 
     const [eye, setEye] = useState(false);
     const [email, setEmail] = useState("");
@@ -21,13 +23,21 @@ const Login = () => {
         setEye(!eye);
     }
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         const userData = {
             email,
             password
         };
-        handleApiLogin(userData, toast, dispatch, navigate);
+        let loginSuccess = await handleApiLogin(userData, toast, dispatch, navigate, doctor);
+
+        if (doctor && loginSuccess) {
+            navigate(`/detail-doctor/${doctor.name}`, {
+                state: {
+                    doctor: doctor,
+                }
+            })
+        }
     }
 
     return (
@@ -56,7 +66,12 @@ const Login = () => {
                         </div>
                     </form>
                     <div className="create-account-wrap">
-                        <p>Not a member? <NavLink className="create-account-btn" to="/register">Create Account</NavLink></p>
+                        <div>Not a member? </div>
+                        <div className="create-account-btn"
+                            onClick={() => navigate("/register", { state: { doctor: doctor } })}
+                        >
+                            Create Account
+                        </div>
                     </div>
                 </div>
             </div>

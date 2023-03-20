@@ -17,6 +17,11 @@ const userSlice = createSlice({
             infoAdressPriceNameClinic: null,
             isFetching: false,
             error: false
+        },
+        appointment: {
+            appointment: null,
+            isFetching: false,
+            error: false
         }
     },
     reducers: {
@@ -55,6 +60,18 @@ const userSlice = createSlice({
         GET_DOCTOR_INFO_FAILED: (state) => {
             state.doctorInfo.error = true;
         },
+
+        BOOK_APPOINTMENT_START: (state) => {
+            state.appointment.isFetching = true;
+        },
+        BOOK_APPOINTMENT_SUSSCESS: (state, action) => {
+            state.appointment.isFetching = false;
+            state.appointment.appointment = action.payload;
+            state.appointment.error = false;
+        },
+        BOOK_APPOINTMENT_FAILED: (state) => {
+            state.appointment.error = true;
+        },
     },
 })
 
@@ -62,7 +79,7 @@ export const {
     GET_TOP_DOCTORS_START, GET_TOP_DOCTORS_SUSSCESS, GET_TOP_DOCTORS_FAILED,
     GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS, GET_SCHEDULE_DOCTOR_FAILED,
     GET_DOCTOR_INFO_START, GET_DOCTOR_INFO_SUSSCESS, GET_DOCTOR_INFO_FAILED,
-
+    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED
 } = userSlice.actions;
 
 export default userSlice.reducer;

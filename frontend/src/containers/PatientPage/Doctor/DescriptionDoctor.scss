@@ -1,0 +1,73 @@
+.description-doctor-container {
+    display: flex;
+    height: 160px;
+    width: 760px;
+    margin: 30px auto;
+    justify-content: center;
+
+    &.modal {
+        width: 650px;
+        height: 100px;
+        margin: 10px auto;
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+        }
+
+        .description-content {
+            .name-doctor {
+                font-size: 20px;
+                color: #337ab7;
+            }
+
+        }
+    }
+
+    .avatar {
+        width: 160px;
+        height: 160px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-size: contain;
+        border-radius: 100%;
+    }
+
+    .description-content {
+        flex-grow: 1;
+
+        .name-doctor {
+            color: #000;
+            margin: 0;
+            padding: 10px;
+            font-size: 27px;
+            font-weight: 500;
+        }
+
+        .description-doctor {
+            pre {
+                margin: 0;
+                padding: 0 10px;
+                font-size: 14px;
+                font-weight: 400px;
+                color: #555;
+                font: 14px/1.5 'Montserrat', sans-serif;
+            }
+        }
+
+        .time-selected {
+            font-size: 16px;
+            font-weight: 300;
+            padding: 0 10px 10px 10px;
+        }
+
+        .title-booking {
+            border-top: 1px solid #ccc;
+            font-size: 18px;
+            font-weight: 300;
+            padding: 0 10px;
+            text-transform: uppercase;
+        }
+    }
+}

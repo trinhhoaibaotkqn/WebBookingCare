@@ -30,7 +30,7 @@ const LeftMenu = () => {
                 </div>
                 <div className="item-container">
                     {user ?
-                        <NavLink className="menu-item" to="personal-page">Tài khoản cá nhân</NavLink>
+                        <NavLink className="menu-item" to="/personal-page">Tài khoản cá nhân</NavLink>
                         :
                         <>
                             <NavLink className="menu-item" to="/login">Đăng nhập</NavLink>

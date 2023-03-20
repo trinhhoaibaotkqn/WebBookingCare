@@ -7,14 +7,18 @@ import {
     REFRESH_TOKEN
 } from "../store/slice/authSlice";
 
-export const handleApiRegister = async (user, toast, dispatch, navigate) => {
+export const handleApiRegister = async (user, toast, dispatch, navigate, doctor) => {
     dispatch(REGISTER_START());
     try {
         const res = await axios.post("http://localhost:8080/auth/register", user);
-        if (res.data.errCode === 0) {
+        if (res.data && res.data.errCode === 0) {
             dispatch(REGISTER_SUCCESS());
             toast.success(res.data.message);
-            navigate("/login");
+            if (!doctor) {
+                navigate(`/login`);
+            } else {
+                return true;
+            }
         }
     } catch (err) {
         dispatch(REGISTER_FAILED());
@@ -22,7 +26,7 @@ export const handleApiRegister = async (user, toast, dispatch, navigate) => {
     }
 }
 
-export const handleApiLogin = async (user, toast, dispatch, navigate) => {
+export const handleApiLogin = async (user, toast, dispatch, navigate, doctor) => {
     dispatch(LOGIN_START());
     try {
         const res = await axios.post("http://localhost:8080/auth/login", user,
@@ -32,7 +36,11 @@ export const handleApiLogin = async (user, toast, dispatch, navigate) => {
         if (res.data.errCode === 0) {
             dispatch(LOGIN_SUCCESS(res.data.user));
             toast.success(res.data.message);
-            navigate("/");
+            if (!doctor) {
+                navigate(`/`);
+            } else {
+                return true;
+            }
         }
     } catch (err) {
         dispatch(LOGIN_FAILED());

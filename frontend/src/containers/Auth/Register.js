@@ -4,7 +4,7 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsGenderAmbiguous, BsTelephone } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { ImHome } from 'react-icons/im';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +16,9 @@ import {
 import "./Register.scss";
 
 const Register = () => {
+
+    const location = useLocation();
+    const doctor = location.state?.doctor;
 
     const [eye, setEye] = useState(false);
     const [name, setName] = useState("");
@@ -32,7 +35,7 @@ const Register = () => {
         setEye(!eye);
     }
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         const userData = {
             name,
@@ -46,7 +49,14 @@ const Register = () => {
         const isValid = checkValidDataRegister(userData, toast);
         delete userData.passwordConfirm;
         if (isValid) {
-            handleApiRegister(userData, toast, dispatch, navigate);
+            const registerSuccess = await handleApiRegister(userData, toast, dispatch, navigate, doctor);
+            if (doctor && registerSuccess) {
+                navigate("/login", {
+                    state: {
+                        doctor: doctor,
+                    }
+                });
+            }
         }
     }
 

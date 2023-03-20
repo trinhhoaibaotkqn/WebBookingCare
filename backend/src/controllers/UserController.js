@@ -1,4 +1,8 @@
+const { sequelize } = require("../models/index");
 const db = require("../models/index");
+const userService = require("../services/userService");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 class UserController {
 
@@ -73,7 +77,10 @@ class UserController {
             const data = await db.Schedule.findAll({
                 where: {
                     doctorId: doctorId,
-                    date: date
+                    date: date,
+                    currentNumber: {
+                        [Op.lt]: sequelize.col("maxNumber")
+                    }
                 },
                 include: [
                     { model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }
@@ -111,6 +118,18 @@ class UserController {
                 message: "Get schedule successfully",
                 data: data
             })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    //[POST] 
+    bookAppointment = async (req, res) => {
+        try {
+            let data = await userService.bookAppointment(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
