@@ -31,6 +31,7 @@ import DetailDoctor from './PatientPage/Doctor/DetailDoctor';
 import DoctorHome from './DoctorPage/DoctorHome';
 import Schedule from './DoctorPage/Section/Schedule';
 import InformationCheckup from './DoctorPage/Section/InformationCheckup';
+import ConfirmBooking from './PatientPage/Doctor/ConfirmBooking';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -47,6 +48,7 @@ function App() {
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
               <Route exact path="/detail-doctor/:name" element={<DetailDoctor />} />
+              <Route path="/verify-booking-appointment" element={<ConfirmBooking />} />
               <Route exact path="/system/admin/" element={<AdminHome />}>
                 <Route exact path="user/" element={<AdminUser />} />
                 <Route path="user/edit-info-doctor" element={<MarkdownInfoDoctor />} />

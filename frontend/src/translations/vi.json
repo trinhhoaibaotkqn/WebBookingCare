@@ -14,5 +14,10 @@
         "title1": "Nền tảng y tế",
         "title2": "Chăm sóc sức khỏe toàn diện",
         "text-search": "Tìm bác sĩ"
+    },
+    "confirmBooking": {
+        "errCode0": "Xác nhận lịch hẹn thành công",
+        "errCode1": "Lịch hẹn không tồn tại",
+        "errCode3": "Lịch hẹn đã kích hoạt rồi"
     }
 }

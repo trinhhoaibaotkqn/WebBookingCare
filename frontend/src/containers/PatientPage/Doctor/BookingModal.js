@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import { handleApiBookAppointment } from "../../../services/userService";
+import { languages } from "../../../utils/Constants";
 
 const BookingModal = (props) => {
     let { doctor, isShow, setIsShow, timeSelected, setToggleBooked, toggleBooked } = props;
@@ -14,6 +15,8 @@ const BookingModal = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     let user = useSelector(state => state.auth.login.currentUser);
+    let doctorInfo = useSelector(state => state.user.doctorInfo.infoAdressPriceNameClinic)
+    const language = useSelector(state => state.common.language);
 
     const [name, setName] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
@@ -30,15 +33,20 @@ const BookingModal = (props) => {
             } else {
                 const dataBooking = {
                     patientId: user.id,
+                    patientEmail: user.email,
                     doctorId: doctor.id,
+                    doctorName: doctor.name,
                     date: timeSelected.date,
+                    timeData: language === languages.VI ? timeSelected.timeData.valueVi : timeSelected.timeData.valueEn,
                     timeType: timeSelected.timeType,
                     name,
                     phoneNumber,
-                    reason
+                    reason,
+                    language,
+                    doctorInfo
                 }
                 console.log(dataBooking);
-                handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked)
+                handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason)
             }
         }
     }

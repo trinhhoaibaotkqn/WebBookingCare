@@ -14,5 +14,10 @@
         "title1": "Medical service",
         "title2": "Comprehensive health care",
         "text-search": "Search doctor"
+    },
+    "confirmBooking": {
+        "errCode0": "Confirm appointment susscessfully",
+        "errCode1": "Appointment doesn't exist",
+        "errCode3": "Appointment already has been activated"
     }
 }

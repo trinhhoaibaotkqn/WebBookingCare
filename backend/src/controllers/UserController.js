@@ -134,6 +134,17 @@ class UserController {
             res.status(500).json("Server error");
         }
     }
+
+    verifyBookingAppointment = async (req, res) => {
+        try {
+            let data = await userService.verifyBookingAppointment(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
 }
 
 module.exports = new UserController;

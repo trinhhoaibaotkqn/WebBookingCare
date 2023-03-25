@@ -8,11 +8,13 @@ import HomeFooter from "./HomeFooter";
 import LeftMenu from "./LeftMenu";
 
 import "./HomePage.scss";
+import HomeBanner from "./Section/HomeBanner";
 
 const HomePage = () => {
     return (
         <div className="homepage">
             <HomeHeader />
+            <HomeBanner />
             <Specialty />
             <Facility />
             <OutStandingDoctor />

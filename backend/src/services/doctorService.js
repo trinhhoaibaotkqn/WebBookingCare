@@ -19,8 +19,6 @@ const saveSchedule = (data) => {
                             doctorId: data.doctorId,
                             date: moment(data.date).format('YYYY-MM-DD'),
                             timeType: item,
-                            currentNumber: 0,
-                            maxNumber: parseInt(process.env.MAX_NUMBER_PATIENT_BOOKING)
                         }
                     })
                 }
@@ -29,7 +27,7 @@ const saveSchedule = (data) => {
                         doctorId: data.doctorId,
                         date: data.date
                     },
-                    attributes: ['doctorId', "date", "timeType", "currentNumber", "maxNumber"],
+                    attributes: ['doctorId', "date", "timeType"],
                     raw: true
                 })
                 const dataCreate = _.differenceWith(dataRequest, dataExist, _.isEqual);
