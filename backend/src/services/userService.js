@@ -54,7 +54,7 @@ const bookAppointment = (data) => {
                     res.errCode = 0;
                     res.message = "Pls Confirm booking in your email";
                     res.booking = booking;
-                    emailService.sendEmail(data, data.language, url);
+                    await emailService.sendEmailConfirmBooking(data, data.language, url);
                     resolve(res);
                 }
             }
@@ -80,7 +80,6 @@ const verifyBookingAppointment = (data) => {
                         token: data.token,
                     }
                 });
-                console.log(booking)
                 if (!booking) {
                     res.status = 404;
                     res.errCode = 2;

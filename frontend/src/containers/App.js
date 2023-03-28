@@ -32,6 +32,7 @@ import DoctorHome from './DoctorPage/DoctorHome';
 import Schedule from './DoctorPage/Section/Schedule';
 import InformationCheckup from './DoctorPage/Section/InformationCheckup';
 import ConfirmBooking from './PatientPage/Doctor/ConfirmBooking';
+import Appointment from './DoctorPage/Section/Appointment';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -59,6 +60,7 @@ function App() {
               <Route exact path="/system/doctor/" element={<DoctorHome />}>
                 <Route exact path="schedule" element={<Schedule />} />
                 <Route path="info-checkup" element={<InformationCheckup />} />
+                <Route path="appointment" element={<Appointment />} />
               </Route>
             </Routes>
             <ToastContainer

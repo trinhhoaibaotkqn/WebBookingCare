@@ -103,6 +103,47 @@ class DocTorController {
         }
     }
 
+    getListAppointment = async (req, res) => {
+        try {
+            const doctorId = req.query?.doctorId;
+            const date = req.query?.date;
+            const data = await db.Booking.findAll({
+                where: {
+                    doctorId: doctorId,
+                    date: date,
+                    statusId: "S2"
+                },
+                attributes: {
+                    exclude: ['token', "statusId"]
+                },
+                include: [
+                    { model: db.Allcode, as: 'timeAppointment', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.User, as: 'patientData', attributes: ['name', 'phoneNumber', "email", "address", "image"] },
+                ],
+                raw: true,
+                nest: true
+            })
+            res.status(200).json({
+                errCode: 0,
+                message: "Get list appointment susscessfully",
+                data: data
+            })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    doneAppointment = async (req, res) => {
+        try {
+            let data = await doctorSevice.doneAppointment(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
 }
 
 module.exports = new DocTorController;

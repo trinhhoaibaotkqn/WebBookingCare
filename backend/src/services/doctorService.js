@@ -1,6 +1,8 @@
 const db = require("../models/index");
 const _ = require('lodash');
 const moment = require("moment");
+const { reject } = require("lodash");
+const emailService = require("./emailService");
 
 const saveSchedule = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -111,4 +113,40 @@ const saveDataDoctorInfo = (data) => {
     })
 }
 
-module.exports = { saveSchedule, saveDataDoctorInfo };
+const doneAppointment = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.image || data.image === "") {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "You forget attach prescription";
+                resolve(res);
+            } else {
+                const existData = await db.Booking.findOne({
+                    where: {
+                        id: data.id,
+                        statusId: "S2"
+                    }
+                });
+                if (existData) {
+                    await existData.update({ statusId: "S3" });
+                    await emailService.sendEmailCompleteBooking(data, data.language);
+                    res.status = 200;
+                    res.errCode = 0;
+                    res.message = "Completed appointment";
+                    resolve(res);
+                } else {
+                    res.status = 404;
+                    res.errCode = 2;
+                    res.message = "User is not exist";
+                    resolve(res);
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+module.exports = { saveSchedule, saveDataDoctorInfo, doneAppointment };

@@ -32,6 +32,15 @@ const doctorSlice = createSlice({
             info: null,
             isFetching: false,
             error: false
+        },
+        appointment: {
+            listAppointment: null,
+            isFetching: false,
+            error: false
+        },
+        appointmentComplete: {
+            isFetching: false,
+            error: false
         }
     },
     reducers: {
@@ -131,6 +140,29 @@ const doctorSlice = createSlice({
         GET_DOCTOR_INFO_FAILED: (state) => {
             state.doctorInfo.error = true;
         },
+
+        GET_LIST_APPOINTMENT_START: (state) => {
+            state.appointment.isFetching = true;
+        },
+        GET_LIST_APPOINTMENT_SUSSCESS: (state, action) => {
+            state.appointment.isFetching = false;
+            state.appointment.listAppointment = action.payload;
+            state.appointment.error = false;
+        },
+        GET_LIST_APPOINTMENT_FAILED: (state) => {
+            state.appointment.error = true;
+        },
+
+        COMPLETE_APPOINTMENT_START: (state) => {
+            state.appointmentComplete.isFetching = true;
+        },
+        COMPLETE_APPOINTMENT_SUSSCESS: (state) => {
+            state.appointmentComplete.isFetching = false;
+            state.appointmentComplete.error = false;
+        },
+        COMPLETE_APPOINTMENT_FAILED: (state) => {
+            state.appointmentComplete.error = true;
+        },
     },
 })
 
@@ -143,7 +175,8 @@ export const {
     GET_LIST_SELECTED_TIME_START, GET_LIST_SELECTED_TIME_SUSSCESS, GET_LIST_SELECTED_TIME_FAILED,
     SAVE_DOCTOR_INFO_START, SAVE_DOCTOR_INFO_SUSSCESS, SAVE_DOCTOR_INFO_FAILED,
     GET_DOCTOR_INFO_START, GET_DOCTOR_INFO_SUSSCESS, GET_DOCTOR_INFO_FAILED,
-
+    GET_LIST_APPOINTMENT_START, GET_LIST_APPOINTMENT_SUSSCESS, GET_LIST_APPOINTMENT_FAILED,
+    COMPLETE_APPOINTMENT_START, COMPLETE_APPOINTMENT_SUSSCESS, COMPLETE_APPOINTMENT_FAILED
 } = doctorSlice.actions;
 
 export default doctorSlice.reducer;

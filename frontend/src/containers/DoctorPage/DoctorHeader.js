@@ -37,6 +37,14 @@ const DoctorHeader = () => {
                     >
                         <div className="title">Info Checkup</div>
                     </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? "child-center-content active" : "child-center-content"
+                        }
+                        to="/system/doctor/appointment"
+                    >
+                        <div className="title">Appointment</div>
+                    </NavLink>
                 </div>
 
                 <div className="right-content">
