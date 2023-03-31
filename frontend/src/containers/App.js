@@ -14,7 +14,7 @@ import PatientHome from './PatientPage/PersonalPage/PatientHome';
 import AdminHome from './AdminPage/AdminHome';
 import AdminUser from './AdminPage/Section/AdminUser/AdminUser';
 import AdminFacility from './AdminPage/Section/AdminFacility';
-import AdminSpecialty from './AdminPage/Section/AdminSpecialty';
+import AdminSpecialty from './AdminPage/Section/AdminSpecialty/AdminSpecialty';
 import AdminHandbook from './AdminPage/Section/AdminHandbook';
 import LanguageUtils from "../utils/LanguageUtil";
 import { IntlProvider } from "react-intl";

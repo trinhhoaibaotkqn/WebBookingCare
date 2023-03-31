@@ -44,7 +44,26 @@ const adminSlice = createSlice({
             listRole: null,
             isFetching: false,
             error: false
-        }
+        },
+        specialty: {
+            listSpecialty: null,
+            isFetching: false,
+            error: false
+        },
+        createSpecialty: {
+            currentSpecialty: null,
+            isFetching: false,
+            error: false
+        },
+        editSpecialty: {
+            currentUser: null,
+            isFetching: false,
+            error: false
+        },
+        deleteSpecialty: {
+            isFetching: false,
+            error: false
+        },
     },
     reducers: {
         GET_ADMIN_START: (state) => {
@@ -184,6 +203,57 @@ const adminSlice = createSlice({
             state.role.isFetching = false;
             state.role.error = true;
         },
+
+        GET_SPECIALTY_START: (state) => {
+            state.specialty.isFetching = true;
+        },
+        GET_SPECIALTY_SUCCESS: (state, action) => {
+            state.specialty.listSpecialty = action.payload;
+            state.specialty.isFetching = false;
+            state.specialty.error = false;
+        },
+        GET_SPECIALTY_FAILED: (state) => {
+            state.specialty.isFetching = false;
+            state.specialty.error = true;
+        },
+
+        CREATE_SPECIALTY_START: (state) => {
+            state.createSpecialty.isFetching = true;
+        },
+        CREATE_SPECIALTY_SUCCESS: (state, action) => {
+            state.createSpecialty.currentSpecialty = action.payload;
+            state.createSpecialty.isFetching = false;
+            state.createSpecialty.error = false;
+        },
+        CREATE_SPECIALTY_FAILED: (state) => {
+            state.createSpecialty.isFetching = false;
+            state.createSpecialty.error = true;
+        },
+
+        EDIT_SPECIALTY_START: (state) => {
+            state.editSpecialty.isFetching = true;
+        },
+        EDIT_SPECIALTY_SUCCESS: (state, action) => {
+            state.editSpecialty.currentUser = action.payload;
+            state.editSpecialty.isFetching = false;
+            state.editSpecialty.error = false;
+        },
+        EDIT_SPECIALTY_FAILED: (state) => {
+            state.editSpecialty.isFetching = false;
+            state.editSpecialty.error = true;
+        },
+
+        DELETE_SPECIALTY_START: (state) => {
+            state.deleteSpecialty.isFetching = true;
+        },
+        DELETE_SPECIALTY_SUCCESS: (state) => {
+            state.deleteSpecialty.isFetching = false;
+            state.deleteSpecialty.error = false;
+        },
+        DELETE_SPECIALTY_FAILED: (state) => {
+            state.deleteSpecialty.isFetching = false;
+            state.deleteSpecialty.error = true;
+        },
     },
 })
 
@@ -198,6 +268,10 @@ export const {
     SAVE_INFO_DOCTOR_START, SAVE_INFO_DOCTOR_SUCCESS, SAVE_INFO_DOCTOR_FAILED,
     GET_INFO_DOCTOR_START, GET_INFO_DOCTOR_SUCCESS, GET_INFO_DOCTOR_FAILED,
     GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED,
+    GET_SPECIALTY_START, GET_SPECIALTY_SUCCESS, GET_SPECIALTY_FAILED,
+    CREATE_SPECIALTY_START, CREATE_SPECIALTY_SUCCESS, CREATE_SPECIALTY_FAILED,
+    EDIT_SPECIALTY_START, EDIT_SPECIALTY_SUCCESS, EDIT_SPECIALTY_FAILED,
+    DELETE_SPECIALTY_START, DELETE_SPECIALTY_SUCCESS, DELETE_SPECIALTY_FAILED,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

@@ -75,6 +75,7 @@ const ModalEditUser = (props) => {
         setPositionId(dataEdit?.positionId);
         setIsUpdateEmail(false);
         setIsUpdatePassword(false);
+        setImage();
         if (dataEdit && dataEdit.image && dataEdit.image.data) {
             let imageBase64 = new Buffer(dataEdit.image, 'base64').toString('binary');
             setPreviewImgUrl(imageBase64);

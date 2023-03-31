@@ -9,5 +9,9 @@ router.delete("/delete-user/:id", adminController.deleteUser);
 router.get("/get-role", adminController.getRole);
 router.post("/save-info-doctor", adminController.saveInfoDoctor);
 router.get("/get-info-doctor/:doctorId", adminController.getInfoDoctor);
+router.post("/create-new-specialty", adminController.createSpecialty);
+router.get("/get-list-specialty", adminController.getAllSpecialty);
+router.patch("/edit-specialty/:id", adminController.editSpecialty);
+router.delete("/delete-specialty/:id", adminController.deleteSpecialty);
 
 module.exports = router;

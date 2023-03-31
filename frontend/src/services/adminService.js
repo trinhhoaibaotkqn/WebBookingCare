@@ -13,7 +13,19 @@ import {
     SAVE_INFO_DOCTOR_SUCCESS,
     GET_INFO_DOCTOR_FAILED,
     GET_INFO_DOCTOR_START,
-    GET_INFO_DOCTOR_SUCCESS
+    GET_INFO_DOCTOR_SUCCESS,
+    CREATE_SPECIALTY_START,
+    CREATE_SPECIALTY_SUCCESS,
+    CREATE_SPECIALTY_FAILED,
+    GET_SPECIALTY_START,
+    GET_SPECIALTY_SUCCESS,
+    GET_SPECIALTY_FAILED,
+    EDIT_SPECIALTY_START,
+    EDIT_SPECIALTY_SUCCESS,
+    EDIT_SPECIALTY_FAILED,
+    DELETE_SPECIALTY_START,
+    DELETE_SPECIALTY_SUCCESS,
+    DELETE_SPECIALTY_FAILED
 } from "../store/slice/adminSlice";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -109,5 +121,81 @@ export const handleApiGetInfoDoctor = async (doctorId, dispatch) => {
         }
     } catch (err) {
         dispatch(GET_INFO_DOCTOR_FAILED());
+    }
+}
+
+export const handleApiCreateSpecialty = async (data, dispatch, setIsOpenAdd, clearModal, handleListenChange) => {
+    dispatch(CREATE_SPECIALTY_START());
+    try {
+        const res = await axios.post("http://localhost:8080/admin/create-new-specialty", data,
+            {
+                "withCredentials": true
+            });
+        if (res.data.errCode === 0) {
+            dispatch(CREATE_SPECIALTY_SUCCESS(res.data.data));
+            toast.success(res.data.message);
+            clearModal();
+            handleListenChange();
+            setIsOpenAdd(false);
+        }
+    } catch (err) {
+        dispatch(CREATE_SPECIALTY_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiGetListSpecialty = async (dispatch, setListSpecialty) => {
+    dispatch(GET_SPECIALTY_START());
+    try {
+        const res = await axios.get(`http://localhost:8080/admin/get-list-specialty`,
+            {
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            dispatch(GET_SPECIALTY_SUCCESS(res.data.data));
+            setListSpecialty(res.data.data);
+        }
+    } catch (err) {
+        dispatch(GET_SPECIALTY_FAILED());
+    }
+}
+
+export const handleApiEditSpecialty = async (id, data, dispatch, handleListenChange, setIsOpenEdit) => {
+    dispatch(EDIT_SPECIALTY_START());
+    try {
+        const res = await axios.patch(`http://localhost:8080/admin/edit-specialty/${id}`, data,
+            {
+                "withCredentials": true
+            }
+        );
+        if (res.data.errCode === 0) {
+            dispatch(EDIT_SPECIALTY_SUCCESS(res.data.data));
+            toast.success(res.data.message);
+            handleListenChange();
+            setIsOpenEdit();
+        }
+    } catch (err) {
+        dispatch(EDIT_SPECIALTY_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiDeleteSpecialty = async (id, dispatch, handleListenChange, setIsOpenDelete) => {
+    dispatch(DELETE_SPECIALTY_START());
+    try {
+        const res = await axios.delete(`http://localhost:8080/admin/delete-specialty/${id}`,
+            {
+                "withCredentials": true
+            }
+        );
+        if (res.data.errCode === 0) {
+            dispatch(DELETE_SPECIALTY_SUCCESS());
+            toast.success(res.data.message);
+            handleListenChange();
+            setIsOpenDelete(false);
+        }
+    } catch (err) {
+        dispatch(DELETE_SPECIALTY_FAILED());
+        toast.error(err.response.data.message);
     }
 }

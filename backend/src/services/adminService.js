@@ -53,7 +53,6 @@ const createUser = (userData) => {
                             image: userData.image,
                             roleid: userData.roleid,
                             positionId: userData.positionId,
-                            image: userData.image
                         }
                         const user = await db.User.create(newUser, { raw: true });
                         delete user.dataValues.password;
@@ -253,6 +252,139 @@ const saveInfoDoctor = (data) => {
     })
 }
 
+const createSpecialty = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.name || !data.image || !data.descriptionHTML || !data.descriptionMarkdown) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing parameters";
+                res.data = null;
+                resolve(res);
+            } else {
+                const existSpecialty = await db.Specialty.findOne({
+                    where: { name: data.name }
+                });
+                if (existSpecialty) {
+                    res.status = 404;
+                    res.errCode = 2;
+                    res.message = "This specialty already exist";
+                    res.data = null;
+                    resolve(res);
+                } else {
+
+                    if (data.image.length > 10000000) {
+                        res.status = 404;
+                        res.errCode = 3;
+                        res.message = "Image size is too large";
+                        res.data = null;
+                        resolve(res);
+                    } else {
+                        const newSpecialty = {
+                            name: data.name,
+                            image: data.image,
+                            descriptionHTML: data.descriptionHTML,
+                            descriptionMarkdown: data.descriptionMarkdown,
+                        }
+                        const specialty = await db.Specialty.create(newSpecialty);
+                        res.status = 200;
+                        res.errCode = 0;
+                        res.message = "Specialty already is created";
+                        res.data = specialty;
+                        resolve(res);
+                    }
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const editSpecialty = (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.name || !data.descriptionHTML || !data.descriptionMarkdown) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing parameters";
+                res.data = null;
+                resolve(res);
+            } else {
+                const existSpecialty = await db.Specialty.findOne({
+                    where: { id: id }
+                });
+                if (!existSpecialty) {
+                    res.status = 404;
+                    res.errCode = 2;
+                    res.message = "This specialty is not exist";
+                    res.data = null;
+                    resolve(res);
+                } else {
+                    const updateSpecialty = {
+                        name: data.name,
+                        descriptionHTML: data.descriptionHTML,
+                        descriptionMarkdown: data.descriptionMarkdown,
+                    }
+                    let isValidImage = true;
+                    if (data.image) {
+                        if (data.image.length > 10000000) {
+                            isValidImage = false;
+                            res.status = 404;
+                            res.errCode = 3;
+                            res.message = "Image size is too large";
+                            res.data = null;
+                            resolve(res);
+                        } else {
+                            updateSpecialty.image = data.image;
+                        }
+                    }
+                    if (isValidImage) {
+                        const newSpecialty = await existSpecialty.update(updateSpecialty);
+                        res.status = 200;
+                        res.errCode = 0;
+                        res.message = "Update specialty successfully";
+                        res.data = newSpecialty;
+                        resolve(res);
+                    }
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const deleteSpecialty = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            const specialty = await db.Specialty.findOne({
+                where: {
+                    id: id
+                }
+            });
+            if (!specialty) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "This specialty does not exist";
+                resolve(res);
+            }
+            if (specialty) {
+                specialty.destroy();
+                res.status = 200;
+                res.errCode = 0;
+                res.message = "Delete specialty successfully";
+                resolve(res);
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const isValidValue = async (type, key,) => {
     let value = await db.Allcode.findOne({
         where: {
@@ -267,4 +399,4 @@ const isValidValue = async (type, key,) => {
     }
 }
 
-module.exports = { createUser, editUser, deleteUser, saveInfoDoctor }
+module.exports = { createUser, editUser, deleteUser, saveInfoDoctor, createSpecialty, editSpecialty, deleteSpecialty }

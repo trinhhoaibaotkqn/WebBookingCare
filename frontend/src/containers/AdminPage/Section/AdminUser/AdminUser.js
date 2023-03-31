@@ -140,7 +140,7 @@ const AdminUser = () => {
 
         return () => {
             console.log(">>>>>>clean up")
-            dispatch(CLEAR_ALL_LIST());
+            // dispatch(CLEAR_ALL_LIST());
         }
     }, [dispatch, listenUpdate, optionAdmin, optionDoctor, optionPatient]);
 
@@ -157,15 +157,15 @@ const AdminUser = () => {
     //     handleFindUserByEmail()
     // }, [selectedOption])
     return (
-        <div className="user-admin-container">
-            <div className="user-admin-content">
+        <div className="section-admin-container">
+            <div className="section-admin-content">
                 <div className="btn-add-new-container">
                     <div className="btn-add-new"
                         onClick={() => handleModalAdd()}
                     >
                         <GrAddCircle /> Add new user
                     </div>
-                    <div className="select-user">
+                    <div className="select-tag">
                         <Select
                             defaultValue={selectedOption}
                             onChange={setSelectedOption}
