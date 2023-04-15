@@ -1,8 +1,11 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import urlImage from "../../../assets/images/co-xuong-khop.jpg";
-import urlImage2 from "../../../assets/images/than-kinh.jpg";
+import { handleGetAllSpecialty } from "../../../services/userService";
+import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import CommonUtils from "../../../utils/CommonUtils";
+import { useNavigate } from "react-router-dom";
 
 const Specialty = () => {
     let settings = {
@@ -23,6 +26,15 @@ const Specialty = () => {
         ]
     };
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [listSpecialty, setListSpecialty] = useState();
+
+    useEffect(() => {
+        handleGetAllSpecialty(dispatch, setListSpecialty);
+    }, [dispatch])
+
     return (
         <div className="section-share">
             <div className="section-content">
@@ -31,54 +43,22 @@ const Specialty = () => {
                     <div className="header-button">xem thêm</div>
                 </div>
                 <Slider {...settings}>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage2})` }}></div>
-                            <div className="subs-title">Thần kinh</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-specialty" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Cơ xương khớp</div>
-                        </div>
-                    </div>
+                    {listSpecialty && listSpecialty.length > 0 && listSpecialty.map((item) => {
+                        return (
+                            <div key={item.id}
+                                onClick={() => navigate(`/detail-specialty/${item.name}`, {
+                                    state: {
+                                        specialty: item,
+                                    }
+                                })}
+                            >
+                                <div className="item-content">
+                                    <div className="item-image image-specialty" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
+                                    <div className="subs-title">{item.name}</div>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </Slider>
             </div>
         </div>

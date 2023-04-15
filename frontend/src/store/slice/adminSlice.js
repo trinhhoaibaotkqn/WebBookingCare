@@ -64,6 +64,25 @@ const adminSlice = createSlice({
             isFetching: false,
             error: false
         },
+        facility: {
+            listClinic: null,
+            isFetching: false,
+            error: false
+        },
+        createClinic: {
+            currentClinic: null,
+            isFetching: false,
+            error: false
+        },
+        editClinic: {
+            currentUser: null,
+            isFetching: false,
+            error: false
+        },
+        deleteClinic: {
+            isFetching: false,
+            error: false
+        },
     },
     reducers: {
         GET_ADMIN_START: (state) => {
@@ -254,6 +273,57 @@ const adminSlice = createSlice({
             state.deleteSpecialty.isFetching = false;
             state.deleteSpecialty.error = true;
         },
+
+        GET_FACILITY_START: (state) => {
+            state.facility.isFetching = true;
+        },
+        GET_FACILITY_SUCCESS: (state, action) => {
+            state.facility.listClinic = action.payload;
+            state.facility.isFetching = false;
+            state.facility.error = false;
+        },
+        GET_FACILITY_FAILED: (state) => {
+            state.facility.isFetching = false;
+            state.facility.error = true;
+        },
+
+        CREATE_FACILITY_START: (state) => {
+            state.createClinic.isFetching = true;
+        },
+        CREATE_FACILITY_SUCCESS: (state, action) => {
+            state.createClinic.currentClinic = action.payload;
+            state.createClinic.isFetching = false;
+            state.createClinic.error = false;
+        },
+        CREATE_FACILITY_FAILED: (state) => {
+            state.createClinic.isFetching = false;
+            state.createClinic.error = true;
+        },
+
+        EDIT_FACILITY_START: (state) => {
+            state.editClinic.isFetching = true;
+        },
+        EDIT_FACILITY_SUCCESS: (state, action) => {
+            state.editClinic.currentUser = action.payload;
+            state.editClinic.isFetching = false;
+            state.editClinic.error = false;
+        },
+        EDIT_FACILITY_FAILED: (state) => {
+            state.editClinic.isFetching = false;
+            state.editClinic.error = true;
+        },
+
+        DELETE_FACILITY_START: (state) => {
+            state.deleteClinic.isFetching = true;
+        },
+        DELETE_FACILITY_SUCCESS: (state) => {
+            state.deleteClinic.isFetching = false;
+            state.deleteClinic.error = false;
+        },
+        DELETE_FACILITY_FAILED: (state) => {
+            state.deleteClinic.isFetching = false;
+            state.deleteClinic.error = true;
+        },
     },
 })
 
@@ -272,6 +342,10 @@ export const {
     CREATE_SPECIALTY_START, CREATE_SPECIALTY_SUCCESS, CREATE_SPECIALTY_FAILED,
     EDIT_SPECIALTY_START, EDIT_SPECIALTY_SUCCESS, EDIT_SPECIALTY_FAILED,
     DELETE_SPECIALTY_START, DELETE_SPECIALTY_SUCCESS, DELETE_SPECIALTY_FAILED,
+    GET_FACILITY_START, GET_FACILITY_SUCCESS, GET_FACILITY_FAILED,
+    CREATE_FACILITY_START, CREATE_FACILITY_SUCCESS, CREATE_FACILITY_FAILED,
+    EDIT_FACILITY_START, EDIT_FACILITY_SUCCESS, EDIT_FACILITY_FAILED,
+    DELETE_FACILITY_START, DELETE_FACILITY_SUCCESS, DELETE_FACILITY_FAILED,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

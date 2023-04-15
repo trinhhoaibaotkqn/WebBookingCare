@@ -13,7 +13,7 @@ import HomePage from './HomePage/HomePage';
 import PatientHome from './PatientPage/PersonalPage/PatientHome';
 import AdminHome from './AdminPage/AdminHome';
 import AdminUser from './AdminPage/Section/AdminUser/AdminUser';
-import AdminFacility from './AdminPage/Section/AdminFacility';
+import AdminFacility from './AdminPage/Section/AdminFacility/AdminFacility';
 import AdminSpecialty from './AdminPage/Section/AdminSpecialty/AdminSpecialty';
 import AdminHandbook from './AdminPage/Section/AdminHandbook';
 import LanguageUtils from "../utils/LanguageUtil";
@@ -33,6 +33,8 @@ import Schedule from './DoctorPage/Section/Schedule';
 import InformationCheckup from './DoctorPage/Section/InformationCheckup';
 import ConfirmBooking from './PatientPage/Doctor/ConfirmBooking';
 import Appointment from './DoctorPage/Section/Appointment';
+import ScrollToTop from '../components/ScrollToTop';
+import DetailSpecialty from './PatientPage/Specialty/DetailSpecialty';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -43,12 +45,14 @@ function App() {
       <div className="App">
         <div className='App-content'>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route exact path="/" element={<HomePage />} />
               <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
               <Route exact path="/detail-doctor/:name" element={<DetailDoctor />} />
+              <Route exact path="/detail-specialty/:name" element={<DetailSpecialty />} />
               <Route path="/verify-booking-appointment" element={<ConfirmBooking />} />
               <Route exact path="/system/admin/" element={<AdminHome />}>
                 <Route exact path="user/" element={<AdminUser />} />

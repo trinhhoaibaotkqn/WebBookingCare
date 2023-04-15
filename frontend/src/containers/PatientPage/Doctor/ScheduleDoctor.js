@@ -16,7 +16,7 @@ import {
 import CommonUtils from '../../../utils/CommonUtils';
 
 const ScheduleDoctor = (props) => {
-    let { doctor, setTimeSelected, setIsShow, toggleBooked } = props;
+    let { doctor, setTimeSelected, setIsShow, toggleBooked, componentSpecialty } = props;
     const dispatch = useDispatch();
     const language = useSelector(state => state.common.language);
     const [isShowMorePrice, setIsShowMorePrice] = useState(false);
@@ -102,7 +102,7 @@ const ScheduleDoctor = (props) => {
 
     return (
         <div className="schedule-container">
-            <div className="schedule-content">
+            <div className={componentSpecialty ? "schedule-content component-specialty" : "schedule-content"}>
                 <div className="schedule-content-up">
                     <div className="date">
                         <select onChange={(e) => setSelectedDay(e.target.value)}>

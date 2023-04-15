@@ -20,6 +20,7 @@ import {
     GET_DOCTOR_START, GET_DOCTOR_SUCCESS, GET_DOCTOR_FAILED,
     GET_PATIENT_FAILED, GET_PATIENT_START, GET_PATIENT_SUCCESS,
     OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT, CLEAR_ALL_LIST,
+    GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED
 } from "../../../../store/slice/adminSlice";
 import CommonUtils from "../../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
@@ -97,7 +98,7 @@ const AdminUser = () => {
                     dispatch(GET_DOCTOR_START()) :
                     dispatch(GET_PATIENT_START()));
             try {
-                console.log(">>>>>>call api");
+                console.log(">>>>>>call api get list user");
                 const res = await axios.get(`http://localhost:8080/admin/get-user/${keyRole}`,
                     {
                         "withCredentials": true
@@ -140,9 +141,28 @@ const AdminUser = () => {
 
         return () => {
             console.log(">>>>>>clean up")
-            // dispatch(CLEAR_ALL_LIST());
+            dispatch(CLEAR_ALL_LIST());
         }
     }, [dispatch, listenUpdate, optionAdmin, optionDoctor, optionPatient]);
+
+    useEffect(() => {
+        const handleLoadRoleFromDB = async () => {
+            dispatch(GET_ROLE_START());
+            try {
+                console.log(">>>>>call api role");
+                const res = await axios.get("http://localhost:8080/admin/get-role",
+                    {
+                        "withCredentials": true
+                    });
+                if (res.data.errCode === 0) {
+                    dispatch(GET_ROLE_SUCCESS(res.data.objCode));
+                }
+            } catch (err) {
+                dispatch(GET_ROLE_FAILED());
+            }
+        }
+        handleLoadRoleFromDB();
+    }, [dispatch]);
 
 
 
@@ -204,7 +224,7 @@ const AdminUser = () => {
                                 {/* <th>Image</th> */}
                                 <th>Action</th>
                             </tr>
-                            {data && data.map((item, index) => {
+                            {listRole && listRole.length > 0 && data && data.length > 0 && data.map((item, index) => {
                                 return (<tr key={item.id}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>

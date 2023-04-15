@@ -1,18 +1,18 @@
 import { useDispatch } from "react-redux";
-import { handleApiDeleteSpecialty } from "../../../../services/adminService";
+import { handleApiDeleteFacility } from "../../../../services/adminService";
 
-const ModalDeleteSpecialty = (props) => {
+const ModalDeleteFacility = (props) => {
     const dispatch = useDispatch();
     const { isOpenDelete, setIsOpenDelete, dataDelete, handleListenChange } = props;
 
     const handleDeleteUser = () => {
-        handleApiDeleteSpecialty(dataDelete.id, dispatch, handleListenChange, setIsOpenDelete);
+        handleApiDeleteFacility(dataDelete.id, dispatch, handleListenChange, setIsOpenDelete);
     }
     return (
         <div style={isOpenDelete ? { display: "block" } : { display: "none" }} className="modal-user modal-delete-user">
             <div className="modal-content">
                 <div className="modal-header">
-                    <div className="title-modal-header">Delete specialty</div>
+                    <div className="title-modal-header">Delete facility</div>
                     <span className="close" onClick={() => setIsOpenDelete()}>&times;</span>
                 </div>
                 <div className="modal-body">
@@ -35,4 +35,4 @@ const ModalDeleteSpecialty = (props) => {
     )
 }
 
-export default ModalDeleteSpecialty;
+export default ModalDeleteFacility;

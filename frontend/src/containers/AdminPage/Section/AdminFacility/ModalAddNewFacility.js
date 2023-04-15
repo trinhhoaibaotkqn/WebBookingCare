@@ -4,19 +4,21 @@ import { useState } from 'react';
 import CommonUtils from '../../../../utils/CommonUtils';
 import { RiFolderUploadLine } from "react-icons/ri";
 import { MdOutlineLocalHospital } from "react-icons/md";
+import { FaRegAddressBook } from "react-icons/fa";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from "react-redux";
-import { handleApiCreateSpecialty } from '../../../../services/adminService';
+import { handleApiCreateFacility } from '../../../../services/adminService';
 
-const ModalAddNewSpecialty = (props) => {
+const ModalAddNewFacility = (props) => {
     let { isOpenAdd, setIsOpenAdd, handleListenChange } = props;
 
     const dispatch = useDispatch();
 
     const [image, setImage] = useState();
     const [name, setName] = useState();
+    const [address, setAddress] = useState();
     const [descriptionHTML, setDescriptionHTML] = useState();
     const [descriptionMarkdown, setDescriptionMarkdown] = useState();
 
@@ -46,27 +48,32 @@ const ModalAddNewSpecialty = (props) => {
         setDescriptionMarkdown("");
     }
 
-    const handleAddNewSpecialty = () => {
+    const handleAddNewFacility = () => {
         const data = {
             name,
+            address,
             image,
             descriptionHTML,
             descriptionMarkdown
         }
-        handleApiCreateSpecialty(data, dispatch, setIsOpenAdd, clearModal, handleListenChange);
+        handleApiCreateFacility(data, dispatch, setIsOpenAdd, clearModal, handleListenChange);
     }
 
     return (
         <div style={isOpenAdd ? { display: "block" } : { display: "none" }} className="modal-user modal-addnew-specialty">
             <div className="modal-content">
                 <div className="modal-header">
-                    <div className="title-modal-header">Add new specialty</div>
+                    <div className="title-modal-header">Add new facility</div>
                     <span className="close" onClick={() => setIsOpenAdd(false)}>&times;</span>
                 </div>
                 <div className="modal-body">
-                    <div className="modal-element name-specialty">
+                    <div className="modal-element name-facility">
                         <span className="modal-icon-label"><MdOutlineLocalHospital /></span>
-                        <input type="text" placeholder="Name specialty" onChange={(e) => setName(e.target.value)} />
+                        <input type="text" placeholder="Name facility" onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div className="modal-element address-facility">
+                        <span className="modal-icon-label"><FaRegAddressBook /></span>
+                        <input type="text" placeholder="Address facility" onChange={(e) => setAddress(e.target.value)} />
                     </div>
                     <div className="modal-element element-image-specialty">
                         <div id="image-user">
@@ -100,7 +107,7 @@ const ModalAddNewSpecialty = (props) => {
 
                     <div className="modal-element element-btn">
                         <button className="cancel-btn" onClick={() => setIsOpenAdd(false)}>cancel</button>
-                        <button className="add-btn" onClick={() => handleAddNewSpecialty()}>add</button>
+                        <button className="add-btn" onClick={() => handleAddNewFacility()}>add</button>
                     </div>
                 </div>
             </div>
@@ -108,4 +115,4 @@ const ModalAddNewSpecialty = (props) => {
     )
 }
 
-export default ModalAddNewSpecialty;
+export default ModalAddNewFacility;

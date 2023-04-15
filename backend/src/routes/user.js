@@ -9,4 +9,5 @@ router.get('/get-schedule-doctor', userController.getScheduleDoctor);
 router.get('/get-doctor-info-price-address-clinic/:id', userController.getDoctorInfoPriceAddressClinic);
 router.post('/book-appointment', userController.bookAppointment);
 router.post('/verify-booking-appointment', userController.verifyBookingAppointment);
+router.get('/get-all-specialty', userController.getAllSpecialty);
 module.exports = router;

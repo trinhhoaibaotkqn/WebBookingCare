@@ -25,7 +25,19 @@ import {
     EDIT_SPECIALTY_FAILED,
     DELETE_SPECIALTY_START,
     DELETE_SPECIALTY_SUCCESS,
-    DELETE_SPECIALTY_FAILED
+    DELETE_SPECIALTY_FAILED,
+    CREATE_FACILITY_START,
+    CREATE_FACILITY_SUCCESS,
+    CREATE_FACILITY_FAILED,
+    GET_FACILITY_START,
+    GET_FACILITY_SUCCESS,
+    GET_FACILITY_FAILED,
+    EDIT_FACILITY_START,
+    EDIT_FACILITY_SUCCESS,
+    EDIT_FACILITY_FAILED,
+    DELETE_FACILITY_START,
+    DELETE_FACILITY_SUCCESS,
+    DELETE_FACILITY_FAILED
 } from "../store/slice/adminSlice";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -196,6 +208,82 @@ export const handleApiDeleteSpecialty = async (id, dispatch, handleListenChange,
         }
     } catch (err) {
         dispatch(DELETE_SPECIALTY_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiCreateFacility = async (data, dispatch, setIsOpenAdd, clearModal, handleListenChange) => {
+    dispatch(CREATE_FACILITY_START());
+    try {
+        const res = await axios.post("http://localhost:8080/admin/create-new-clinic", data,
+            {
+                "withCredentials": true
+            });
+        if (res.data.errCode === 0) {
+            dispatch(CREATE_FACILITY_SUCCESS(res.data.data));
+            toast.success(res.data.message);
+            clearModal();
+            handleListenChange();
+            setIsOpenAdd(false);
+        }
+    } catch (err) {
+        dispatch(CREATE_FACILITY_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiGetListFacility = async (dispatch, setListFacility) => {
+    dispatch(GET_FACILITY_START());
+    try {
+        const res = await axios.get(`http://localhost:8080/admin/get-list-clinic`,
+            {
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            dispatch(GET_FACILITY_SUCCESS(res.data.data));
+            setListFacility(res.data.data);
+        }
+    } catch (err) {
+        dispatch(GET_FACILITY_FAILED());
+    }
+}
+
+export const handleApiEditFacility = async (id, data, dispatch, handleListenChange, setIsOpenEdit) => {
+    dispatch(EDIT_FACILITY_START());
+    try {
+        const res = await axios.patch(`http://localhost:8080/admin/edit-clinic/${id}`, data,
+            {
+                "withCredentials": true
+            }
+        );
+        if (res.data.errCode === 0) {
+            dispatch(EDIT_FACILITY_SUCCESS(res.data.data));
+            toast.success(res.data.message);
+            handleListenChange();
+            setIsOpenEdit();
+        }
+    } catch (err) {
+        dispatch(EDIT_FACILITY_FAILED());
+        toast.error(err.response.data.message);
+    }
+}
+
+export const handleApiDeleteFacility = async (id, dispatch, handleListenChange, setIsOpenDelete) => {
+    dispatch(DELETE_FACILITY_START());
+    try {
+        const res = await axios.delete(`http://localhost:8080/admin/delete-clinic/${id}`,
+            {
+                "withCredentials": true
+            }
+        );
+        if (res.data.errCode === 0) {
+            dispatch(DELETE_FACILITY_SUCCESS());
+            toast.success(res.data.message);
+            handleListenChange();
+            setIsOpenDelete(false);
+        }
+    } catch (err) {
+        dispatch(DELETE_FACILITY_FAILED());
         toast.error(err.response.data.message);
     }
 }

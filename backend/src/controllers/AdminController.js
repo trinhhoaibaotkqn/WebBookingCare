@@ -163,6 +163,55 @@ class AdminController {
             res.status(500).json("Server error");
         }
     }
+
+    createClinic = async (req, res) => {
+        try {
+            let data = await adminService.createClinic(req.body);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getAllClinic = async (req, res) => {
+        try {
+            const clinic = await db.Clinic.findAll();
+            res.status(200).json({
+                errCode: 0,
+                message: "Get list Clinic successfully",
+                data: clinic
+            });
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    editClinic = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const dataUpdate = req.body;
+            const data = await adminService.editClinic(id, dataUpdate);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    deleteClinic = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const data = await adminService.deleteClinic(id);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
 }
 
 module.exports = new AdminController;

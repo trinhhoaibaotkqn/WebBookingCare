@@ -72,13 +72,7 @@ const ModalEditSpecialty = (props) => {
                     <span className="close" onClick={() => setIsOpenEdit(false)}>&times;</span>
                 </div>
                 <div className="modal-body">
-                    <div className="modal-element name-specialty">
-                        <span className="modal-icon-label"><MdOutlineLocalHospital /></span>
-                        <input type="text" placeholder="Name specialty"
-                            onChange={(e) => setName(e.target.value)}
-                            defaultValue={dataEdit?.name}
-                        />
-                    </div>
+
                     <div className="modal-element element-image-specialty">
                         <div id="image-user">
                             <input id="previewImg-edit" type="file" style={{ display: "none" }}
@@ -100,12 +94,16 @@ const ModalEditSpecialty = (props) => {
                             </div>
                         </div>
                     </div>
+                    <div className="modal-element name-specialty">
+                        <span className="modal-icon-label"><MdOutlineLocalHospital /></span>
+                        <input placeholder='Name' value={name ? name : ""} onChange={e => setName(e.target.value)} />
+                    </div>
                     <div className="modal-element markdow-specialty">
                         <MdEditor
                             style={{ height: '60vh', margin: '0 10px 10px 10px' }}
                             renderHTML={text => mdParser.render(text)}
                             onChange={handleEditorChange}
-                            value={dataEdit?.descriptionMarkdown}
+                            value={descriptionMarkdown}
                         />
                     </div>
 

@@ -385,6 +385,141 @@ const deleteSpecialty = (id) => {
     })
 }
 
+const createClinic = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.name || !data.address || !data.image || !data.descriptionHTML || !data.descriptionMarkdown) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing parameters";
+                res.data = null;
+                resolve(res);
+            } else {
+                const existClinic = await db.Clinic.findOne({
+                    where: { name: data.name }
+                });
+                if (existClinic) {
+                    res.status = 404;
+                    res.errCode = 2;
+                    res.message = "This specialty already exist";
+                    res.data = null;
+                    resolve(res);
+                } else {
+
+                    if (data.image.length > 10000000) {
+                        res.status = 404;
+                        res.errCode = 3;
+                        res.message = "Image size is too large";
+                        res.data = null;
+                        resolve(res);
+                    } else {
+                        const newClinic = {
+                            name: data.name,
+                            address: data.address,
+                            image: data.image,
+                            descriptionHTML: data.descriptionHTML,
+                            descriptionMarkdown: data.descriptionMarkdown,
+                        }
+                        const specialty = await db.Clinic.create(newClinic);
+                        res.status = 200;
+                        res.errCode = 0;
+                        res.message = "Specialty already is created";
+                        res.data = specialty;
+                        resolve(res);
+                    }
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const editClinic = (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            if (!data.name || !data.address || !data.descriptionHTML || !data.descriptionMarkdown) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "Missing parameters";
+                res.data = null;
+                resolve(res);
+            } else {
+                const existClinic = await db.Clinic.findOne({
+                    where: { id: id }
+                });
+                if (!existClinic) {
+                    res.status = 404;
+                    res.errCode = 2;
+                    res.message = "This clinic is not exist";
+                    res.data = null;
+                    resolve(res);
+                } else {
+                    const updateClinic = {
+                        name: data.name,
+                        address: data.address,
+                        descriptionHTML: data.descriptionHTML,
+                        descriptionMarkdown: data.descriptionMarkdown,
+                    }
+                    let isValidImage = true;
+                    if (data.image) {
+                        if (data.image.length > 10000000) {
+                            isValidImage = false;
+                            res.status = 404;
+                            res.errCode = 3;
+                            res.message = "Image size is too large";
+                            res.data = null;
+                            resolve(res);
+                        } else {
+                            updateClinic.image = data.image;
+                        }
+                    }
+                    if (isValidImage) {
+                        const newClinic = await existClinic.update(updateClinic);
+                        res.status = 200;
+                        res.errCode = 0;
+                        res.message = "Update specialty successfully";
+                        res.data = newClinic;
+                        resolve(res);
+                    }
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const deleteClinic = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            const clinic = await db.Clinic.findOne({
+                where: {
+                    id: id
+                }
+            });
+            if (!clinic) {
+                res.status = 404;
+                res.errCode = 1;
+                res.message = "This clinic does not exist";
+                resolve(res);
+            }
+            if (clinic) {
+                clinic.destroy();
+                res.status = 200;
+                res.errCode = 0;
+                res.message = "Delete clinic successfully";
+                resolve(res);
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const isValidValue = async (type, key,) => {
     let value = await db.Allcode.findOne({
         where: {
@@ -399,4 +534,8 @@ const isValidValue = async (type, key,) => {
     }
 }
 
-module.exports = { createUser, editUser, deleteUser, saveInfoDoctor, createSpecialty, editSpecialty, deleteSpecialty }
+module.exports = {
+    createUser, editUser, deleteUser, saveInfoDoctor,
+    createSpecialty, editSpecialty, deleteSpecialty,
+    createClinic, editClinic, deleteClinic
+}

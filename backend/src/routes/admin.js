@@ -13,5 +13,9 @@ router.post("/create-new-specialty", adminController.createSpecialty);
 router.get("/get-list-specialty", adminController.getAllSpecialty);
 router.patch("/edit-specialty/:id", adminController.editSpecialty);
 router.delete("/delete-specialty/:id", adminController.deleteSpecialty);
+router.post("/create-new-clinic", adminController.createClinic);
+router.get("/get-list-clinic", adminController.getAllClinic);
+router.patch("/edit-clinic/:id", adminController.editClinic);
+router.delete("/delete-clinic/:id", adminController.deleteClinic);
 
 module.exports = router;

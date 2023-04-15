@@ -2,8 +2,24 @@
     margin: 20px 0;
 
     .schedule-content {
-        width: 1100px;
+        width: 80vw;
         margin: auto;
+
+        &.component-specialty {
+            width: 40vw;
+            border-left: 1px solid #eee;
+            padding-left: 10px;
+
+            .schedule-content-down {
+                flex-direction: column;
+
+                .more-info-booking {
+                    border-top: 1px solid #eee;
+                    margin-top: 10px;
+                    border-left: none;
+                }
+            }
+        }
 
         .schedule-content-up {
             .date {
@@ -35,11 +51,11 @@
             display: flex;
 
             .time-option {
-                display: grid;
+                display: flex;
+                flex-wrap: wrap;
                 height: fit-content;
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-                padding-right: 30px;
-                min-width: 710px;
+                // padding-right: 30px;
+                max-width: 700px;
 
                 .child-time-option {
                     width: 160px;

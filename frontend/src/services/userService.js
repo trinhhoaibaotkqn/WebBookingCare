@@ -1,5 +1,5 @@
 import {
-    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED, CONFIRM_APPOINTMENT_START, CONFIRM_APPOINTMENT_SUSSCESS, CONFIRM_APPOINTMENT_FAILED,
+    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED, CONFIRM_APPOINTMENT_START, CONFIRM_APPOINTMENT_SUSSCESS, CONFIRM_APPOINTMENT_FAILED, GET_LIST_SPECIALTY_START, GET_LIST_SPECIALTY_SUSSCESS, GET_LIST_SPECIALTY_FAILED,
 
 } from "../store/slice/userSlice";
 import { toast } from 'react-toastify';
@@ -46,5 +46,22 @@ export const handleApiConfirmAppointment = async (data, dispatch, setErrCode) =>
         } else {
             setErrCode(1);
         }
+    }
+}
+
+export const handleGetAllSpecialty = async (dispatch, setListSpecialty) => {
+    dispatch(GET_LIST_SPECIALTY_START());
+    try {
+        console.log("call api get list specialty")
+        const res = await axios.get(`http://localhost:8080/user/get-all-specialty`,
+            {
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            setListSpecialty(res.data.data);
+            dispatch(GET_LIST_SPECIALTY_SUSSCESS(res.data.data));
+        }
+    } catch (err) {
+        dispatch(GET_LIST_SPECIALTY_FAILED());
     }
 }

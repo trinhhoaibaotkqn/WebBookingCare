@@ -145,6 +145,19 @@ class UserController {
             res.status(500).json("Server error");
         }
     }
+
+    getAllSpecialty = async (req, res) => {
+        try {
+            const listSpecialty = await db.Specialty.findAll();
+            res.status(200).json({
+                errCode: 0,
+                message: "Get all specialty successfully",
+                data: listSpecialty
+            })
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
 }
 
 module.exports = new UserController;

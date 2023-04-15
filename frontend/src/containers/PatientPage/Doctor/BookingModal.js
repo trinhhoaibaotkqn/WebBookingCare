@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import { handleApiBookAppointment } from "../../../services/userService";
 import { languages } from "../../../utils/Constants";
+import './BookingModal.scss';
 
 const BookingModal = (props) => {
     let { doctor, isShow, setIsShow, timeSelected, setToggleBooked, toggleBooked } = props;

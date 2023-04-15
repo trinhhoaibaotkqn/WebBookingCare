@@ -2,15 +2,15 @@ import Select from 'react-select';
 import 'photoswipe/dist/photoswipe.css';
 // import { Gallery, Item } from 'react-photoswipe-gallery';
 import { GrAddCircle } from "react-icons/gr";
-import ModalAddNewSpecialty from './ModalAddNewSpecialty';
+import ModalAddNewFacility from './ModalAddNewFacility';
 import { useEffect, useState } from 'react';
-import { handleApiGetListSpecialty } from '../../../../services/adminService';
+import { handleApiGetListFacility } from '../../../../services/adminService';
 import { useDispatch } from 'react-redux';
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
-import ModalEditSpecialty from './ModalEditSpecialty';
-import ModalDeleteSpecialty from './ModalDeleteSpecialty';
+import ModalEditFacility from './ModalEditFacility';
+import ModalDeleteFacility from './ModalDeleteFacility';
 
-const AdminSpecialty = () => {
+const AdminFacility = () => {
 
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -25,7 +25,7 @@ const AdminSpecialty = () => {
 
     const dispatch = useDispatch();
 
-    const [listSpecialty, setListSpecialty] = useState();
+    const [listFacility, setListFacility] = useState();
 
     const handleClickBtnEdit = (item) => {
         setIsOpenEdit(true);
@@ -37,7 +37,7 @@ const AdminSpecialty = () => {
     }
 
     useEffect(() => {
-        handleApiGetListSpecialty(dispatch, setListSpecialty);
+        handleApiGetListFacility(dispatch, setListFacility)
     }, [dispatch, listenChange])
 
     return (
@@ -65,14 +65,16 @@ const AdminSpecialty = () => {
                             <tr>
                                 <th>STT</th>
                                 <th>Name</th>
+                                <th>Address</th>
                                 {/* <th>Image</th> */}
                                 <th>Action</th>
                             </tr>
-                            {listSpecialty && listSpecialty.length > 0 && listSpecialty.map((item, index) => {
+                            {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
                                 return (
                                     <tr key={item.id}>
                                         <td>{index + 1}</td>
                                         <td>{item.name}</td>
+                                        <td>{item.address}</td>
                                         {/* <td></td> */}
                                         <td>
                                             <button className="btn-edit"
@@ -94,18 +96,18 @@ const AdminSpecialty = () => {
                     </table>
                 </div>
             </div>
-            <ModalAddNewSpecialty
+            <ModalAddNewFacility
                 isOpenAdd={isOpenAdd}
                 setIsOpenAdd={setIsOpenAdd}
                 handleListenChange={handleListenChange}
             />
-            <ModalEditSpecialty
+            <ModalEditFacility
                 isOpenEdit={isOpenEdit}
                 setIsOpenEdit={setIsOpenEdit}
                 dataEdit={dataEdit}
                 handleListenChange={handleListenChange}
             />
-            <ModalDeleteSpecialty
+            <ModalDeleteFacility
                 isOpenDelete={isOpenDelete}
                 setIsOpenDelete={setIsOpenDelete}
                 dataDelete={dataDelete}
@@ -115,4 +117,4 @@ const AdminSpecialty = () => {
     )
 }
 
-export default AdminSpecialty;
+export default AdminFacility;
