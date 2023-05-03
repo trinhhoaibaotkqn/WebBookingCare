@@ -4,11 +4,7 @@ import Slider from "react-slick";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    GET_TOP_DOCTORS_FAILED,
-    GET_TOP_DOCTORS_START,
-    GET_TOP_DOCTORS_SUSSCESS,
-} from "../../../store/slice/userSlice";
+import { handleApiGetTopDoctor } from "../../../services/userService";
 import { useNavigate } from "react-router-dom";
 import CommonUtils from "../../../utils/CommonUtils";
 
@@ -37,25 +33,10 @@ const OutStandingDoctor = () => {
     const language = useSelector(state => state.common.language);
 
     const [listDoctors, setListDoctors] = useState();
+    console.log(listDoctors);
 
     useEffect(() => {
-        const handleGetTopDoctor = async (limit) => {
-            dispatch(GET_TOP_DOCTORS_START());
-            try {
-                console.log("call api get top doctor")
-                const res = await axios.get(`http://localhost:8080/user/get-top-doctor-home/${limit}`,
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data) {
-                    setListDoctors(res.data);
-                    dispatch(GET_TOP_DOCTORS_SUSSCESS(res.data));
-                }
-            } catch (err) {
-                dispatch(GET_TOP_DOCTORS_FAILED());
-            }
-        }
-        handleGetTopDoctor(5);
+        handleApiGetTopDoctor(5, dispatch, setListDoctors);
     }, [dispatch])
 
     return (
@@ -69,20 +50,20 @@ const OutStandingDoctor = () => {
                     {listDoctors && listDoctors.map(item => {
                         let title;
                         if (language === "vi") {
-                            title = `${item.positionData.valueVi === "Không" ? "" : `${item.positionData.valueVi}, `}${item.roleData.valueVi} ${item.name}`
+                            title = `${item.doctorInfoData.positionData.valueVi === "Không" ? "" : `${item.doctorInfoData.positionData.valueVi}, `}Bác sỹ ${item.doctorInfoData.name}`
                         }
                         if (language === "en") {
-                            title = `${item.positionData.valueEn === "None" ? "" : `${item.positionData.valueEn}, `}${item.roleData.valueEn} ${item.name}`
+                            title = `${item.doctorInfoData.positionData.valueEn === "None" ? "" : `${item.doctorInfoData.positionData.valueEn}, `}Bác sỹ ${item.doctorInfoData.name}`
                         }
                         return (
                             <div key={item.id}
-                                onClick={() => navigate(`/detail-doctor/${item.name}`, {
+                                onClick={() => navigate(`/detail-doctor/${item.doctorInfoData.name}`, {
                                     state: {
                                         doctor: item,
                                     }
                                 })}>
                                 <div className="item-content">
-                                    <div className="item-image-doctor" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
+                                    <div className="item-image-doctor" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.doctorInfoData.image)})` }}></div>
                                     <div className="title-doctor">
                                         <div className="subs-title">{title}</div>
                                         <div className="subs-title-doctor-2">Nam học</div>

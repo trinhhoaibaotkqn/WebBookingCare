@@ -211,7 +211,7 @@ const saveInfoDoctor = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let res = {};
-            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown) {
+            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown || !data.clinicId || !data.specialtyId) {
                 res.status = 404;
                 res.errCode = 1;
                 res.message = "Missing data input";
@@ -227,7 +227,9 @@ const saveInfoDoctor = (data) => {
                     doctorId: data.doctorId,
                     contentHTML: data.contentHTML,
                     contentMarkdown: data.contentMarkdown,
-                    description: data.description
+                    description: data.description,
+                    clinicId: data.clinicId,
+                    specialtyId: data.specialtyId
                 };
                 if (!existData) {
                     const content = await db.Markdown.create(newInfo);

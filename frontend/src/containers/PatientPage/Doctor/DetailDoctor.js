@@ -15,7 +15,6 @@ const DetailDoctor = () => {
     const [timeSelected, setTimeSelected] = useState();
     const [toggleBooked, setToggleBooked] = useState(false);
 
-    const size = "big";
     const description = true;
 
     return (
@@ -26,7 +25,7 @@ const DetailDoctor = () => {
 
             <DescriptionDoctor
                 doctor={doctor}
-                size={size}
+                size={"big"}
                 description={description}
             />
 

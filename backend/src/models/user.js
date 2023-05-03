@@ -13,8 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Allcode, { foreignKey: "positionId", targetKey: "key", as: "positionData" });
       User.belongsTo(models.Allcode, { foreignKey: "gender", targetKey: "key", as: "genderData" });
       User.belongsTo(models.Allcode, { foreignKey: "roleid", targetKey: "key", as: "roleData" });
-      User.hasOne(models.Markdown, { foreignKey: "doctorId", as: "doctorData" });
+      // User.hasOne(models.Markdown, { foreignKey: "doctorInfoId", as: "doctorData" });
+      User.hasOne(models.DoctorInfo, { foreignKey: "doctorId", as: "doctorInfoData" });
       User.hasMany(models.Booking, { foreignKey: "patientId", as: "patientData" });
+      User.hasMany(models.Schedule, { foreignKey: "doctorId", as: "scheduleData" });
     }
   }
   User.init({

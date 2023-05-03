@@ -4,7 +4,9 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleApiSaveInfoDoctor } from '../../../../services/adminService';
+import Select from 'react-select';
+import { handleApiGetListFacility, handleApiGetListSpecialty, handleApiSaveInfoDoctor } from '../../../../services/adminService';
+import CommonUtils from '../../../../utils/CommonUtils';
 
 const MarkdownInfoDoctor = () => {
     const dispatch = useDispatch()
@@ -12,7 +14,11 @@ const MarkdownInfoDoctor = () => {
     const location = useLocation();
     const doctor = location.state.doctor;
     const infoDoctor = location.state.infoDoctor;
+    const [listFacility, setListFacility] = useState();
+    const [listSpecialty, setListSpecialty] = useState();
 
+    const [specialty, setSpecialty] = useState();
+    const [clinic, setClinic] = useState();
     const [description, setDescription] = useState();
     const [contentHTML, setContentHTML] = useState();
     const [contentMarkdown, setContentMarkdown] = useState();
@@ -28,16 +34,30 @@ const MarkdownInfoDoctor = () => {
             contentHTML,
             contentMarkdown,
             description,
-            doctorId: doctor.id
+            doctorId: doctor.id,
+            clinicId: clinic?.value,
+            specialtyId: specialty?.value
         }
+        console.log(content)
         handleApiSaveInfoDoctor(content, dispatch, navigate);
     }
 
     useEffect(() => {
-        setDescription(infoDoctor.description);
-        setContentHTML(infoDoctor.contentHTML);
-        setContentMarkdown(infoDoctor.contentMarkdown)
-    }, [infoDoctor])
+        setDescription(infoDoctor?.description);
+        setContentHTML(infoDoctor?.contentHTML);
+        setContentMarkdown(infoDoctor?.contentMarkdown);
+        handleApiGetListFacility(dispatch, setListFacility);
+        handleApiGetListSpecialty(dispatch, setListSpecialty);
+    }, [infoDoctor, dispatch]);
+
+    useEffect(() => {
+        if (listFacility && infoDoctor?.clinicId && listSpecialty && infoDoctor?.specialtyId) {
+            let facility = CommonUtils.findItemByIdInListSelect(CommonUtils.createArrIdMappingName(listFacility), infoDoctor?.clinicId);
+            setClinic(facility);
+            let specialtyData = CommonUtils.findItemByIdInListSelect(CommonUtils.createArrIdMappingName(listSpecialty), infoDoctor?.specialtyId);
+            setSpecialty(specialtyData);
+        }
+    }, [listFacility, infoDoctor, listSpecialty])
 
     return (
         <div className="markdown-background">
@@ -63,13 +83,35 @@ const MarkdownInfoDoctor = () => {
                     Save
                 </button>
             </div>
-            <div className='text-description'>
-                <div >Description about doctor:</div>
-                <textarea rows="4" cols="150"
-                    onChange={(e) => setDescription(e.target.value)}
-                    defaultValue={description}
-                >
-                </textarea>
+            <div className='content-top-container'>
+                <div className='text-description'>
+                    <div >Description about doctor:</div>
+                    <textarea rows="4" cols="150"
+                        onChange={(e) => setDescription(e.target.value)}
+                        defaultValue={description}
+                    >
+                    </textarea>
+                </div>
+                <div className='select-content'>
+                    <div className="select-tag">
+                        <Select
+                            value={specialty ? specialty : null}
+                            onChange={setSpecialty}
+                            options={listSpecialty ? CommonUtils.createArrIdMappingName(listSpecialty) : ""}
+                            isClearable={true}
+                            placeholder={"Chọn chuyên khoa"}
+                        />
+                    </div>
+                    <div className="select-tag">
+                        <Select
+                            value={clinic ? clinic : null}
+                            onChange={setClinic}
+                            options={listFacility ? CommonUtils.createArrIdMappingName(listFacility) : ""}
+                            isClearable={true}
+                            placeholder={"Chọn bệnh viện"}
+                        />
+                    </div>
+                </div>
             </div>
             <div className="markdown-container">
                 <MdEditor

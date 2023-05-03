@@ -13,6 +13,9 @@ import {
 const Schedule = () => {
     const dispatch = useDispatch();
     const listTime = useSelector(state => state.doctor.time.listTime);
+    const doctor = {
+        id: 20
+    }
 
     const language = useSelector(state => state.common.language);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -20,7 +23,7 @@ const Schedule = () => {
 
     const handleClickBtnSave = async () => {
         const data = {
-            doctorId: 10,
+            doctorId: doctor.id,
             date: selectedDate,
             listTimeType: listSelectedTime,
         }
@@ -54,7 +57,7 @@ const Schedule = () => {
                 const res = await axios.get("http://localhost:8080/doctor/get-schedule",
                     {
                         params: {
-                            doctorId: 10,
+                            doctorId: doctor.id,
                             date: selectedDate
                         }
                     });

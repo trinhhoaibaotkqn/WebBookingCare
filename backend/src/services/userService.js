@@ -107,8 +107,107 @@ const verifyBookingAppointment = (data) => {
     })
 }
 
+const getTopDoctorHome = (limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let date = new Date();
+            const listDoctors = await db.DoctorInfo.findAll({
+                limit: limit,
+                order: [['count', 'DESC']],
+                attributes: {
+                    exclude: ['paymentId', 'priceId', 'provinceId', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    { model: db.Markdown, as: 'doctorMarkDownData' },
+                    { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
+                    {
+                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'image'],
+                        include: [
+                            {
+                                model: db.Schedule,
+                                as: 'scheduleData',
+                                where: {
+                                    // date: {
+                                    //     [Op.eq]: date,
+                                    // }
+                                    // date: "2023-05-03"
+                                    date: date
+                                },
+                                required: false,
+                                attributes: ['date', "timeType"],
+                                include: [{ model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }]
+                            },
+                            { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }
+                        ]
+                    }
+                ]
+            });
+            res.status = 200;
+            res.errCode = 0;
+            res.message = "Get list top doctor successfully";
+            res.data = listDoctors;
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getAllDoctorBySpecialty = (specialtyId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            let date = new Date();
+            const listDoctors = await db.DoctorInfo.findAll({
+                where: {
+                    specialtyId: specialtyId
+                },
+                attributes: {
+                    exclude: ['paymentId', 'priceId', 'provinceId', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    { model: db.Markdown, as: 'doctorMarkDownData' },
+                    { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
+                    { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
+                    {
+                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'image'],
+                        include: [
+                            {
+                                model: db.Schedule,
+                                as: 'scheduleData',
+                                where: {
+                                    // date: {
+                                    //     [Op.eq]: date,
+                                    // }
+                                    // date: "2023-05-03"
+                                    date: date
+                                },
+                                required: false,
+                                attributes: ['date', "timeType"],
+                                include: [{ model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }]
+                            },
+                            { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }
+                        ]
+                    }
+                ]
+            });
+            res.status = 200;
+            res.errCode = 0;
+            res.message = "Get list doctor by specialty successfully";
+            res.data = listDoctors;
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const createUrlValidate = (token, id) => {
     return `${process.env.REACT_APP_URL}/verify-booking-appointment?token=${token}&nonce=${id}`;
 }
 
-module.exports = { bookAppointment, verifyBookingAppointment }
+module.exports = { bookAppointment, verifyBookingAppointment, getAllDoctorBySpecialty, getTopDoctorHome }

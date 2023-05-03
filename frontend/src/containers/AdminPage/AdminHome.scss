@@ -637,11 +637,26 @@
 
     }
 
-    .text-description {
+    .content-top-container {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 10px 40px;
+        align-items: center;
+
+        .text-description {
+            display: flex;
+            width: 40vw;
+            flex-direction: column;
+            justify-content: center;
+            margin: 10px 40px;
+        }
+
+        .select-content {
+            margin-right: 30px;
+
+            .select-tag {
+                width: 500px;
+                margin: 10px;
+            }
+        }
     }
 
 }

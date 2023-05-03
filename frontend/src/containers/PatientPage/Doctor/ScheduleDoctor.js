@@ -7,9 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import axios from "axios";
 import {
-    GET_DOCTOR_INFO_FAILED,
-    GET_DOCTOR_INFO_START,
-    GET_DOCTOR_INFO_SUSSCESS,
     GET_SCHEDULE_DOCTOR_FAILED,
     GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS
 } from "../../../store/slice/userSlice";
@@ -83,21 +80,7 @@ const ScheduleDoctor = (props) => {
     }, [selectedDay, doctor, dispatch, listDays, toggleBooked]);
 
     useEffect(() => {
-        const handleApiGetInfoDoctor = async () => {
-            dispatch(GET_DOCTOR_INFO_START());
-            try {
-                console.log(">>>>>call api info doctor");
-                const res = await axios.get(`http://localhost:8080/user/get-doctor-info-price-address-clinic/${doctor.id}`);
-                if (res.data && res.data.errCode === 0) {
-                    dispatch(GET_DOCTOR_INFO_SUSSCESS(res.data.data));
-                    setInfo(res.data.data);
-                }
-            } catch (err) {
-                dispatch(GET_DOCTOR_INFO_FAILED());
-            }
-        }
-
-        handleApiGetInfoDoctor();
+        setInfo(doctor.doctorInfoData);
     }, [dispatch, doctor])
 
     return (

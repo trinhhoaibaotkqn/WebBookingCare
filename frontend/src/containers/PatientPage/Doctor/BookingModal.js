@@ -16,7 +16,7 @@ const BookingModal = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     let user = useSelector(state => state.auth.login.currentUser);
-    let doctorInfo = useSelector(state => state.user.doctorInfo.infoAdressPriceNameClinic)
+    let doctorInfo = doctor.doctorInfoData;
     const language = useSelector(state => state.common.language);
 
     const [name, setName] = useState();

@@ -58,5 +58,23 @@ class CommonUtils {
     static capitalizeFirstLetter(string) {
         return string[0].toUpperCase() + string.slice(1);
     }
+
+    static createArrIdMappingName(list) {
+        let arr = [];
+        list.forEach((item) => {
+            let obj = {
+                value: item.id,
+                label: item.name,
+            }
+            arr.push(obj);
+        })
+        return arr;
+    }
+
+    static findItemByIdInListSelect(list, id) {
+        return list.find((item) => {
+            return item.value === id
+        })
+    }
 }
 export default CommonUtils;

@@ -1,7 +1,12 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import urlImage from "../../../assets/images/bv-viet-duc.jpg";
+import { useEffect } from "react";
+import { handleApiGetAllFacility } from "../../../services/userService";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import CommonUtils from "../../../utils/CommonUtils";
+
 const Facility = () => {
     let settings = {
         dots: false,
@@ -21,6 +26,14 @@ const Facility = () => {
         ]
     };
 
+    const dispatch = useDispatch();
+
+    const [listFacility, setListFacility] = useState();
+
+    useEffect(() => {
+        handleApiGetAllFacility(dispatch, setListFacility)
+    }, [dispatch])
+
     return (
         <div className="section-share section-facility section-gray">
             <div className="section-content">
@@ -29,54 +42,16 @@ const Facility = () => {
                     <div className="header-button">xem thêm</div>
                 </div>
                 <Slider {...settings}>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="item-content">
-                            <div className="item-image image-facility" style={{ backgroundImage: `url(${urlImage})` }}></div>
-                            <div className="subs-title">Bệnh viện Hữu nghị Việt Đức</div>
-                        </div>
-                    </div>
+                    {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
+                        return (
+                            <div key={index}>
+                                <div className="item-content">
+                                    <div className="item-image image-facility" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
+                                    <div className="subs-title">{item.name}</div>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </Slider>
             </div>
         </div>

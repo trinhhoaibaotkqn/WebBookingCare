@@ -44,6 +44,7 @@ const ModalAddNewFacility = (props) => {
         setPreviewImgUrl("");
         setImage("");
         setName("");
+        setAddress("");
         setDescriptionHTML("");
         setDescriptionMarkdown("");
     }
@@ -69,11 +70,11 @@ const ModalAddNewFacility = (props) => {
                 <div className="modal-body">
                     <div className="modal-element name-facility">
                         <span className="modal-icon-label"><MdOutlineLocalHospital /></span>
-                        <input type="text" placeholder="Name facility" onChange={(e) => setName(e.target.value)} />
+                        <input type="text" value={name ? name : ''} placeholder="Name facility" onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className="modal-element address-facility">
                         <span className="modal-icon-label"><FaRegAddressBook /></span>
-                        <input type="text" placeholder="Address facility" onChange={(e) => setAddress(e.target.value)} />
+                        <input type="text" value={address ? address : ''} placeholder="Address facility" onChange={(e) => setAddress(e.target.value)} />
                     </div>
                     <div className="modal-element element-image-specialty">
                         <div id="image-user">

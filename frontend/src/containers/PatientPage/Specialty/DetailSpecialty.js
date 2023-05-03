@@ -1,26 +1,32 @@
 import HeaderDetail from "../HeaderDetail";
 import { useLocation } from "react-router-dom";
 import "./DetailSpecialty.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DescriptionDoctor from "../Doctor/DescriptionDoctor";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ScheduleDoctor from "../Doctor/ScheduleDoctor";
 import BookingModal from "../Doctor/BookingModal";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { handleApiGetListDoctorBySpecialty } from "../../../services/userService";
 
 const DetailSpecialty = () => {
 
+    const dispatch = useDispatch();
     const location = useLocation();
     const specialty = location.state.specialty;
 
     const [showHide, setShowHide] = useState(true);
     const doctor = useSelector(state => state.user.topDoctors.listDoctors[3]);
-    console.log(doctor)
+    console.log(specialty)
+    const [listDoctor, setListDoctor] = useState();
 
     const [isShow, setIsShow] = useState(false);
     const [timeSelected, setTimeSelected] = useState();
     const [toggleBooked, setToggleBooked] = useState(false);
 
+    useEffect(() => {
+        handleApiGetListDoctorBySpecialty(specialty.id, dispatch, setListDoctor);
+    }, [dispatch, specialty])
 
     return (
         <div className="detail-specialty-container">

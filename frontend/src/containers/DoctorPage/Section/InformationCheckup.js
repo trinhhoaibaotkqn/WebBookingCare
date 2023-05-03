@@ -18,7 +18,7 @@ const InformationCheckup = () => {
     // const [doctorData, setDoctorData] = useState();
 
     const [isEdit, setIsEdit] = useState(false);
-    const doctorId = 10;
+    const doctorId = 20;
     const [priceId, setPriceId] = useState((listPrice && listPrice.length > 0) ? listPrice[0]?.key : "");
     const [paymentId, setPaymentId] = useState((listPayment && listPayment.length) > 0 ? listPayment[0]?.key : "");
     const [provinceId, setProvinceId] = useState((listProvince && listProvince.length) > 0 ? listProvince[0]?.key : "");
