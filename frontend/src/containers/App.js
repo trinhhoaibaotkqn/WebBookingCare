@@ -35,6 +35,7 @@ import ConfirmBooking from './PatientPage/Doctor/ConfirmBooking';
 import Appointment from './DoctorPage/Section/Appointment';
 import ScrollToTop from '../components/ScrollToTop';
 import DetailSpecialty from './PatientPage/Specialty/DetailSpecialty';
+import DetailFacility from './PatientPage/Facility/DetailFacility';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -47,12 +48,12 @@ function App() {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route exact path="/" element={<HomePage />} />
               <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
               <Route exact path="/personal-page" element={<IsAuthenticated><PatientHome /></IsAuthenticated>} />
               <Route exact path="/detail-doctor/:name" element={<DetailDoctor />} />
               <Route exact path="/detail-specialty/:name" element={<DetailSpecialty />} />
+              <Route exact path="/detail-facility/:name" element={<DetailFacility />} />
               <Route path="/verify-booking-appointment" element={<ConfirmBooking />} />
               <Route exact path="/system/admin/" element={<AdminHome />}>
                 <Route exact path="user/" element={<AdminUser />} />
@@ -66,6 +67,7 @@ function App() {
                 <Route path="info-checkup" element={<InformationCheckup />} />
                 <Route path="appointment" element={<Appointment />} />
               </Route>
+              <Route exact path="/" element={<HomePage />} />
             </Routes>
             <ToastContainer
               position="top-center"

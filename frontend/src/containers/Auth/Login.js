@@ -6,7 +6,7 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
-import { handleApiLogin } from "../../services/authService";
+import { handleApiLoginUser, navigateUserAfterLogin } from "../../services/authService";
 
 const Login = () => {
 
@@ -29,15 +29,9 @@ const Login = () => {
             email,
             password
         };
-        let loginSuccess = await handleApiLogin(userData, toast, dispatch, navigate, doctor);
-
-        if (doctor && loginSuccess) {
-            navigate(`/detail-doctor/${doctor.name}`, {
-                state: {
-                    doctor: doctor,
-                }
-            })
-        }
+        let userLoggedIn = await handleApiLoginUser(userData, toast, dispatch);
+        if (userLoggedIn)
+            navigateUserAfterLogin(doctor, userLoggedIn, navigate);
     }
 
     return (

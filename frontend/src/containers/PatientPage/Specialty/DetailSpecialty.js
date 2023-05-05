@@ -2,12 +2,10 @@ import HeaderDetail from "../HeaderDetail";
 import { useLocation } from "react-router-dom";
 import "./DetailSpecialty.scss";
 import { useEffect, useState } from "react";
-import DescriptionDoctor from "../Doctor/DescriptionDoctor";
-import { useDispatch, useSelector } from "react-redux";
-import ScheduleDoctor from "../Doctor/ScheduleDoctor";
-import BookingModal from "../Doctor/BookingModal";
+import { useDispatch } from "react-redux";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { handleApiGetListDoctorBySpecialty } from "../../../services/userService";
+import ItemDoctor from "./ItemDoctor";
 
 const DetailSpecialty = () => {
 
@@ -16,13 +14,9 @@ const DetailSpecialty = () => {
     const specialty = location.state.specialty;
 
     const [showHide, setShowHide] = useState(true);
-    const doctor = useSelector(state => state.user.topDoctors.listDoctors[3]);
-    console.log(specialty)
     const [listDoctor, setListDoctor] = useState();
 
-    const [isShow, setIsShow] = useState(false);
-    const [timeSelected, setTimeSelected] = useState();
-    const [toggleBooked, setToggleBooked] = useState(false);
+
 
     useEffect(() => {
         handleApiGetListDoctorBySpecialty(specialty.id, dispatch, setListDoctor);
@@ -40,28 +34,15 @@ const DetailSpecialty = () => {
             <div className="list-doctor-container">
                 <div className="btn-provine">Toàn quốc  <MdKeyboardArrowDown /></div>
                 <div className="list-doctor-content">
-                    <div className="child-doctor">
-                        <DescriptionDoctor
-                            doctor={doctor}
-                            size={"small"}
-                            description={true}
-                        />
-                        <ScheduleDoctor
-                            doctor={doctor}
-                            setTimeSelected={setTimeSelected}
-                            setIsShow={setIsShow}
-                            toggleBooked={toggleBooked}
-                            componentSpecialty={true}
-                        />
-                        <BookingModal
-                            doctor={doctor}
-                            isShow={isShow}
-                            setIsShow={setIsShow}
-                            timeSelected={timeSelected}
-                            setToggleBooked={setToggleBooked}
-                            toggleBooked={toggleBooked}
-                        />
-                    </div>
+                    {listDoctor && listDoctor.length > 0 && listDoctor.map((item, index) => {
+                        return (
+                            <div key={index} className="child-doctor">
+                                <ItemDoctor
+                                    doctor={item}
+                                />
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         </div>

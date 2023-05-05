@@ -2,24 +2,43 @@ import "./DescriptionDoctor.scss";
 import CommonUtils from "../../../utils/CommonUtils";
 import { useSelector } from "react-redux";
 import { description_doctor } from "../../../utils/Constants";
+import { useNavigate } from 'react-router-dom';
 
 const DescriptionDoctor = (props) => {
-    let { doctor, size, description, timeSelected } = props;
+    let { doctor, size, description, timeSelected, formList } = props;
 
     const language = useSelector(state => state.common.language);
+    const navigate = useNavigate();
     let name;
     if (language === "vi") {
-        name = `${doctor.positionData.valueVi === "Không" ? "" : `${doctor.positionData.valueVi}, `}${doctor.roleData.valueVi} ${doctor.name}`
+        name = `${doctor.doctorInfoData.positionData.valueVi === "Không" ? "" : `${doctor.doctorInfoData.positionData.valueVi}, `}Bác sỹ ${doctor.doctorInfoData.name}`
     }
     if (language === "en") {
-        name = `${doctor.positionData.valueEn === "None" ? "" : `${doctor.positionData.valueEn}, `}${doctor.roleData.valueEn} ${doctor.name}`
+        name = `${doctor.doctorInfoData.positionData.valueEn === "None" ? "" : `${doctor.doctorInfoData.positionData.valueEn}, `}Bác sỹ ${doctor.name}`
+    }
+
+    const handleClickNameDoctor = (e) => {
+        if (formList) {
+            navigate(`/detail-doctor/${doctor.doctorInfoData.name}`, {
+                state: {
+                    doctor: doctor,
+                }
+            })
+        } else {
+            e.preventDefault();
+        }
     }
 
     return (
         <div className={size === description_doctor.BIG ? "description-doctor-container" : "description-doctor-container modal"}>
-            <div className="avatar" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(doctor.image)})` }}></div>
+            <div className="avatar" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(doctor.doctorInfoData.image)})` }}></div>
             <div className="description-content">
-                <div className="name-doctor">{name}</div>
+                <div className="name-doctor"
+                    style={formList ? { cursor: "pointer" } : {}}
+                    onClick={(e) => { handleClickNameDoctor(e) }}
+                >
+                    {name}
+                </div>
                 {
                     timeSelected && !description ?
                         <>
@@ -29,7 +48,7 @@ const DescriptionDoctor = (props) => {
                         :
                         <div className="description-doctor">
                             <pre>
-                                {doctor.doctorData.description}
+                                {doctor.doctorMarkDownData.description}
                             </pre>
                         </div>
                 }

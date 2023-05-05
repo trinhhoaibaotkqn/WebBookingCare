@@ -12,4 +12,5 @@ router.post('/verify-booking-appointment', userController.verifyBookingAppointme
 router.get('/get-all-specialty', userController.getAllSpecialty);
 router.get('/get-all-clinic', userController.getAllClinic);
 router.get('/get-all-doctor-by-specialty/:specialtyId', userController.getAllDoctorBySpecialty);
+router.get('/get-all-doctor-by-clinic/:clinicId', userController.getAllDoctorByClinic);
 module.exports = router;

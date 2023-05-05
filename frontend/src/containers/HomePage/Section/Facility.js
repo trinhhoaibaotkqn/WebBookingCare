@@ -6,6 +6,7 @@ import { handleApiGetAllFacility } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import CommonUtils from "../../../utils/CommonUtils";
+import { useNavigate } from "react-router-dom";
 
 const Facility = () => {
     let settings = {
@@ -27,6 +28,7 @@ const Facility = () => {
     };
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [listFacility, setListFacility] = useState();
 
@@ -44,7 +46,13 @@ const Facility = () => {
                 <Slider {...settings}>
                     {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
                         return (
-                            <div key={index}>
+                            <div key={index}
+                                onClick={() => navigate(`/detail-facility/${item.name}`, {
+                                    state: {
+                                        facility: item,
+                                    }
+                                })}
+                            >
                                 <div className="item-content">
                                     <div className="item-image image-facility" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
                                     <div className="subs-title">{item.name}</div>

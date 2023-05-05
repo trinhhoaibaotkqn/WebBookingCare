@@ -6,62 +6,6 @@ const Op = Sequelize.Op;
 
 class UserController {
 
-    // [GET] get-top - doctor - home
-    // getTopDoctorHome = async (req, res) => {
-    //     try {
-    //         let date = new Date();
-    //         let limitInput = req.params.limit;
-    //         let limit;
-    //         if (!limitInput) {
-    //             limit = 10;
-    //         } else {
-    //             limit = parseInt(limitInput);
-    //         }
-    //         const user = await db.User.findAll({
-    //             limit: limit,
-    //             order: [['createdAt', 'DESC']],
-    //             where: {
-    //                 roleid: "R2",
-    //             },
-    //             attributes: {
-    //                 exclude: ['password']
-    //             },
-    //             include: [
-    //                 { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
-    //                 { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
-    //                 { model: db.Allcode, as: 'roleData', attributes: ['valueEn', 'valueVi'] },
-    //                 { model: db.Markdown, as: 'doctorData', attributes: ['contentHTML', "description"] },
-    //                 {
-    //                     model: db.DoctorInfo, as: 'doctorInfoData', attributes: ['addressClinic', "nameClinic", "note"],
-    //                     include: [
-    //                         { model: db.Allcode, as: 'priceData', attributes: ['valueEn', 'valueVi'] },
-    //                         { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
-    //                         { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] }
-    //                     ]
-    //                 },
-    //                 // {
-    //                 //     model: db.Schedule,
-    //                 //     where: {
-    //                 //         date: {
-    //                 //             [Op.gte]: date,
-    //                 //         }
-    //                 //     },
-    //                 //     as: 'scheduleData',
-    //                 //     attributes: ['date', "timeType"],
-    //                 //     include: [{ model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }]
-    //                 // }
-    //             ]
-    //         })
-    //         res.json({
-    //             errCode: 0,
-    //             message: 'successfully',
-    //             data: user
-    //         });
-    //     } catch (err) {
-    //         res.status(500).json("Server error");
-    //     }
-    // }
-
     getTopDoctorHome = async (req, res) => {
         try {
             let limitInput = req.params.limit;
@@ -216,6 +160,18 @@ class UserController {
         try {
             let specialtyId = req.params.specialtyId;
             let data = await userService.getAllDoctorBySpecialty(specialtyId);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getAllDoctorByClinic = async (req, res) => {
+        try {
+            let clinicId = req.params.clinicId;
+            let data = await userService.getAllDoctorByClinic(clinicId);
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);

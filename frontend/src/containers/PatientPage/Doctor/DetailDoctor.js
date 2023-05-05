@@ -15,18 +15,16 @@ const DetailDoctor = () => {
     const [timeSelected, setTimeSelected] = useState();
     const [toggleBooked, setToggleBooked] = useState(false);
 
-    const description = true;
-
     return (
         <div className="detail-doctor-container">
             <HeaderDetail
-                title={`Phó giáo sư, tiến sĩ, bác sĩ ${doctor.name}`}
+                title={`Phó giáo sư, tiến sĩ, bác sĩ ${doctor.doctorInfoData.name}`}
             />
 
             <DescriptionDoctor
                 doctor={doctor}
                 size={"big"}
-                description={description}
+                description={true}
             />
 
             <ScheduleDoctor
@@ -37,7 +35,7 @@ const DetailDoctor = () => {
             />
 
             <div className="more-information-doctor-container">
-                <div className="more-information-doctor-content" dangerouslySetInnerHTML={{ __html: doctor.doctorData.contentHTML }}></div>
+                <div className="more-information-doctor-content" dangerouslySetInnerHTML={{ __html: doctor.doctorMarkDownData.contentHTML }}></div>
             </div>
 
             <BookingModal

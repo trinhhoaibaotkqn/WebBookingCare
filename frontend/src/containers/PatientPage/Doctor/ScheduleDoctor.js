@@ -5,12 +5,8 @@ import moment from "moment";
 import 'moment/locale/vi';
 import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
-import axios from "axios";
-import {
-    GET_SCHEDULE_DOCTOR_FAILED,
-    GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS
-} from "../../../store/slice/userSlice";
 import CommonUtils from '../../../utils/CommonUtils';
+import { handleApiGetScheduleByDay } from '../../../services/userService';
 
 const ScheduleDoctor = (props) => {
     let { doctor, setTimeSelected, setIsShow, toggleBooked, componentSpecialty } = props;
@@ -21,15 +17,24 @@ const ScheduleDoctor = (props) => {
     const [selectedDay, setSelectedDay] = useState();
     const [listDays, setListDays] = useState([]);
     const [listTime, setListTime] = useState([]);
-    const [info, setInfo] = useState();
+    const [toggleChangeDay, setToggleChangeDay] = useState(true);
 
     const handleOpenModal = (item) => {
         setTimeSelected(item);
         setIsShow(true);
     }
 
+    const handleOnchangeDay = (e) => {
+        setToggleChangeDay(!toggleChangeDay);
+        if (listDays && listDays.length > 0) {
+            const date = listDays.find(item => {
+                return item.value === e.target.value;
+            }).date;
+            setSelectedDay(date);
+        }
+    }
+
     useEffect(() => {
-        console.log("render list day")
         let arr = []
         for (let i = 0; i < 7; i++) {
             let obj = {};
@@ -44,51 +49,26 @@ const ScheduleDoctor = (props) => {
             arr.push(obj);
         }
         setListDays(arr);
-        setSelectedDay(arr[0].value);
-    }, [language])
+        setSelectedDay(arr[0].date);
+        setListTime(doctor.doctorInfoData.scheduleData);
+    }, [language, doctor])
 
     useEffect(() => {
-        const handleApiGetScheduleByDay = async (data) => {
-            dispatch(GET_SCHEDULE_DOCTOR_START());
-            try {
-                console.log(">>>>>call api schedule doctor");
-                const res = await axios.get("http://localhost:8080/user/get-schedule-doctor",
-                    {
-                        params: data
-                    });
-                if (res.data && res.data.errCode === 0) {
-                    dispatch(GET_SCHEDULE_DOCTOR_SUSSCESS(res.data.data));
-                    setListTime(res.data.data);
-                }
-            } catch (err) {
-                dispatch(GET_SCHEDULE_DOCTOR_FAILED());
-                setListTime([]);
-            }
-        }
-
         if (listDays && listDays.length > 0) {
-            const date = listDays.find(item => {
-                return item.value === selectedDay;
-            }).date;
-
             const data = {
-                date: date,
-                doctorId: doctor.id
+                date: selectedDay,
+                doctorId: doctor.doctorId
             }
-            handleApiGetScheduleByDay(data);
+            handleApiGetScheduleByDay(data, dispatch, setListTime);
         }
-    }, [selectedDay, doctor, dispatch, listDays, toggleBooked]);
-
-    useEffect(() => {
-        setInfo(doctor.doctorInfoData);
-    }, [dispatch, doctor])
+    }, [toggleChangeDay, dispatch, toggleBooked]);
 
     return (
         <div className="schedule-container">
             <div className={componentSpecialty ? "schedule-content component-specialty" : "schedule-content"}>
                 <div className="schedule-content-up">
                     <div className="date">
-                        <select onChange={(e) => setSelectedDay(e.target.value)}>
+                        <select onChange={(e) => handleOnchangeDay(e)}>
                             {listDays && listDays.length > 0 && listDays.map((item, index) => {
                                 return (
                                     <option
@@ -121,13 +101,13 @@ const ScheduleDoctor = (props) => {
                         }
                     </div>
                     <div className="more-info-booking">
-                        {info ?
+                        {doctor ?
                             <>
                                 <div className="adrress-clinic-container">
                                     <div className="title-clinic">ĐỊA CHỈ KHÁM</div>
-                                    <div className="name-clinic">{info.nameClinic}</div>
+                                    <div className="name-clinic">{doctor.nameClinic}</div>
                                     <div className="address-clinic">
-                                        {info.addressClinic}, {language === languages.EN ? info.provinceData.valueEn : info.provinceData.valueVi}
+                                        {doctor.addressClinic}, {language === languages.EN ? doctor.provinceData.valueEn : doctor.provinceData.valueVi}
                                     </div>
                                 </div>
                                 <div className="price-container">
@@ -135,7 +115,7 @@ const ScheduleDoctor = (props) => {
                                         <div className='price-content-common'>
                                             <div className='label-price'>GIÁ KHÁM: </div>
                                             <div className='price'>
-                                                {language === languages.EN ? `${info.priceData.valueEn}$.` : `${info.priceData.valueVi}đ.`}
+                                                {language === languages.EN ? `${doctor.priceData.valueEn}$.` : `${doctor.priceData.valueVi}đ.`}
                                             </div>
                                             <div className='hide-detail' onClick={() => setIsShowMorePrice(true)}>Xem chi tiết</div>
                                         </div>
@@ -147,17 +127,17 @@ const ScheduleDoctor = (props) => {
                                                     <div className='price'>
                                                         <span>GIÁ KHÁM</span>
                                                         <span>
-                                                            {language === languages.EN ? `${info.priceData.valueEn}$` : `${info.priceData.valueVi}đ`}
+                                                            {language === languages.EN ? `${doctor.priceData.valueEn}$` : `${doctor.priceData.valueVi}đ`}
                                                         </span>
                                                     </div>
-                                                    <div className='note'>{info.note}</div>
+                                                    <div className='note'>{doctor.note}</div>
                                                 </div>
                                                 <div className='method-payment'>
                                                     {
                                                         language === languages.EN ?
-                                                            `The patient can pay the cost in the form of: ${info.paymentData.valueEn}`
+                                                            `The patient can pay the cost in the form of: ${doctor.paymentData.valueEn}`
                                                             :
-                                                            `Người bệnh có thể thanh toán chi phí bằng hình thức: ${info.paymentData.valueVi}`
+                                                            `Người bệnh có thể thanh toán chi phí bằng hình thức: ${doctor.paymentData.valueVi}`
                                                     }
                                                 </div>
                                             </div>

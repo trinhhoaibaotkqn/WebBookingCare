@@ -26,14 +26,14 @@ let sendEmailConfirmBooking = async (data, language, url) => {
 const getContentEmailConfirmBooking = (data, language, url) => {
     if (language === languages.VI) {
         let content = `
-        <h3>Chào ${data.name},</h3>
+        <h3>Chào ${data.patientName},</h3>
         <p>Cảm ơn bạn đã sử dụng dịch vụ đặt lịch khám bệnh online của chúng tôi trên BookingCare.</p>
         <p>Thông tin đặt lịch khám bệnh:</p>
         <div><b>Thời gian: ${moment(data.date).locale("vi").format('dddd - DD/MM/yyyy')}, từ ${data.timeData}</b></div>
         <div><b>Bác sỹ: ${data.doctorName}</b></div>
-        <div><b>Tên phòng khám: ${data.doctorInfo.nameClinic}</b></div>
-        <div><b>Địa chỉ phòng khám: ${data.doctorInfo.addressClinic}, ${data.doctorInfo.provinceData.valueVi}</b></div>
-        <div><b>Giá khám: ${data.doctorInfo.priceData.valueVi}đ</b></div>
+        <div><b>Tên phòng khám: ${data.nameClinic}</b></div>
+        <div><b>Địa chỉ phòng khám: ${data.addressClinic}, ${data.provinceData.valueVi}</b></div>
+        <div><b>Giá khám: ${data.priceData.valueVi}đ</b></div>
         <p>Vui lòng kiểm tra lại thông tin và xác nhận bằng cách click vào đường link <a href=${url} target="_blank">tại đây</a></p>
         `
         return content;
@@ -41,14 +41,14 @@ const getContentEmailConfirmBooking = (data, language, url) => {
     if (language === languages.EN) {
         let content =
             `
-        <h3>Dear ${data.name},</h3>
+        <h3>Dear ${data.patientName},</h3>
         <p>Thank you for using our online medical appointment booking service on BookingCare.</p>
         <p>Appointment information:</p>
         <div><b>Date and time: ${moment(data.date).locale("en").format('dddd - DD/MM/yyyy')}, ${data.timeData}</b></div>
         <div><b>Doctor: ${data.doctorName}</b></div>
-        <div><b>Clinic name: ${data.doctorInfo.nameClinic}</b></div>
-        <div><b>Clinic address: ${data.doctorInfo.addressClinic}, ${data.doctorInfo.provinceData.valueEn}</b></div>
-        <div><b>Price: ${data.doctorInfo.priceData.valueEn}$</b></div>
+        <div><b>Clinic name: ${data.nameClinic}</b></div>
+        <div><b>Clinic address: ${data.addressClinic}, ${data.provinceData.valueEn}</b></div>
+        <div><b>Price: ${data.priceData.valueEn}$</b></div>
         <p>Please check the information and confirm by <a href=${url} target="_blank">Click here</a></p>
         `
         return content;

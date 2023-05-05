@@ -1,5 +1,11 @@
 import {
-    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED, CONFIRM_APPOINTMENT_START, CONFIRM_APPOINTMENT_SUSSCESS, CONFIRM_APPOINTMENT_FAILED, GET_LIST_SPECIALTY_START, GET_LIST_SPECIALTY_SUSSCESS, GET_LIST_SPECIALTY_FAILED, GET_LIST_FACILITY_START, GET_LIST_FACILITY_SUSSCESS, GET_LIST_FACILITY_FAILED, GET_LIST_DOCTOR_BY_SPECIALTY_START, GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS, GET_LIST_DOCTOR_BY_SPECIALTY_FAILED, GET_TOP_DOCTORS_START, GET_TOP_DOCTORS_SUSSCESS, GET_TOP_DOCTORS_FAILED,
+    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED,
+    CONFIRM_APPOINTMENT_START, CONFIRM_APPOINTMENT_SUSSCESS, CONFIRM_APPOINTMENT_FAILED,
+    GET_LIST_SPECIALTY_START, GET_LIST_SPECIALTY_SUSSCESS, GET_LIST_SPECIALTY_FAILED,
+    GET_LIST_FACILITY_START, GET_LIST_FACILITY_SUSSCESS, GET_LIST_FACILITY_FAILED,
+    GET_LIST_DOCTOR_BY_SPECIALTY_START, GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS, GET_LIST_DOCTOR_BY_SPECIALTY_FAILED,
+    GET_TOP_DOCTORS_START, GET_TOP_DOCTORS_SUSSCESS, GET_TOP_DOCTORS_FAILED, GET_SCHEDULE_DOCTOR_START,
+    GET_SCHEDULE_DOCTOR_SUSSCESS, GET_SCHEDULE_DOCTOR_FAILED, GET_LIST_DOCTOR_BY_FACILITY_START, GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS, GET_LIST_DOCTOR_BY_FACILITY_FAILED,
 
 } from "../store/slice/userSlice";
 import { toast } from 'react-toastify';
@@ -100,6 +106,23 @@ export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, s
     }
 }
 
+export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, setListDoctor) => {
+    dispatch(GET_LIST_DOCTOR_BY_FACILITY_START());
+    try {
+        console.log("call api get list doctor by facility")
+        const res = await axios.get(`http://localhost:8080/user/get-all-doctor-by-clinic/${facilityId}`,
+            {
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            setListDoctor(res.data.data);
+            dispatch(GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS(res.data.data));
+        }
+    } catch (err) {
+        dispatch(GET_LIST_DOCTOR_BY_FACILITY_FAILED());
+    }
+}
+
 export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => {
     dispatch(GET_TOP_DOCTORS_START());
     try {
@@ -114,5 +137,23 @@ export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => 
         }
     } catch (err) {
         dispatch(GET_TOP_DOCTORS_FAILED());
+    }
+}
+
+export const handleApiGetScheduleByDay = async (data, dispatch, setListTime) => {
+    dispatch(GET_SCHEDULE_DOCTOR_START());
+    try {
+        console.log(">>>>>call api schedule doctor");
+        const res = await axios.get("http://localhost:8080/user/get-schedule-doctor",
+            {
+                params: data
+            });
+        if (res.data && res.data.errCode === 0) {
+            dispatch(GET_SCHEDULE_DOCTOR_SUSSCESS(res.data.data));
+            setListTime(res.data.data);
+        }
+    } catch (err) {
+        dispatch(GET_SCHEDULE_DOCTOR_FAILED());
+        setListTime([]);
     }
 }

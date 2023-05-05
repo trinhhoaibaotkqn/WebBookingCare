@@ -16,7 +16,6 @@ const BookingModal = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     let user = useSelector(state => state.auth.login.currentUser);
-    let doctorInfo = doctor.doctorInfoData;
     const language = useSelector(state => state.common.language);
 
     const [name, setName] = useState();
@@ -33,21 +32,23 @@ const BookingModal = (props) => {
                 toast.error("Some required fiels are empty");
             } else {
                 const dataBooking = {
+                    doctorId: doctor.id,
+                    doctorName: doctor.doctorInfoData.name,
+                    date: timeSelected.date,
+                    timeType: timeSelected.timeType,
+                    timeData: language === languages.VI ? timeSelected.timeData.valueVi : timeSelected.timeData.valueEn,
                     patientId: user.id,
                     patientEmail: user.email,
-                    doctorId: doctor.id,
-                    doctorName: doctor.name,
-                    date: timeSelected.date,
-                    timeData: language === languages.VI ? timeSelected.timeData.valueVi : timeSelected.timeData.valueEn,
-                    timeType: timeSelected.timeType,
-                    name,
-                    phoneNumber,
+                    patientName: name,
+                    patientPhoneNumber: phoneNumber,
                     reason,
                     language,
-                    doctorInfo
+                    nameClinic: doctor.nameClinic,
+                    addressClinic: doctor.addressClinic,
+                    provinceData: doctor.provinceData,
+                    priceData: doctor.priceData
                 }
-                console.log(dataBooking);
-                handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason)
+                handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason);
             }
         }
     }

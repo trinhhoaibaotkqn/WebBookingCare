@@ -36,7 +36,12 @@ const userSlice = createSlice({
             listFacility: null,
             isFetching: false,
             error: false
-        }
+        },
+        detailFacility: {
+            listDoctors: null,
+            isFetching: false,
+            error: false
+        },
     },
     reducers: {
         GET_TOP_DOCTORS_START: (state) => {
@@ -114,12 +119,24 @@ const userSlice = createSlice({
             state.detailSpecialty.isFetching = true;
         },
         GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS: (state, action) => {
-            state.facidetailSpecialtylity.isFetching = false;
+            state.detailSpecialty.isFetching = false;
             state.detailSpecialty.listDoctors = action.payload;
             state.detailSpecialty.error = false;
         },
         GET_LIST_DOCTOR_BY_SPECIALTY_FAILED: (state) => {
             state.detailSpecialty.error = true;
+        },
+
+        GET_LIST_DOCTOR_BY_FACILITY_START: (state) => {
+            state.detailFacility.isFetching = true;
+        },
+        GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS: (state, action) => {
+            state.detailFacility.isFetching = false;
+            state.detailFacility.listDoctors = action.payload;
+            state.detailFacility.error = false;
+        },
+        GET_LIST_DOCTOR_BY_FACILITY_FAILED: (state) => {
+            state.detailFacility.error = true;
         },
     },
 })
@@ -132,6 +149,7 @@ export const {
     GET_LIST_SPECIALTY_START, GET_LIST_SPECIALTY_SUSSCESS, GET_LIST_SPECIALTY_FAILED,
     GET_LIST_FACILITY_START, GET_LIST_FACILITY_SUSSCESS, GET_LIST_FACILITY_FAILED,
     GET_LIST_DOCTOR_BY_SPECIALTY_START, GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS, GET_LIST_DOCTOR_BY_SPECIALTY_FAILED,
+    GET_LIST_DOCTOR_BY_FACILITY_START, GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS, GET_LIST_DOCTOR_BY_FACILITY_FAILED
 } = userSlice.actions;
 
 export default userSlice.reducer;

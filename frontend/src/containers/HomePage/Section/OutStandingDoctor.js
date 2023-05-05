@@ -1,7 +1,6 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { handleApiGetTopDoctor } from "../../../services/userService";
@@ -33,7 +32,6 @@ const OutStandingDoctor = () => {
     const language = useSelector(state => state.common.language);
 
     const [listDoctors, setListDoctors] = useState();
-    console.log(listDoctors);
 
     useEffect(() => {
         handleApiGetTopDoctor(5, dispatch, setListDoctors);

@@ -26,7 +26,7 @@ export const handleApiRegister = async (user, toast, dispatch, navigate, doctor)
     }
 }
 
-export const handleApiLogin = async (user, toast, dispatch, navigate, doctor) => {
+export const handleApiLoginUser = async (user, toast, dispatch) => {
     dispatch(LOGIN_START());
     try {
         const res = await axios.post("http://localhost:8080/auth/login", user,
@@ -34,13 +34,9 @@ export const handleApiLogin = async (user, toast, dispatch, navigate, doctor) =>
                 "withCredentials": true
             });
         if (res.data.errCode === 0) {
-            dispatch(LOGIN_SUCCESS(res.data.user));
             toast.success(res.data.message);
-            if (!doctor) {
-                navigate(`/`);
-            } else {
-                return true;
-            }
+            dispatch(LOGIN_SUCCESS(res.data.user));
+            return res.data.user;
         }
     } catch (err) {
         dispatch(LOGIN_FAILED());
@@ -101,5 +97,27 @@ export const checkValidDataRegister = (user, toast) => {
     }
     if (user.password === user.passwordConfirm) {
         return true;
+    }
+}
+
+export const navigateUserAfterLogin = (doctor, user, navigate) => {
+    if (user.roleid === "R1") {
+        navigate('/system/admin/user');
+    }
+    if (user.roleid === "R2") {
+        navigate('/system/doctor/schedule');
+    }
+    if (doctor) {
+        if (user.roleid === "R3") {
+            navigate(`/detail-doctor/${doctor.name}`, {
+                state: {
+                    doctor: doctor,
+                }
+            })
+        }
+    } else {
+        if (user.roleid === "R3") {
+            navigate('/')
+        }
     }
 }
