@@ -1,0 +1,23 @@
+{
+    "homeheader": {
+        "speciality": "Специальность",
+        "searchdoctor": "Поиск врача по специальности",
+        "health-facility": "Учреждение",
+        "hospotal-clinic": "Выбрать клинику больницы",
+        "doctor": "Врач",
+        "choose-doctor": "Выбрать хорошего врача",
+        "package": "Пакет проверки",
+        "check-health": "Общая проверка здоровья",
+        "support": "Поддержка"
+    },
+    "homebanner": {
+        "title1": "Медицинское обслуживание",
+        "title2": "Комплексное медицинское обслуживание",
+        "text-search": "Поиск врача"
+    },
+    "confirmBooking": {
+        "errCode0": "Confirm appointment susscessfully",
+        "errCode1": "Appointment doesn't exist",
+        "errCode3": "Appointment already has been activated"
+    }
+}

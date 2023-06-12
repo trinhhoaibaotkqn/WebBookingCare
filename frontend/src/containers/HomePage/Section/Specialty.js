@@ -39,8 +39,8 @@ const Specialty = () => {
         <div className="section-share">
             <div className="section-content">
                 <div className="section-header">
-                    <div className="title">Chuyên khoa phổ biến</div>
-                    <div className="header-button">xem thêm</div>
+                    <div className="title">Популярные специальности</div>
+                    <div className="header-button">Подробнее</div>
                 </div>
                 <Slider {...settings}>
                     {listSpecialty && listSpecialty.length > 0 && listSpecialty.map((item) => {

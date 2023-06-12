@@ -62,10 +62,18 @@ const HomeHeader = () => {
                                 onClick={() => handleChangeLanguage("en")}
                             >VN</div>
                             :
-                            <div
-                                className="language-en"
-                                onClick={() => handleChangeLanguage("vi")}
-                            >EN</div>
+                            (
+                                language === "en" ?
+                                    <div
+                                        className="language-en"
+                                        onClick={() => handleChangeLanguage("ru")}
+                                    >EN</div>
+                                    :
+                                    <div
+                                        className="language-en"
+                                        onClick={() => handleChangeLanguage("vi")}
+                                    >RU</div>
+                            )
                         }
                     </div>
                 </div>

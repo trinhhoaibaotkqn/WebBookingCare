@@ -13,7 +13,6 @@ const DetailFacility = () => {
 
     const location = useLocation();
     const facility = location.state.facility;
-    console.log(facility);
 
     const [listDoctor, setListDoctor] = useState();
 

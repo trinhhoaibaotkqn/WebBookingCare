@@ -1,6 +1,5 @@
 import DatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
-
 import vi from 'date-fns/locale/vi';
 import { useDispatch, useSelector } from "react-redux";
 import { handleApiGetListAppointment } from "../../../services/doctorService";
@@ -8,14 +7,13 @@ import { languages } from "../../../utils/Constants";//
 import { MdOutlineDone } from "react-icons/md";
 import ModalCompleteAppointment from "./ModalCompleteAppointment";
 
-
-
 const Appointment = () => {
 
-    const language = useSelector(state => state.common.language);
     const dispatch = useDispatch();
 
-    const doctorId = 10;
+    const language = useSelector(state => state.common.language);
+    const doctor = useSelector(state => state.auth.login.currentUser);
+
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [listAppointment, setListAppointment] = useState();
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -31,13 +29,12 @@ const Appointment = () => {
 
     useEffect(() => {
         const data = {
-            doctorId: doctorId,
+            doctorId: doctor.id,
             date: selectedDate
         }
-        // console.log(data)
         console.log("call api get list appointment")
         handleApiGetListAppointment(data, dispatch, setListAppointment);
-    }, [setListAppointment, selectedDate, dispatch, toggleUpdateData])
+    }, [doctor, setListAppointment, selectedDate, dispatch, toggleUpdateData])
     return (
         <div className="doctor-appointment-container">
             <div className="doctor-appointment-content">

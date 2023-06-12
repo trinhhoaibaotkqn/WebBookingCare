@@ -20,27 +20,27 @@ const HomeBanner = () => {
             <div className="content-down">
                 <div className="option">
                     <div className="icon-option"><FaHospitalAlt /></div>
-                    <div className="option-title">Khám<br></br>chuyên khoa</div>
+                    <div className="option-title">Экспертиза<br></br>специалиста</div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><GiPersonInBed /></div>
-                    <div className="option-title">Khám<br></br>tổng quát</div>
+                    <div className="option-title">Общий<br></br>осмотр</div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaMicroscope /></div>
-                    <div className="option-title">Xét nghiệm<br></br>y học</div>
+                    <div className="option-title">Медицинский<br></br>тест</div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaStethoscope /></div>
-                    <div className="option-title">Sức khỏe<br></br>tinh thần</div>
+                    <div className="option-title">Душевное<br></br>здоровье</div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaAmbulance /></div>
-                    <div className="option-title">Sức khỏe<br></br>danh nghiệp</div>
+                    <div className="option-title">Здоровье<br></br>бизнеса</div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaTooth /></div>
-                    <div className="option-title">Khám<br></br>nha khoa</div>
+                    <div className="option-title">Стоматологический<br></br>осмотр</div>
                 </div>
             </div>
         </div>

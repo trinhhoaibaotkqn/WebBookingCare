@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom"
 
-const IsAuthenticated = ({ children }) => {
+const IsPatient = ({ children }) => {
     const user = useSelector((state) => state.auth.login.currentUser);
 
-    if (!user) {
+    if (!user || user.roleid !== "R3") {
         return <Navigate to="/" replace />
     }
-    return children;
+    if (user.roleid === "R3")
+        return children;
 }
 
-export default IsAuthenticated;
+export default IsPatient;

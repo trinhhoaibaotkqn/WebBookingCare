@@ -35,7 +35,7 @@ const PatientHome = () => {
                             <>
                                 <div>Tên: {user.name}</div>
                                 <div>Email: {user.email}</div>
-                                <div>Giới tính: {user.gender === 0 ? "Nam" : "Nữ"}</div>
+                                <div>Giới tính: {user.gender === "M" ? "Nam" : (user.gender === "F" ? "Nữ" : "Khác")}</div>
                                 <div>Địa chỉ: {user.address}</div>
                                 <div>Số điện thoại: {user.phoneNumber}</div>
                             </>

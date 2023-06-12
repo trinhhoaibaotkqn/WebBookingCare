@@ -14,6 +14,7 @@ const MarkdownInfoDoctor = () => {
     const location = useLocation();
     const doctor = location.state.doctor;
     const infoDoctor = location.state.infoDoctor;
+    console.log(infoDoctor)
     const [listFacility, setListFacility] = useState();
     const [listSpecialty, setListSpecialty] = useState();
 

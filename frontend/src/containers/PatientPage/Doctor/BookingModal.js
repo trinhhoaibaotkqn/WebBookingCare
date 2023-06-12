@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { handleApiBookAppointment } from "../../../services/userService";
 import { languages } from "../../../utils/Constants";
 import './BookingModal.scss';
+import Loading from "../../../components/Loading";
 
 const BookingModal = (props) => {
     let { doctor, isShow, setIsShow, timeSelected, setToggleBooked, toggleBooked } = props;
@@ -22,35 +23,42 @@ const BookingModal = (props) => {
     const [phoneNumber, setPhoneNumber] = useState();
     const [reason, setReason] = useState();
 
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleClickConfirmBtn = () => {
+    const handleClickConfirmBtn = async () => {
+        setIsLoading(true);
         if (!user) {
-            toast.warning("You need to login first")
-            navigate("/login", { state: { doctor: doctor } })
+            toast.warning("You need to login first");
+            navigate("/login", { state: { doctor: doctor } });
         } else {
-            if (!name || !phoneNumber || !reason) {
-                toast.error("Some required fiels are empty");
+            if (user.roleid !== "R3") {
+                toast.error("Your account is not a patient account");
             } else {
-                const dataBooking = {
-                    doctorId: doctor.id,
-                    doctorName: doctor.doctorInfoData.name,
-                    date: timeSelected.date,
-                    timeType: timeSelected.timeType,
-                    timeData: language === languages.VI ? timeSelected.timeData.valueVi : timeSelected.timeData.valueEn,
-                    patientId: user.id,
-                    patientEmail: user.email,
-                    patientName: name,
-                    patientPhoneNumber: phoneNumber,
-                    reason,
-                    language,
-                    nameClinic: doctor.nameClinic,
-                    addressClinic: doctor.addressClinic,
-                    provinceData: doctor.provinceData,
-                    priceData: doctor.priceData
+                if (!name || !phoneNumber || !reason) {
+                    toast.error("Some required fiels are empty");
+                } else {
+                    const dataBooking = {
+                        doctorId: doctor.id,
+                        doctorName: doctor.doctorInfoData.name,
+                        date: timeSelected.date,
+                        timeType: timeSelected.timeType,
+                        timeData: language === languages.VI ? timeSelected.timeData.valueVi : timeSelected.timeData.valueEn,
+                        patientId: user.id,
+                        patientEmail: user.email,
+                        patientName: name,
+                        patientPhoneNumber: phoneNumber,
+                        reason,
+                        language,
+                        nameClinic: doctor.nameClinic,
+                        addressClinic: doctor.addressClinic,
+                        provinceData: doctor.provinceData,
+                        priceData: doctor.priceData
+                    }
+                    await handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason);
                 }
-                handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason);
             }
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -97,6 +105,7 @@ const BookingModal = (props) => {
                         <span className="modal-icon-label"><FaPlusCircle /></span>
                         <input type="text"
                             placeholder="Lí do khám"
+                            value={reason ? reason : ""}
                             onChange={(e) => setReason(e.target.value)}
                         />
                     </div>
@@ -105,6 +114,9 @@ const BookingModal = (props) => {
                     </div>
                 </div>
             </div>
+            <Loading
+                isLoading={isLoading}
+            />
         </div>
     )
 }

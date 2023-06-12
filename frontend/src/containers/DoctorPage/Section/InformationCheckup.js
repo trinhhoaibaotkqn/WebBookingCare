@@ -15,10 +15,9 @@ const InformationCheckup = () => {
     const listPrice = useSelector(state => state.doctor.price.listPrice);
     const listPayment = useSelector(state => state.doctor.payment.listPayment);
     const listProvince = useSelector(state => state.doctor.province.listProvince);
-    // const [doctorData, setDoctorData] = useState();
+    const doctor = useSelector(state => state.auth.login.currentUser);
 
     const [isEdit, setIsEdit] = useState(false);
-    const doctorId = 20;
     const [priceId, setPriceId] = useState((listPrice && listPrice.length > 0) ? listPrice[0]?.key : "");
     const [paymentId, setPaymentId] = useState((listPayment && listPayment.length) > 0 ? listPayment[0]?.key : "");
     const [provinceId, setProvinceId] = useState((listProvince && listProvince.length) > 0 ? listProvince[0]?.key : "");
@@ -28,7 +27,7 @@ const InformationCheckup = () => {
 
     const handleClickBtnSave = () => {
         const data = {
-            doctorId,
+            doctorId: doctor.id,
             priceId,
             provinceId,
             paymentId,
@@ -42,30 +41,30 @@ const InformationCheckup = () => {
     }
 
     useEffect(() => {
-        const handleLoadDoctorInfoFromDB = async () => {
+        const handleLoadDoctorInfoFromDB = async (doctor, dispatch, setPriceId, setPaymentId, setProvinceId, setAddressClinic, setNameClinic, setNote) => {
             dispatch(GET_DOCTOR_INFO_START());
             try {
                 console.log(">>>>>call api doctor info");
-                const res = await axios.get(`http://localhost:8080/doctor/get-doctor-info/${doctorId}`,
+                const res = await axios.get(`http://localhost:8080/doctor/get-doctor-info/${doctor.id}`,
                     {
                         "withCredentials": true
                     }
                 );
                 if (res.data && res.data.errCode === 0) {
                     dispatch(GET_DOCTOR_INFO_SUSSCESS(res.data.data));
-                    setPriceId(res.data.data.priceId);
-                    setPaymentId(res.data.data.paymentId);
-                    setProvinceId(res.data.data.provinceId);
-                    setAddressClinic(res.data.data.addressClinic);
-                    setNameClinic(res.data.data.nameClinic);
-                    setNote(res.data.data.note);
+                    setPriceId(res.data?.data?.priceId);
+                    setPaymentId(res.data?.data?.paymentId);
+                    setProvinceId(res.data?.data?.provinceId);
+                    setAddressClinic(res.data?.data?.addressClinic);
+                    setNameClinic(res.data?.data?.nameClinic);
+                    setNote(res.data?.data?.note);
                 }
             } catch (err) {
                 dispatch(GET_DOCTOR_INFO_FAILED());
             }
         }
-        handleLoadDoctorInfoFromDB()
-    }, [dispatch]);
+        handleLoadDoctorInfoFromDB(doctor, dispatch, setPriceId, setPaymentId, setProvinceId, setAddressClinic, setNameClinic, setNote)
+    }, [dispatch, doctor]);
     return (
         <div className="infor-checkup-container">
             <div className="infor-checkup-content">

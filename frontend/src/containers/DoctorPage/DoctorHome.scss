@@ -63,6 +63,7 @@
             .avatar-container {
                 display: flex;
                 align-items: center;
+                position: relative;
 
                 .avatar {
                     width: 40px;
@@ -74,6 +75,36 @@
                     font-size: 30px;
                     color: #fff;
                     cursor: pointer;
+                }
+
+                .dropdown-user {
+                    position: absolute;
+                    top: 50px;
+                    left: 0;
+                    width: 170px;
+                    box-shadow: rgba(32, 33, 36, 0.28) 0px 1px 6px;
+                    border-radius: 6px;
+
+                    .dropdown-user-item {
+                        padding: 0 10px;
+                        box-sizing: border-box;
+                        height: 40px;
+                        line-height: 40px;
+                        border-top: 1px solid #ccc;
+                        font-weight: 500;
+                        overflow: hidden;
+                        cursor: pointer;
+                        background-color: #fff;
+                    }
+
+                    .dropdown-user-item:hover {
+                        background-color: #18885c;
+                        color: #fff;
+                    }
+
+                    .dropdown-user-item:first-child {
+                        border-top: none;
+                    }
                 }
             }
 

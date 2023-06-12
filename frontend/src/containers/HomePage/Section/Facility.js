@@ -40,8 +40,8 @@ const Facility = () => {
         <div className="section-share section-facility section-gray">
             <div className="section-content">
                 <div className="section-header">
-                    <div className="title">Cơ sở y tế nổi bật</div>
-                    <div className="header-button">xem thêm</div>
+                    <div className="title">Выдающееся медицинское учреждение</div>
+                    <div className="header-button">Подробнее</div>
                 </div>
                 <Slider {...settings}>
                     {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
