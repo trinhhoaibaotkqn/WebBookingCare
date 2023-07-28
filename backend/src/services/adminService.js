@@ -1,5 +1,45 @@
 const db = require("../models/index");
 const bcrypt = require('bcrypt');
+const ResponseForm = require("../utils/ResponseForm");
+
+const getCode = (type) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.Allcode.findAll({
+                where: {
+                    type: type
+                },
+                attributes: ['key', 'valueEn', 'valueVi']
+            });
+            if (!data) {
+                const res = new ResponseForm(404, 1, `Get ${type} fail`, []);
+                resolve(res);
+            }
+            if (data) {
+                const res = new ResponseForm(200, 0, `Get ${type} successfully`, data);
+                resolve(res);
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getAllUserByRole = (roleid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.User.findAll({
+                where: {
+                    roleid: roleid
+                }, attributes: { exclude: ['password'] },
+            });
+            const res = new ResponseForm(200, 0, "Get data successfully", data);
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
 
 const createUser = (userData) => {
     return new Promise(async (resolve, reject) => {
@@ -207,11 +247,39 @@ const deleteUser = (id) => {
     })
 }
 
+const getListNameClinic = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.Clinic.findAll({
+                attributes: ["id", "name"],
+            });
+            const res = new ResponseForm(200, 0, "Get data successfully", data);
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getListNameSpecialty = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.Specialty.findAll({
+                attributes: ["id", "name"],
+            });
+            const res = new ResponseForm(200, 0, "Get data successfully", data);
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const saveInfoDoctor = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let res = {};
-            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown || !data.clinicId || !data.specialtyId) {
+            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown || !data.description) {
                 res.status = 404;
                 res.errCode = 1;
                 res.message = "Missing data input";
@@ -220,16 +288,16 @@ const saveInfoDoctor = (data) => {
             } else {
                 const existData = await db.Markdown.findOne({
                     where: {
-                        doctorId: data.doctorId
+                        doctorInfoId: data.doctorId
                     }
-                })
+                });
                 const newInfo = {
-                    doctorId: data.doctorId,
+                    doctorInfoId: data.doctorId,
                     contentHTML: data.contentHTML,
                     contentMarkdown: data.contentMarkdown,
                     description: data.description,
-                    clinicId: data.clinicId,
-                    specialtyId: data.specialtyId
+                    clinicId: data.clinicId ?? null,
+                    specialtyId: data.specialtyId ?? null
                 };
                 if (!existData) {
                     const content = await db.Markdown.create(newInfo);
@@ -522,6 +590,22 @@ const deleteClinic = (id) => {
     })
 }
 
+const getInfoDoctor = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.Markdown.findOne({
+                where: {
+                    doctorInfoId: doctorId
+                }
+            })
+            const res = new ResponseForm(200, 0, "Get information doctor successfully", data)
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 const isValidValue = async (type, key,) => {
     let value = await db.Allcode.findOne({
         where: {
@@ -537,7 +621,9 @@ const isValidValue = async (type, key,) => {
 }
 
 module.exports = {
+    getAllUserByRole, getCode, getInfoDoctor,
     createUser, editUser, deleteUser, saveInfoDoctor,
+    getListNameClinic, getListNameSpecialty,
     createSpecialty, editSpecialty, deleteSpecialty,
     createClinic, editClinic, deleteClinic
 }

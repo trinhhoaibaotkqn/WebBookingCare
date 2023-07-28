@@ -2,10 +2,10 @@ import MarkdownIt from 'markdown-it';
 import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { handleApiGetListFacility, handleApiGetListSpecialty, handleApiSaveInfoDoctor } from '../../../../services/adminService';
+import { handleApiSaveInfoDoctor } from '../../../../services/adminService';
 import CommonUtils from '../../../../utils/CommonUtils';
 
 const MarkdownInfoDoctor = () => {
@@ -14,9 +14,10 @@ const MarkdownInfoDoctor = () => {
     const location = useLocation();
     const doctor = location.state.doctor;
     const infoDoctor = location.state.infoDoctor;
-    console.log(infoDoctor)
-    const [listFacility, setListFacility] = useState();
-    const [listSpecialty, setListSpecialty] = useState();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
+
+    const listSpecialty = useSelector(state => state.admin.allSpecialties.listNameSpecialties);
+    const listFacility = useSelector(state => state.admin.allFacilities.listNameFacilities);
 
     const [specialty, setSpecialty] = useState();
     const [clinic, setClinic] = useState();
@@ -40,25 +41,29 @@ const MarkdownInfoDoctor = () => {
             specialtyId: specialty?.value
         }
         console.log(content)
-        handleApiSaveInfoDoctor(content, dispatch, navigate);
+        handleApiSaveInfoDoctor(content, dispatch, navigate, userLogin);
     }
 
     useEffect(() => {
         setDescription(infoDoctor?.description);
         setContentHTML(infoDoctor?.contentHTML);
         setContentMarkdown(infoDoctor?.contentMarkdown);
-        handleApiGetListFacility(dispatch, setListFacility);
-        handleApiGetListSpecialty(dispatch, setListSpecialty);
     }, [infoDoctor, dispatch]);
 
     useEffect(() => {
-        if (listFacility && infoDoctor?.clinicId && listSpecialty && infoDoctor?.specialtyId) {
-            let facility = CommonUtils.findItemByIdInListSelect(CommonUtils.createArrIdMappingName(listFacility), infoDoctor?.clinicId);
-            setClinic(facility);
-            let specialtyData = CommonUtils.findItemByIdInListSelect(CommonUtils.createArrIdMappingName(listSpecialty), infoDoctor?.specialtyId);
-            setSpecialty(specialtyData);
+        if (infoDoctor && infoDoctor.clinicId) {
+            setClinic({
+                value: infoDoctor.clinicId,
+                label: CommonUtils.findNameByID(listFacility, infoDoctor.clinicId).name
+            })
         }
-    }, [listFacility, infoDoctor, listSpecialty])
+        if (infoDoctor && infoDoctor.specialtyId) {
+            setSpecialty({
+                value: infoDoctor.specialtyId,
+                label: CommonUtils.findNameByID(listSpecialty, infoDoctor.specialtyId).name
+            })
+        }
+    }, [])
 
     return (
         <div className="markdown-background">
@@ -96,18 +101,18 @@ const MarkdownInfoDoctor = () => {
                 <div className='select-content'>
                     <div className="select-tag">
                         <Select
-                            value={specialty ? specialty : null}
+                            value={specialty}
                             onChange={setSpecialty}
-                            options={listSpecialty ? CommonUtils.createArrIdMappingName(listSpecialty) : ""}
+                            options={listSpecialty ? CommonUtils.customizeDataSelectFromNameID(listSpecialty) : ""}
                             isClearable={true}
                             placeholder={"Chọn chuyên khoa"}
                         />
                     </div>
                     <div className="select-tag">
                         <Select
-                            value={clinic ? clinic : null}
+                            value={clinic}
                             onChange={setClinic}
-                            options={listFacility ? CommonUtils.createArrIdMappingName(listFacility) : ""}
+                            options={listFacility ? CommonUtils.customizeDataSelectFromNameID(listFacility) : ""}
                             isClearable={true}
                             placeholder={"Chọn bệnh viện"}
                         />

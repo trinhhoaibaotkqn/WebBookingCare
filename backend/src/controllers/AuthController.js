@@ -97,7 +97,7 @@ class AuthController {
         const refreshToken = req.refreshToken;
         const accessToken = generateAccessToken(user);
         const newRefreshToken = generateRefreshToken(user);
-        await saveRefreshTokenToDB(refreshToken, user);
+        await saveRefreshTokenToDB(newRefreshToken, user);
 
         res.cookie("refreshToken", newRefreshToken,
             {

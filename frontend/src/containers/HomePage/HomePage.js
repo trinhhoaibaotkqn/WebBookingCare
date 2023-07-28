@@ -19,7 +19,7 @@ const HomePage = () => {
             <Facility />
             <OutStandingDoctor />
             <Handbook />
-            <About />
+            {/* <About /> */}
             <HomeFooter />
             <LeftMenu />
         </div>

@@ -2,12 +2,10 @@
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import { GrAddCircle } from "react-icons/gr";
 import { RiFileEditFill } from "react-icons/ri";
-import Select from 'react-select';
 import 'photoswipe/dist/photoswipe.css';
 // import { Gallery, Item } from 'react-photoswipe-gallery';
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -16,33 +14,29 @@ import ModalEditUser from "./ModalEditUser";
 import ModalDeleteUser from "./ModalDeleteUser";
 
 import {
-    GET_ADMIN_FAILED, GET_ADMIN_START, GET_ADMIN_SUCCESS,
-    GET_DOCTOR_START, GET_DOCTOR_SUCCESS, GET_DOCTOR_FAILED,
-    GET_PATIENT_FAILED, GET_PATIENT_START, GET_PATIENT_SUCCESS,
-    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT, CLEAR_ALL_LIST,
-    GET_ROLE_START, GET_ROLE_SUCCESS, GET_ROLE_FAILED
+    CLEAN_ALL_LIST,
+    OPEN_AMIN, OPEN_DOCTOR, OPEN_PATIENT,
 } from "../../../../store/slice/adminSlice";
 import CommonUtils from "../../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
-import { handleApiGetInfoDoctor } from "../../../../services/adminService";
+import { handleApiGetInfoDoctor, handleApiGetListNameFacility, handleApiGetListNameSpecialty, handleApiGetListUsers } from "../../../../services/adminService";
 
 const AdminUser = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const listRole = useSelector((state) => state.admin.role.listRole);
+    const user = useSelector(state => state.auth.login.currentUser);
+    const listRole = useSelector((state) => state.admin.code.listRole);
+    const listGender = useSelector((state) => state.admin.code.listGender);
+    const listPosition = useSelector((state) => state.admin.code.listPosition);
+    const isReady = listRole && listRole.length > 0 && listGender && listGender.length > 0 && listPosition && listPosition.length > 0
     const language = useSelector((state) => state.common.language);
 
-    const [listOptionSelect, setListOptionSelect] = useState(null);
-    const [selectedOption, setSelectedOption] = useState(null);
-    // console.log(">>>>>selected: ", selectedOption);
+    // const [listOptionSelect, setListOptionSelect] = useState(null);
+    // const [selectedOption, setSelectedOption] = useState(null);
 
-    const [listAdmin, setListAdmin] = useState();
-    const [listPatient, setListPatient] = useState();
-    const [listDoctor, setListDoctor] = useState();
-
-    const optionAdmin = useSelector((state) => state.admin.admin.isOpen);
-    const optionDoctor = useSelector((state) => state.admin.doctor.isOpen);
-    const optionPatient = useSelector((state) => state.admin.patient.isOpen);
+    const optionAdmin = useSelector(state => state.admin.admin.isOpen);
+    const optionDoctor = useSelector(state => state.admin.doctor.isOpen);
+    const optionPatient = useSelector(state => state.admin.patient.isOpen);
 
     const [modalAdd, setModalAdd] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
@@ -64,17 +58,19 @@ const AdminUser = () => {
         setModaDelete(!modalDelete);
         setDataDelete(user);
     }
-    const handleClickOptionAdmin = () => {
-        dispatch(OPEN_AMIN());
-        setData(listAdmin);
-    }
-    const handleClickOptionDoctor = () => {
-        dispatch(OPEN_DOCTOR());
-        setData(listDoctor);
-    }
-    const handleClickOptionPatient = () => {
-        dispatch(OPEN_PATIENT());
-        setData(listPatient);
+    const handleClickOption = (ROLE) => {
+        switch (ROLE) {
+            case "R1":
+                dispatch(OPEN_AMIN());
+                break;
+            case "R2":
+                dispatch(OPEN_DOCTOR());
+                break;
+            case "R3":
+                dispatch(OPEN_PATIENT());
+                break;
+            default:
+        }
     }
 
     const handleListenChange = () => {
@@ -82,7 +78,7 @@ const AdminUser = () => {
     }
 
     const handleClickEditMarkdown = async (doctor) => {
-        const infoDoctor = await handleApiGetInfoDoctor(doctor.id, dispatch);
+        const infoDoctor = await handleApiGetInfoDoctor(doctor.id, dispatch, user);
         navigate("/system/admin/user/edit-info-doctor", {
             state: {
                 doctor: doctor,
@@ -92,90 +88,24 @@ const AdminUser = () => {
     }
 
     useEffect(() => {
-        const handleApiGetData = async (keyRole, optionAdmin, optionDoctor, optionPatient) => {
-            keyRole === "R1" ?
-                dispatch(GET_ADMIN_START()) : (keyRole === "R2" ?
-                    dispatch(GET_DOCTOR_START()) :
-                    dispatch(GET_PATIENT_START()));
-            try {
-                console.log(">>>>>>call api get list user");
-                const res = await axios.get(`http://localhost:8080/admin/get-user/${keyRole}`,
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data) {
-                    if (optionAdmin && keyRole === "R1") {
-                        setData(res.data);
-                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
-                    }
-                    if (optionDoctor && keyRole === "R2") {
-                        setData(res.data);
-                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
-                    }
-                    if (optionPatient && keyRole === "R3") {
-                        setData(res.data);
-                        setListOptionSelect(CommonUtils.getListSelectUserName(res.data));
-                    }
-                    keyRole === "R1" ?
-                        setListAdmin(res.data) : (keyRole === "R2" ?
-                            setListDoctor(res.data) :
-                            setListPatient(res.data));
-                    keyRole === "R1" ?
-                        dispatch(GET_ADMIN_SUCCESS(res.data)) : (keyRole === "R2" ?
-                            dispatch(GET_DOCTOR_SUCCESS(res.data)) :
-                            dispatch(GET_PATIENT_SUCCESS(res.data)));
-                }
-            } catch (err) {
-                keyRole === "R1" ?
-                    dispatch(GET_ADMIN_FAILED()) : (keyRole === "R2" ?
-                        dispatch(GET_DOCTOR_FAILED()) :
-                        dispatch(GET_PATIENT_FAILED()))
-            }
-        }
         if (optionDoctor)
-            handleApiGetData("R2", optionAdmin, optionDoctor, optionPatient);
+            handleApiGetListUsers("R2", dispatch, user, setData);
         if (optionPatient)
-            handleApiGetData("R3", optionAdmin, optionDoctor, optionPatient);
+            handleApiGetListUsers("R3", dispatch, user, setData);
         if (optionAdmin)
-            handleApiGetData("R1", optionAdmin, optionDoctor, optionPatient);
+            handleApiGetListUsers("R1", dispatch, user, setData);
 
         return () => {
             console.log(">>>>>>clean up")
-            dispatch(CLEAR_ALL_LIST());
+            dispatch(CLEAN_ALL_LIST());
         }
-    }, [dispatch, listenUpdate, optionAdmin, optionDoctor, optionPatient]);
+    }, [dispatch, optionDoctor, optionPatient, optionAdmin, listenUpdate]);
 
     useEffect(() => {
-        const handleLoadRoleFromDB = async () => {
-            dispatch(GET_ROLE_START());
-            try {
-                console.log(">>>>>call api role");
-                const res = await axios.get("http://localhost:8080/admin/get-role",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_ROLE_SUCCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_ROLE_FAILED());
-            }
-        }
-        handleLoadRoleFromDB();
-    }, [dispatch]);
+        handleApiGetListNameFacility(dispatch, user);
+        handleApiGetListNameSpecialty(dispatch, user);
+    }, [dispatch])
 
-
-
-    // useEffect(() => {
-    //     const handleFindUserByEmail = () => {
-    //         console.log(">>>>>>re-render");
-    //         if (selectedOption) {
-    //             const newData = CommonUtils.sortListDataByEmail(selectedOption.value, data)
-    //             setData(newData);
-    //         }
-    //     }
-    //     handleFindUserByEmail()
-    // }, [selectedOption])
     return (
         <div className="section-admin-container">
             <div className="section-admin-content">
@@ -185,27 +115,22 @@ const AdminUser = () => {
                     >
                         <GrAddCircle /> Add new user
                     </div>
-                    <div className="select-tag">
-                        <Select
-                            defaultValue={selectedOption}
-                            onChange={setSelectedOption}
-                            options={listOptionSelect}
-                            isClearable={true}
-                            placeholder={"Chọn người dùng"}
-                        />
+                    <div className="input-find-user">
+                        <input placeholder="Nhập email" />
+                        <button>Find</button>
                     </div>
                 </div>
                 <div className="option-choose">
                     <div className={optionAdmin ? "option-item active" : "option-item"}
-                        onClick={() => handleClickOptionAdmin()}>
+                        onClick={() => handleClickOption("R1")}>
                         Admin
                     </div>
                     <div className={optionDoctor ? "option-item active" : "option-item"}
-                        onClick={() => handleClickOptionDoctor()}>
+                        onClick={() => handleClickOption("R2")}>
                         Doctor
                     </div>
                     <div className={optionPatient ? "option-item active" : "option-item"}
-                        onClick={() => handleClickOptionPatient()}>
+                        onClick={() => handleClickOption("R3")}>
                         Patient
                     </div>
                 </div>
@@ -224,12 +149,19 @@ const AdminUser = () => {
                                 {/* <th>Image</th> */}
                                 <th>Action</th>
                             </tr>
-                            {listRole && listRole.length > 0 && data && data.length > 0 && data.map((item, index) => {
+                            {isReady && data && data.length > 0 && data.map((item, index) => {
                                 return (<tr key={item.id}>
                                     <td>{index + 1}</td>
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
-                                    <td>{item.gender}</td>
+                                    <td>
+                                        {
+                                            language === "vi" ?
+                                                CommonUtils.getRoleByKey(listGender, item.gender)?.valueVi :
+                                                CommonUtils.getRoleByKey(listGender, item.gender)?.valueEn
+                                        }
+
+                                    </td>
                                     <td>{item.address}</td>
                                     <td>{item.phoneNumber}</td>
                                     <td>
@@ -238,7 +170,12 @@ const AdminUser = () => {
                                             CommonUtils.getRoleByKey(listRole, item.roleid).valueEn
                                         }
                                     </td>
-                                    <td>{item.positionId}</td>
+                                    <td>
+                                        {language === "vi" ?
+                                            CommonUtils.getRoleByKey(listPosition, item.positionId)?.valueVi :
+                                            CommonUtils.getRoleByKey(listPosition, item.positionId)?.valueEn
+                                        }
+                                    </td>
                                     {/* <td>{CommonUtils.getPreviewImgfromDatabase(item.image) ?
                                         <Gallery>
                                             <Item

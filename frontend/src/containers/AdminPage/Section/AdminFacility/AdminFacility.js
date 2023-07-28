@@ -5,12 +5,17 @@ import { GrAddCircle } from "react-icons/gr";
 import ModalAddNewFacility from './ModalAddNewFacility';
 import { useEffect, useState } from 'react';
 import { handleApiGetListFacility } from '../../../../services/adminService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import ModalEditFacility from './ModalEditFacility';
 import ModalDeleteFacility from './ModalDeleteFacility';
+import CommonUtils from '../../../../utils/CommonUtils';
 
 const AdminFacility = () => {
+
+    const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
+    const listOptionFacilities = useSelector(state => state.admin.allFacilities.listNameFacilities);
 
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -22,8 +27,6 @@ const AdminFacility = () => {
     const handleListenChange = () => {
         setListenChange(!listenChange);
     }
-
-    const dispatch = useDispatch();
 
     const [listFacility, setListFacility] = useState();
 
@@ -37,7 +40,7 @@ const AdminFacility = () => {
     }
 
     useEffect(() => {
-        handleApiGetListFacility(dispatch, setListFacility)
+        handleApiGetListFacility(dispatch, setListFacility, userLogin)
     }, [dispatch, listenChange])
 
     return (
@@ -47,17 +50,18 @@ const AdminFacility = () => {
                     <div className="btn-add-new"
                         onClick={() => setIsOpenAdd(true)}
                     >
-                        <GrAddCircle /> Add new specialty
+                        <GrAddCircle /> Add new facility
                     </div>
                     <div className="select-tag">
                         <Select
                             // defaultValue={selectedOption}
                             // onChange={setSelectedOption}
-                            // options={listOptionSelect}
+                            options={listOptionFacilities ? CommonUtils.customizeDataSelectFromNameID(listOptionFacilities) : ""}
                             isClearable={true}
-                            placeholder={"Chọn chuyên khoa"}
+                            placeholder={"Chọn bệnh viện"}
                         />
                     </div>
+                    <button className='btn-seach'>Search</button>
                 </div>
                 <div className="table-container">
                     <table>
@@ -66,7 +70,6 @@ const AdminFacility = () => {
                                 <th>STT</th>
                                 <th>Name</th>
                                 <th>Address</th>
-                                {/* <th>Image</th> */}
                                 <th>Action</th>
                             </tr>
                             {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
@@ -75,7 +78,6 @@ const AdminFacility = () => {
                                         <td>{index + 1}</td>
                                         <td>{item.name}</td>
                                         <td>{item.address}</td>
-                                        {/* <td></td> */}
                                         <td>
                                             <button className="btn-edit"
                                                 onClick={() => handleClickBtnEdit(item)}

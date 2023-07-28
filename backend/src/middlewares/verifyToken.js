@@ -40,4 +40,37 @@ verifyRefreshToken = async (req, res, next) => {
     }
 }
 
-module.exports = { verifyAccessToken, verifyRefreshToken }
+verifyTokenAndAdminAuthor = (req, res, next) => {
+    verifyAccessToken(req, res, () => {
+        if (req.user.roleid === "R1")
+            next();
+        else
+            res.status(403).json("You're allowed");
+    })
+}
+
+verifyTokenAndDoctorAuthor = (req, res, next) => {
+    verifyAccessToken(req, res, () => {
+        if (req.user.roleid === "R2")
+            next();
+        else
+            res.status(403).json("You're allowed");
+    })
+}
+
+verifyTokenAndPatientAuthor = (req, res, next) => {
+    verifyAccessToken(req, res, () => {
+        if (req.user.roleid === "R3")
+            next();
+        else
+            res.status(403).json("You're allowed");
+    })
+}
+
+module.exports = {
+    verifyAccessToken,
+    verifyRefreshToken,
+    verifyTokenAndAdminAuthor,
+    verifyTokenAndDoctorAuthor,
+    verifyTokenAndPatientAuthor
+}

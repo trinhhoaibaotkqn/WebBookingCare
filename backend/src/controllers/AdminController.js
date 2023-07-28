@@ -19,12 +19,10 @@ class AdminController {
     getAllUserByRole = async (req, res) => {
         try {
             const roleid = req.params.role;
-            const user = await db.User.findAll({
-                where: {
-                    roleid: roleid
-                }, attributes: { exclude: ['password'] },
-            })
-            res.status(200).json(user);
+            let data = await adminService.getAllUserByRole(roleid);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -58,27 +56,13 @@ class AdminController {
     }
 
     //[GET] get-role
-    getRole = async (req, res) => {
+    getCode = async (req, res) => {
         try {
-            const objCode = await db.Allcode.findAll({
-                where: {
-                    type: "ROLE"
-                }
-            });
-            if (!objCode) {
-                res.json({
-                    errCode: 1,
-                    message: `Get role fail`,
-                    objCode: []
-                });
-            }
-            if (objCode) {
-                res.json({
-                    errCode: 0,
-                    message: `Get Role successfully`,
-                    objCode: objCode
-                });
-            }
+            const type = req.params.type;
+            const data = await adminService.getCode(type);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -100,16 +84,10 @@ class AdminController {
     getInfoDoctor = async (req, res) => {
         try {
             const doctorId = req.params.doctorId;
-            const info = await db.Markdown.findOne({
-                where: {
-                    doctorId: doctorId
-                }
-            })
-            res.status(200).json({
-                errCode: 0,
-                message: "Get information doctor successfully",
-                info: info
-            });
+            const data = await adminService.getInfoDoctor(doctorId);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -205,6 +183,28 @@ class AdminController {
         try {
             const id = req.params.id;
             const data = await adminService.deleteClinic(id);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getListNameSpecialty = async (req, res) => {
+        try {
+            const data = await adminService.getListNameSpecialty();
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getListNameClinic = async (req, res) => {
+        try {
+            const data = await adminService.getListNameClinic();
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);

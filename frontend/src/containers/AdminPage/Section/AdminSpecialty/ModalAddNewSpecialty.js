@@ -7,13 +7,14 @@ import { MdOutlineLocalHospital } from "react-icons/md";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleApiCreateSpecialty } from '../../../../services/adminService';
 
 const ModalAddNewSpecialty = (props) => {
     let { isOpenAdd, setIsOpenAdd, handleListenChange } = props;
 
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [image, setImage] = useState();
     const [name, setName] = useState();
@@ -53,7 +54,7 @@ const ModalAddNewSpecialty = (props) => {
             descriptionHTML,
             descriptionMarkdown
         }
-        handleApiCreateSpecialty(data, dispatch, setIsOpenAdd, clearModal, handleListenChange);
+        handleApiCreateSpecialty(data, dispatch, setIsOpenAdd, clearModal, handleListenChange, userLogin);
     }
 
     return (

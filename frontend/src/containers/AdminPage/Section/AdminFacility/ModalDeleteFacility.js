@@ -1,12 +1,13 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleApiDeleteFacility } from "../../../../services/adminService";
 
 const ModalDeleteFacility = (props) => {
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
     const { isOpenDelete, setIsOpenDelete, dataDelete, handleListenChange } = props;
 
     const handleDeleteUser = () => {
-        handleApiDeleteFacility(dataDelete.id, dispatch, handleListenChange, setIsOpenDelete);
+        handleApiDeleteFacility(dataDelete.id, dispatch, handleListenChange, setIsOpenDelete, userLogin);
     }
     return (
         <div style={isOpenDelete ? { display: "block" } : { display: "none" }} className="modal-user modal-delete-user">

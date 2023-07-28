@@ -12,12 +12,16 @@ import { Buffer } from "buffer";
 import CommonUtils from "../../../../utils/CommonUtils";
 
 import { handleApiEditUser } from "../../../../services/adminService";
+import { languages } from "../../../../utils/Constants";
 
 const ModalEditUser = (props) => {
     const { modalEdit, handleModalEdit, dataEdit, handleListenChange } = props;
     const dispatch = useDispatch();
-    const listRole = useSelector((state) => state.admin.role.listRole);
+    const listRole = useSelector((state) => state.admin.code.listRole);
+    const listGender = useSelector((state) => state.admin.code.listGender);
+    const listPosition = useSelector((state) => state.admin.code.listPosition);
     const language = useSelector((state) => state.common.language);
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -49,7 +53,7 @@ const ModalEditUser = (props) => {
         if (image) {
             userEdit.image = image;
         }
-        handleApiEditUser(dataEdit.id, userEdit, dispatch, handleListenChange);
+        handleApiEditUser(dataEdit.id, userEdit, dispatch, handleListenChange, userLogin);
         handleModalEdit();
     }
 
@@ -166,9 +170,13 @@ const ModalEditUser = (props) => {
                         <div className="modal-element">
                             <span className="modal-icon-label" ><BsGenderAmbiguous /></span>
                             <select defaultValue={dataEdit.gender} onChange={(e) => setGender(e.target.value)}>
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
-                                <option value="O">Other</option>
+                                {listGender && listGender.length > 0 && listGender.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.key}>
+                                            {language === languages.EN ? item.valueEn : item.valueVi}
+                                        </option>
+                                    )
+                                })}
                             </select>
                         </div>
                         <div className="modal-element">
@@ -186,11 +194,13 @@ const ModalEditUser = (props) => {
                         <div className="modal-element">
                             <span className="modal-icon-label"><AiOutlineFileProtect /></span>
                             <select defaultValue={dataEdit.positionId} onChange={(e) => setPositionId(e.target.value)}>
-                                <option value="P0">None</option>
-                                <option value="P1">Master</option>
-                                <option value="P2">Doctor</option>
-                                <option value="P3">Associate Professor</option>
-                                <option value="P4">Professor</option>
+                                {listPosition && listPosition.length > 0 && listPosition.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.key}>
+                                            {language === languages.EN ? item.valueEn : item.valueVi}
+                                        </option>
+                                    )
+                                })}
                             </select>
                         </div>
                         <div className="modal-element element-cancel-btn">

@@ -8,12 +8,16 @@ import { Gallery, Item } from 'react-photoswipe-gallery';
 import { handleApiCreateUser } from "../../../../services/adminService";
 import { useDispatch, useSelector } from 'react-redux';
 import CommonUtils from '../../../../utils/CommonUtils';
+import { languages } from '../../../../utils/Constants';
 // import { useNavigate } from "react-router-dom";
 
 const ModalAddNewUser = (props) => {
     const dispatch = useDispatch();
-    const listRole = useSelector((state) => state.admin.role.listRole);
+    const listRole = useSelector((state) => state.admin.code.listRole);
+    const listGender = useSelector((state) => state.admin.code.listGender);
+    const listPosition = useSelector((state) => state.admin.code.listPosition);
     const language = useSelector((state) => state.common.language);
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [previewImgUrl, setPreviewImgUrl] = useState();
     const handleOnChangeImage = async (e) => {
@@ -38,7 +42,7 @@ const ModalAddNewUser = (props) => {
     const [positionId, setPositionId] = useState("P0");
     const [image, setImage] = useState();
 
-    const handleCreateUser = (handleModalAdd) => {
+    const handleCreateUser = () => {
         const user = {
             name,
             email,
@@ -51,7 +55,7 @@ const ModalAddNewUser = (props) => {
             positionId,
             image
         };
-        handleApiCreateUser(user, dispatch, handleListenChange, handleModalAdd, clearModal);
+        handleApiCreateUser(user, dispatch, handleListenChange, handleModalAdd, clearModal, userLogin);
     }
 
     const clearModal = () => {
@@ -94,9 +98,13 @@ const ModalAddNewUser = (props) => {
                     <div className="modal-element">
                         <span className="modal-icon-label"><BsGenderAmbiguous /></span>
                         <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                            <option value="O">Other</option>
+                            {listGender && listGender.length > 0 && listGender.map((item, index) => {
+                                return (
+                                    <option key={index} value={item.key}>
+                                        {language === languages.EN ? item.valueEn : item.valueVi}
+                                    </option>
+                                )
+                            })}
                         </select>
                     </div>
                     <div className="modal-element element-address">
@@ -131,9 +139,9 @@ const ModalAddNewUser = (props) => {
                     <div className="modal-element">
                         <span className="modal-icon-label"><RiAdminLine /></span>
                         <select value={roleid} onChange={(e) => setRoleid(e.target.value)}>
-                            {listRole && listRole.map(item => {
+                            {listRole && listRole.map((item, index) => {
                                 return (
-                                    <option key={item.id} value={item.key}>
+                                    <option key={index} value={item.key}>
                                         {language === "vi" ? item.valueVi : item.valueEn}
                                     </option>
                                 )
@@ -143,11 +151,13 @@ const ModalAddNewUser = (props) => {
                     <div className="modal-element">
                         <span className="modal-icon-label"><AiOutlineFileProtect /></span>
                         <select value={positionId} onChange={(e) => setPositionId(e.target.value)}>
-                            <option value="P0">None</option>
-                            <option value="P1">Master</option>
-                            <option value="P2">Doctor</option>
-                            <option value="P3">Associate Professor</option>
-                            <option value="P4">Professor</option>
+                            {listPosition && listPosition.length > 0 && listPosition.map((item, index) => {
+                                return (
+                                    <option key={index} value={item.key}>
+                                        {language === languages.EN ? item.valueEn : item.valueVi}
+                                    </option>
+                                )
+                            })}
                         </select>
                     </div>
 

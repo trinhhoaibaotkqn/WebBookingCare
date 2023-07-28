@@ -25,41 +25,41 @@ class CommonUtils {
         })
     }
 
-    static getListSelectUserName(listData) {
-        let listSelect = [];
-        listData.forEach((item) => {
-            let obj = {
-                value: item.email,
-                label: item.name,
-            }
-            listSelect.push(obj);
-        })
-        return listSelect;
-    }
+    // static getListSelectUserName(listData) {
+    //     let listSelect = [];
+    //     listData.forEach((item) => {
+    //         let obj = {
+    //             value: item.email,
+    //             label: item.name,
+    //         }
+    //         listSelect.push(obj);
+    //     })
+    //     return listSelect;
+    // }
 
-    static getDataByEmail(email, listData) {
-        return listData.find((item) => {
-            return item.email === email;
-        })
-    }
+    // static getDataByEmail(email, listData) {
+    //     return listData.find((item) => {
+    //         return item.email === email;
+    //     })
+    // }
 
-    static sortListDataByEmail(email, listData) {
-        let newList = [{ a: "a" }];
-        listData.forEach((item) => {
-            if (item.email === email) {
-                newList[0] = item;
-            } else {
-                newList.push(item)
-            }
-        })
-        return newList;
-    }
+    // static sortListDataByEmail(email, listData) {
+    //     let newList = [{ a: "a" }];
+    //     listData.forEach((item) => {
+    //         if (item.email === email) {
+    //             newList[0] = item;
+    //         } else {
+    //             newList.push(item)
+    //         }
+    //     })
+    //     return newList;
+    // }
 
     static capitalizeFirstLetter(string) {
         return string[0].toUpperCase() + string.slice(1);
     }
 
-    static createArrIdMappingName(list) {
+    static customizeDataSelectFromNameID(list) {
         let arr = [];
         list.forEach((item) => {
             let obj = {
@@ -71,9 +71,9 @@ class CommonUtils {
         return arr;
     }
 
-    static findItemByIdInListSelect(list, id) {
+    static findNameByID(list, id) {
         return list.find((item) => {
-            return item.value === id
+            return item.id === id
         })
     }
 }

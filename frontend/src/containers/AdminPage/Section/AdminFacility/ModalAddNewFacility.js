@@ -8,13 +8,14 @@ import { FaRegAddressBook } from "react-icons/fa";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleApiCreateFacility } from '../../../../services/adminService';
 
 const ModalAddNewFacility = (props) => {
     let { isOpenAdd, setIsOpenAdd, handleListenChange } = props;
 
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [image, setImage] = useState();
     const [name, setName] = useState();
@@ -57,7 +58,7 @@ const ModalAddNewFacility = (props) => {
             descriptionHTML,
             descriptionMarkdown
         }
-        handleApiCreateFacility(data, dispatch, setIsOpenAdd, clearModal, handleListenChange);
+        handleApiCreateFacility(data, dispatch, setIsOpenAdd, clearModal, handleListenChange, userLogin);
     }
 
     return (

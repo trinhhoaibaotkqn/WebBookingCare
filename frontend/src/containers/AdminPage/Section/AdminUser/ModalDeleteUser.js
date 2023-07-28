@@ -1,12 +1,13 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleApiDeleteUser } from "../../../../services/adminService";
 
 const ModalDeleteUser = (props) => {
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
     const { modalDelete, handleModalDelete, dataDelete, handleListenChange } = props;
 
     const handleDeleteUser = () => {
-        handleApiDeleteUser(dataDelete.id, dispatch, handleListenChange);
+        handleApiDeleteUser(dataDelete.id, dispatch, handleListenChange, userLogin);
         handleModalDelete();
     }
     return (

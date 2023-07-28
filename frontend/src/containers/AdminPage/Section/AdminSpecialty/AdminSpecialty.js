@@ -5,12 +5,13 @@ import { GrAddCircle } from "react-icons/gr";
 import ModalAddNewSpecialty from './ModalAddNewSpecialty';
 import { useEffect, useState } from 'react';
 import { handleApiGetListSpecialty } from '../../../../services/adminService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import ModalEditSpecialty from './ModalEditSpecialty';
 import ModalDeleteSpecialty from './ModalDeleteSpecialty';
 
 const AdminSpecialty = () => {
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -37,7 +38,7 @@ const AdminSpecialty = () => {
     }
 
     useEffect(() => {
-        handleApiGetListSpecialty(dispatch, setListSpecialty);
+        handleApiGetListSpecialty(dispatch, setListSpecialty, userLogin);
     }, [dispatch, listenChange])
 
     return (

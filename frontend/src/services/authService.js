@@ -59,7 +59,7 @@ export const handleApiLogOut = async (user, id, dispatch, navigate,) => {
     }
 }
 
-const createAxiosJWT = (user, dispatch) => {
+export const createAxiosJWT = (user, dispatch) => {
     const newInstance = axios.create();
     newInstance.interceptors.request.use(
         async (config) => {
@@ -68,7 +68,7 @@ const createAxiosJWT = (user, dispatch) => {
 
             if (tokenDecoded.exp < date.getTime() / 1000) {
                 try {
-                    const res = await axios.post("http://localhost:8080/auth/refresh-token", 1, { withCredentials: true });
+                    const res = await axios.post("http://localhost:8080/auth/refresh-token", 1, { "withCredentials": true });
                     var dataToken = res.data;
                 } catch (err) {
                     console.log(err);

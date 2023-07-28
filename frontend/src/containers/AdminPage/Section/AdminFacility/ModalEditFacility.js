@@ -7,7 +7,7 @@ import { MdOutlineLocalHospital } from "react-icons/md";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Buffer } from "buffer";
 import { handleApiEditFacility } from '../../../../services/adminService';
 
@@ -15,6 +15,7 @@ const ModalEditFacility = (props) => {
     let { isOpenEdit, setIsOpenEdit, dataEdit, handleListenChange } = props;
 
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     const [image, setImage] = useState();
     const [name, setName] = useState();
@@ -50,7 +51,7 @@ const ModalEditFacility = (props) => {
         if (image) {
             data.image = image;
         }
-        handleApiEditFacility(dataEdit.id, data, dispatch, handleListenChange, setIsOpenEdit);
+        handleApiEditFacility(dataEdit.id, data, dispatch, handleListenChange, setIsOpenEdit, userLogin);
     }
 
     useEffect(() => {
