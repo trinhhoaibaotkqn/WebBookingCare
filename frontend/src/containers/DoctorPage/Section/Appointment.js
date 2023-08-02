@@ -32,9 +32,10 @@ const Appointment = () => {
             doctorId: doctor.id,
             date: selectedDate
         }
-        console.log("call api get list appointment")
-        handleApiGetListAppointment(data, dispatch, setListAppointment);
-    }, [doctor, setListAppointment, selectedDate, dispatch, toggleUpdateData])
+        console.log(">>>>>>call api get list appointment")
+        handleApiGetListAppointment(data, dispatch, setListAppointment, doctor);
+    }, [setListAppointment, selectedDate, dispatch, toggleUpdateData]);
+
     return (
         <div className="doctor-appointment-container">
             <div className="doctor-appointment-content">

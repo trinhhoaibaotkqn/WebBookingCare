@@ -4,11 +4,7 @@ import { registerLocale } from "react-datepicker";
 import vi from 'date-fns/locale/vi';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleApiSaveSheduleDoctor } from "../../../services/doctorService";
-import axios from "axios";
-import {
-    GET_LIST_SELECTED_TIME_START, GET_LIST_SELECTED_TIME_SUSSCESS, GET_LIST_SELECTED_TIME_FAILED
-} from "../../../store/slice/doctorSlice"
+import { handleApiGetSchedule, handleApiSaveSheduleDoctor } from "../../../services/doctorService";
 
 const Schedule = () => {
     const dispatch = useDispatch();
@@ -25,7 +21,7 @@ const Schedule = () => {
             date: selectedDate,
             listTimeType: listSelectedTime,
         }
-        handleApiSaveSheduleDoctor(data, dispatch);
+        handleApiSaveSheduleDoctor(data, dispatch, doctor);
     }
 
     const handleClickTimeOption = (time) => {
@@ -47,31 +43,8 @@ const Schedule = () => {
     registerLocale('vi', vi);
 
     useEffect(() => {
-        const handleApiLoadScheduleFromDB = async () => {
-            dispatch(GET_LIST_SELECTED_TIME_START());
-            try {
-                console.log(">>>>>call api schedule");
-                const res = await axios.get("http://localhost:8080/doctor/get-schedule",
-                    {
-                        params: {
-                            doctorId: doctor?.id,
-                            date: selectedDate
-                        }
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_LIST_SELECTED_TIME_SUSSCESS(res.data.data));
-                    const temp = res.data.data.map(element => {
-                        return element.timeType
-                    });
-                    setListSelectedTime(temp);
-                }
-            } catch (err) {
-                dispatch(GET_LIST_SELECTED_TIME_FAILED());
-            }
-        }
-        handleApiLoadScheduleFromDB();
-
-    }, [dispatch, selectedDate, doctor]);
+        handleApiGetSchedule(dispatch, doctor, selectedDate, setListSelectedTime);
+    }, [dispatch, selectedDate]);
 
     return (
         <div className="doctor-schedule-container">

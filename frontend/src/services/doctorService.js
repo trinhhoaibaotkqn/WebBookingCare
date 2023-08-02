@@ -1,92 +1,188 @@
 import {
-    COMPLETE_APPOINTMENT_FAILED,
-    COMPLETE_APPOINTMENT_START,
-    COMPLETE_APPOINTMENT_SUSSCESS,
-    GET_LIST_APPOINTMENT_FAILED,
-    GET_LIST_APPOINTMENT_START,
-    GET_LIST_APPOINTMENT_SUSSCESS,
-    SAVE_DOCTOR_INFO_FAILED,
-    SAVE_DOCTOR_INFO_START,
-    SAVE_DOCTOR_INFO_SUSSCESS,
-    SAVE_LIST_SELECTED_TIME_FAILED,
-    SAVE_LIST_SELECTED_TIME_START, SAVE_LIST_SELECTED_TIME_SUSSCESS
+    GET_CODE_PAYMENT_FAILED,
+    GET_CODE_PAYMENT_START,
+    GET_CODE_PAYMENT_SUSSCESS,
+    GET_CODE_PRICE_FAILED,
+    GET_CODE_PRICE_START,
+    GET_CODE_PRICE_SUSSCESS,
+    GET_CODE_PROVINCE_FAILED,
+    GET_CODE_PROVINCE_START,
+    GET_CODE_PROVINCE_SUSSCESS,
+    GET_CODE_TIME_FAILED,
+    GET_CODE_TIME_START,
+    GET_CODE_TIME_SUSSCESS,
 } from "../store/slice/doctorSlice";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
+import { createAxiosJWT } from "./authService";
 
-export const handleApiSaveSheduleDoctor = async (data, dispatch) => {
-    dispatch(SAVE_LIST_SELECTED_TIME_START());
+export const handleApiGetAllCode = async (TYPE, dispatch, user) => {
+    switch (TYPE) {
+        case "TIME":
+            dispatch(GET_CODE_TIME_START());
+            break;
+        case "PRICE":
+            dispatch(GET_CODE_PRICE_START());
+            break;
+        case "PAYMENT":
+            dispatch(GET_CODE_PAYMENT_START());
+            break;
+        case "PROVINCE":
+            dispatch(GET_CODE_PROVINCE_START());
+            break;
+        default:
+    }
     try {
-        const res = await axios.post(`http://localhost:8080/doctor/save-schedule`, data,
+        let axiosJWT = createAxiosJWT(user, dispatch);
+        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-allcode/${TYPE}`,
             {
+                headers: { token: `Bearer ${user.accessToken}` },
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            switch (TYPE) {
+                case "TIME":
+                    dispatch(GET_CODE_TIME_SUSSCESS(res.data.data));
+                    break;
+                case "PRICE":
+                    dispatch(GET_CODE_PRICE_SUSSCESS(res.data.data));
+                    break;
+                case "PAYMENT":
+                    dispatch(GET_CODE_PAYMENT_SUSSCESS(res.data.data));
+                    break;
+                case "PROVINCE":
+                    dispatch(GET_CODE_PROVINCE_SUSSCESS(res.data.data));
+                    break;
+                default:
+            }
+        }
+    } catch (err) {
+        switch (TYPE) {
+            case "TIME":
+                dispatch(GET_CODE_TIME_FAILED());
+                break;
+            case "PRICE":
+                dispatch(GET_CODE_PRICE_FAILED());
+                break;
+            case "PAYMENT":
+                dispatch(GET_CODE_PAYMENT_FAILED());
+                break;
+            case "PROVINCE":
+                dispatch(GET_CODE_PROVINCE_FAILED());
+                break;
+            default:
+        }
+    }
+}
+
+export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setListSelectedTime) => {
+    try {
+        console.log(">>>>>call api schedule");
+        let axiosJWT = createAxiosJWT(doctor, dispatch);
+        const res = await axiosJWT.get("http://localhost:8080/doctor/get-schedule",
+            {
+                params: {
+                    doctorId: doctor?.id,
+                    date: selectedDate
+                },
+                headers: { token: `Bearer ${doctor.accessToken}` },
+                "withCredentials": true
+            });
+        if (res.data.errCode === 0) {
+            const temp = res.data.data.map(element => {
+                return element.timeType
+            });
+            setListSelectedTime(temp);
+        }
+    } catch (err) {
+    }
+}
+
+export const handleApiSaveSheduleDoctor = async (data, dispatch, userLogin) => {
+    try {
+        let axiosJWT = createAxiosJWT(userLogin, dispatch);
+        const res = await axiosJWT.post(`http://localhost:8080/doctor/save-schedule`, data,
+            {
+                headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
             }
         );
         if (res.data && res.data.errCode === 0) {
-            dispatch(SAVE_LIST_SELECTED_TIME_SUSSCESS(res.data.data));
             toast.success(res.data.message);
         }
     } catch (err) {
-        dispatch(SAVE_LIST_SELECTED_TIME_FAILED());
         toast.error(err.response.data.message);
     }
 }
 
-export const handleApiSaveDataDoctorInfo = async (data, dispatch) => {
-    dispatch(SAVE_DOCTOR_INFO_START());
+export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue) => {
     try {
-        const res = await axios.put(`http://localhost:8080/doctor/save-doctor-info`, data,
+        console.log(">>>>>call api doctor info");
+        let axiosJWT = createAxiosJWT(doctor, dispatch);
+        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-doctor-info/${doctor.id}`,
             {
+                headers: { token: `Bearer ${doctor.accessToken}` },
                 "withCredentials": true
             }
         );
         if (res.data && res.data.errCode === 0) {
-            dispatch(SAVE_DOCTOR_INFO_SUSSCESS(res.data.data));
-            toast.success(res.data.message);
+            setDefaultValue(res);
         }
     } catch (err) {
-        dispatch(SAVE_DOCTOR_INFO_FAILED());
-        toast.error(err.response.data.message);
+        toast.error("Can't load data from server");
     }
 }
 
-export const handleApiGetListAppointment = async (data, dispatch, setListAppointment) => {
-    dispatch(GET_LIST_APPOINTMENT_START());
+export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin) => {
     try {
-        const res = await axios.get(`http://localhost:8080/doctor/get-list-appointment`,
+        let axiosJWT = createAxiosJWT(userLogin, dispatch);
+        const res = await axiosJWT.put(`http://localhost:8080/doctor/save-doctor-info`, data,
             {
-                params: data
-            },
-            {
+                headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
             }
         );
         if (res.data && res.data.errCode === 0) {
-            dispatch(GET_LIST_APPOINTMENT_SUSSCESS(res.data.data));
+            toast.success(res.data.message);
+        }
+    } catch (err) {
+        toast.error(err.response?.data?.message);
+    }
+}
+
+export const handleApiGetListAppointment = async (data, dispatch, setListAppointment, userLogin) => {
+    try {
+        let axiosJWT = createAxiosJWT(userLogin, dispatch);
+        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-list-appointment`,
+            {
+                params: data,
+                headers: { token: `Bearer ${userLogin.accessToken}` },
+                "withCredentials": true
+            }
+        );
+        if (res.data && res.data.errCode === 0) {
             setListAppointment(res.data.data);
         }
     } catch (err) {
-        dispatch(GET_LIST_APPOINTMENT_FAILED());
+        toast.error("Can't load data from server");
     }
 }
 
-export const handleApiDoneAppointment = async (data, dispatch, setIsOpenModal, toggleUpdateData, setToggleUpdateData) => {
-    dispatch(COMPLETE_APPOINTMENT_START());
+export const handleApiDoneAppointment = async (data, dispatch, setIsOpenModal, toggleUpdateData, setToggleUpdateData, userLogin) => {
     try {
-        const res = await axios.put(`http://localhost:8080/doctor/done-appointment`, data,
+        let axiosJWT = createAxiosJWT(userLogin, dispatch);
+        const res = await axiosJWT.put(`http://localhost:8080/doctor/done-appointment`, data,
             {
+                headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
             }
         );
         if (res.data && res.data.errCode === 0) {
-            dispatch(COMPLETE_APPOINTMENT_SUSSCESS());
             toast.success(res.data.message);
             setToggleUpdateData(!toggleUpdateData);
             setIsOpenModal(false);
         }
     } catch (err) {
-        dispatch(COMPLETE_APPOINTMENT_FAILED());
         toast.error(err.response.data.message);
     }
 }

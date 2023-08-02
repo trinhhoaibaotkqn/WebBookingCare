@@ -7,34 +7,10 @@ class DocTorController {
     getAllcode = async (req, res) => {
         try {
             const type = req.params.type;
-            if (type === "ROLE") {
-                res.json({
-                    errCode: 1,
-                    message: `Type is not valid`,
-                    objCode: []
-                });
-            } else {
-                const objCode = await db.Allcode.findAll({
-                    where: {
-                        type: type
-                    }
-                })
-                if (!objCode) {
-                    res.json({
-                        errCode: 1,
-                        message: `Type is not valid`,
-                        objCode: []
-                    });
-                }
-                if (objCode) {
-                    res.json({
-                        errCode: 0,
-                        message: `Get ${type} successfully`,
-                        objCode: objCode
-                    });
-                }
-            }
-
+            let data = await doctorSevice.getAllcode(type);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }

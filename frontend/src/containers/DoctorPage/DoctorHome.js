@@ -1,85 +1,24 @@
 import { Outlet } from "react-router-dom";
 import DoctorHeader from "./DoctorHeader";
-import {
-    GET_LIST_PAYMENT_FAILED,
-    GET_LIST_PAYMENT_START,
-    GET_LIST_PAYMENT_SUSSCESS,
-    GET_LIST_PRICE_FAILED,
-    GET_LIST_PRICE_START,
-    GET_LIST_PRICE_SUSSCESS,
-    GET_LIST_PROVINCE_FAILED,
-    GET_LIST_PROVINCE_START,
-    GET_LIST_PROVINCE_SUSSCESS,
-    GET_LIST_TIME_FAILED,
-    GET_LIST_TIME_START,
-    GET_LIST_TIME_SUSSCESS
-} from "../../store/slice/doctorSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axios from "axios";
+import { handleApiGetAllCode } from "../../services/doctorService";
+import { CLEAN_ALL_CODE } from "../../store/slice/doctorSlice";
 
 const DoctorHome = () => {
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.auth.login.currentUser);
+
     useEffect(() => {
-        const handleLoadTimePricePaymentProvinceFromDB = async () => {
-            dispatch(GET_LIST_TIME_START());
-            dispatch(GET_LIST_PRICE_START());
-            dispatch(GET_LIST_PAYMENT_START());
-            dispatch(GET_LIST_PROVINCE_START());
+        handleApiGetAllCode("TIME", dispatch, userLogin);
+        handleApiGetAllCode("PRICE", dispatch, userLogin);
+        handleApiGetAllCode("PAYMENT", dispatch, userLogin);
+        handleApiGetAllCode("PROVINCE", dispatch, userLogin);
 
-            try {
-                console.log(">>>>>call api time");
-                const res = await axios.get("http://localhost:8080/doctor/get-allcode/TIME",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_LIST_TIME_SUSSCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_LIST_TIME_FAILED());
-            }
-
-            try {
-                console.log(">>>>>call api price");
-                const res = await axios.get("http://localhost:8080/doctor/get-allcode/PRICE",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_LIST_PRICE_SUSSCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_LIST_PRICE_FAILED());
-            }
-
-            try {
-                console.log(">>>>>call api payment");
-                const res = await axios.get("http://localhost:8080/doctor/get-allcode/PAYMENT",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_LIST_PAYMENT_SUSSCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_LIST_PAYMENT_FAILED());
-            }
-
-            try {
-                console.log(">>>>>call api province");
-                const res = await axios.get("http://localhost:8080/doctor/get-allcode/PROVINCE",
-                    {
-                        "withCredentials": true
-                    });
-                if (res.data.errCode === 0) {
-                    dispatch(GET_LIST_PROVINCE_SUSSCESS(res.data.objCode));
-                }
-            } catch (err) {
-                dispatch(GET_LIST_PROVINCE_FAILED());
-            }
+        return () => {
+            console.log(">>>>>>clean up")
+            dispatch(CLEAN_ALL_CODE());
         }
-        handleLoadTimePricePaymentProvinceFromDB();
     }, [dispatch]);
 
     return (

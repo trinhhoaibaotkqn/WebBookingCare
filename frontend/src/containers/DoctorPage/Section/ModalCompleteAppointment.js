@@ -13,6 +13,7 @@ const ModalCompleteAppointment = (props) => {
 
     const dispatch = useDispatch();
     const language = useSelector(state => state.common.language);
+    const userLogin = useSelector(state => state.auth.login.currentUser);
 
     let [isLoading, setIsLoading] = useState(false);
 
@@ -43,7 +44,7 @@ const ModalCompleteAppointment = (props) => {
             language: language,
             patientEmail: dataComplete.patientData.email
         }
-        await handleApiDoneAppointment(data, dispatch, setIsOpenModal, toggleUpdateData, setToggleUpdateData);
+        await handleApiDoneAppointment(data, dispatch, setIsOpenModal, toggleUpdateData, setToggleUpdateData, userLogin);
         setIsLoading(false);
     }
 

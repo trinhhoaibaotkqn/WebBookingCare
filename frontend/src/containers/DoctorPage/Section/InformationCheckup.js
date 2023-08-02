@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
-import { handleApiSaveDataDoctorInfo } from "../../../services/doctorService";
+import { handleApiGetDoctorInfo, handleApiSaveDataDoctorInfo } from "../../../services/doctorService";
 import {
     GET_DOCTOR_INFO_FAILED,
     GET_DOCTOR_INFO_START, GET_DOCTOR_INFO_SUSSCESS
@@ -21,9 +21,9 @@ const InformationCheckup = () => {
     const [priceId, setPriceId] = useState((listPrice && listPrice.length > 0) ? listPrice[0]?.key : "");
     const [paymentId, setPaymentId] = useState((listPayment && listPayment.length) > 0 ? listPayment[0]?.key : "");
     const [provinceId, setProvinceId] = useState((listProvince && listProvince.length) > 0 ? listProvince[0]?.key : "");
-    const [addressClinic, setAddressClinic] = useState();
-    const [nameClinic, setNameClinic] = useState();
-    const [note, setNote] = useState();
+    const [addressClinic, setAddressClinic] = useState("");
+    const [nameClinic, setNameClinic] = useState("");
+    const [note, setNote] = useState("");
 
     const handleClickBtnSave = () => {
         const data = {
@@ -35,36 +35,23 @@ const InformationCheckup = () => {
             nameClinic,
             note
         }
-        console.log(data);
-        handleApiSaveDataDoctorInfo(data, dispatch);
+        handleApiSaveDataDoctorInfo(data, dispatch, doctor);
         setIsEdit(false);
     }
 
+    const setDefaultValue = (res) => {
+        setPriceId(res.data.data?.priceId);
+        setPaymentId(res.data.data?.paymentId);
+        setProvinceId(res.data.data?.provinceId);
+        setAddressClinic(res.data.data?.addressClinic);
+        setNameClinic(res.data.data?.nameClinic);
+        setNote(res.data.data?.note);
+    }
+
     useEffect(() => {
-        const handleLoadDoctorInfoFromDB = async (doctor, dispatch, setPriceId, setPaymentId, setProvinceId, setAddressClinic, setNameClinic, setNote) => {
-            dispatch(GET_DOCTOR_INFO_START());
-            try {
-                console.log(">>>>>call api doctor info");
-                const res = await axios.get(`http://localhost:8080/doctor/get-doctor-info/${doctor.id}`,
-                    {
-                        "withCredentials": true
-                    }
-                );
-                if (res.data && res.data.errCode === 0) {
-                    dispatch(GET_DOCTOR_INFO_SUSSCESS(res.data.data));
-                    setPriceId(res.data?.data?.priceId);
-                    setPaymentId(res.data?.data?.paymentId);
-                    setProvinceId(res.data?.data?.provinceId);
-                    setAddressClinic(res.data?.data?.addressClinic);
-                    setNameClinic(res.data?.data?.nameClinic);
-                    setNote(res.data?.data?.note);
-                }
-            } catch (err) {
-                dispatch(GET_DOCTOR_INFO_FAILED());
-            }
-        }
-        handleLoadDoctorInfoFromDB(doctor, dispatch, setPriceId, setPaymentId, setProvinceId, setAddressClinic, setNameClinic, setNote)
-    }, [dispatch, doctor]);
+        handleApiGetDoctorInfo(dispatch, doctor, setDefaultValue)
+    }, [dispatch]);
+
     return (
         <div className="infor-checkup-container">
             <div className="infor-checkup-content">

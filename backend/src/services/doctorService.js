@@ -1,8 +1,35 @@
 const db = require("../models/index");
 const _ = require('lodash');
 const moment = require("moment");
-const { reject } = require("lodash");
 const emailService = require("./emailService");
+const ResponseForm = require("../utils/ResponseForm");
+
+const getAllcode = (type) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (type === "ROLE") {
+                const res = new ResponseForm(404, 1, `TYPE is not valid`, []);
+                resolve(res);
+            } else {
+                const data = await db.Allcode.findAll({
+                    where: {
+                        type: type
+                    }
+                });
+                if (!data) {
+                    const res = new ResponseForm(404, 1, "Type is not valid", []);
+                    resolve(res);
+                }
+                if (data) {
+                    const res = new ResponseForm(200, 0, `Get ${type} successfully`, data);
+                    resolve(res);
+                }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
 
 const saveSchedule = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -149,4 +176,7 @@ const doneAppointment = (data) => {
     })
 }
 
-module.exports = { saveSchedule, saveDataDoctorInfo, doneAppointment };
+module.exports = {
+    saveSchedule, saveDataDoctorInfo, doneAppointment,
+    getAllcode,
+};
