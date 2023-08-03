@@ -1,7 +1,7 @@
 import { useState } from "react";
-import DescriptionDoctor from "../Doctor/DescriptionDoctor";
-import ScheduleDoctor from "../Doctor/ScheduleDoctor";
-import BookingModal from "../Doctor/BookingModal";
+import DescriptionDoctor from "./DescriptionDoctor";
+import ScheduleDoctor from "./ScheduleDoctor";
+import BookingModal from "./BookingModal";
 
 const ItemDoctor = (props) => {
     let { doctor } = props;

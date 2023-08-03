@@ -8,32 +8,18 @@ const userSlice = createSlice({
             isFetching: false,
             error: false
         },
-        scheduleDoctor: {
-            schedule: null,
-            isFetching: false,
-            error: false
-        },
-        appointment: {
-            appointment: null,
-            isFetching: false,
-            error: false
-        },
-        confirmBooking: {
-            isFetching: false,
-            error: false
-        },
         specialty: {
             listSpecialty: null,
             isFetching: false,
             error: false
         },
-        detailSpecialty: {
-            listDoctors: null,
+        facility: {
+            listFacility: null,
             isFetching: false,
             error: false
         },
-        facility: {
-            listFacility: null,
+        detailSpecialty: {
+            listDoctors: null,
             isFetching: false,
             error: false
         },
@@ -54,41 +40,6 @@ const userSlice = createSlice({
         },
         GET_TOP_DOCTORS_FAILED: (state) => {
             state.topDoctors.error = true;
-        },
-
-        GET_SCHEDULE_DOCTOR_START: (state) => {
-            state.scheduleDoctor.isFetching = true;
-        },
-        GET_SCHEDULE_DOCTOR_SUSSCESS: (state, action) => {
-            state.scheduleDoctor.isFetching = false;
-            state.scheduleDoctor.schedule = action.payload;
-            state.scheduleDoctor.error = false;
-        },
-        GET_SCHEDULE_DOCTOR_FAILED: (state) => {
-            state.scheduleDoctor.error = true;
-        },
-
-        BOOK_APPOINTMENT_START: (state) => {
-            state.appointment.isFetching = true;
-        },
-        BOOK_APPOINTMENT_SUSSCESS: (state, action) => {
-            state.appointment.isFetching = false;
-            state.appointment.appointment = action.payload;
-            state.appointment.error = false;
-        },
-        BOOK_APPOINTMENT_FAILED: (state) => {
-            state.appointment.error = true;
-        },
-
-        CONFIRM_APPOINTMENT_START: (state) => {
-            state.confirmBooking.isFetching = true;
-        },
-        CONFIRM_APPOINTMENT_SUSSCESS: (state) => {
-            state.confirmBooking.isFetching = false;
-            state.confirmBooking.error = false;
-        },
-        CONFIRM_APPOINTMENT_FAILED: (state) => {
-            state.confirmBooking.error = true;
         },
 
         GET_LIST_SPECIALTY_START: (state) => {
@@ -115,6 +66,12 @@ const userSlice = createSlice({
             state.facility.error = true;
         },
 
+        CLEAN_DATA_HOME: (state) => {
+            state.topDoctors.listDoctors = null;
+            state.facility.listFacility = null;
+            state.specialty.listSpecialty = null;
+        },
+
         GET_LIST_DOCTOR_BY_SPECIALTY_START: (state) => {
             state.detailSpecialty.isFetching = true;
         },
@@ -125,6 +82,10 @@ const userSlice = createSlice({
         },
         GET_LIST_DOCTOR_BY_SPECIALTY_FAILED: (state) => {
             state.detailSpecialty.error = true;
+        },
+
+        CLEAN_LIST_DOCTOR_BY_SPECIALTY: (state) => {
+            state.detailSpecialty.listDoctors = null;
         },
 
         GET_LIST_DOCTOR_BY_FACILITY_START: (state) => {
@@ -138,16 +99,18 @@ const userSlice = createSlice({
         GET_LIST_DOCTOR_BY_FACILITY_FAILED: (state) => {
             state.detailFacility.error = true;
         },
+
+        CLEAN_LIST_DOCTOR_BY_FACILITY: (state) => {
+            state.detailFacility.listDoctors = null;
+        },
     },
 })
 
 export const {
     GET_TOP_DOCTORS_START, GET_TOP_DOCTORS_SUSSCESS, GET_TOP_DOCTORS_FAILED,
-    GET_SCHEDULE_DOCTOR_START, GET_SCHEDULE_DOCTOR_SUSSCESS, GET_SCHEDULE_DOCTOR_FAILED,
-    BOOK_APPOINTMENT_START, BOOK_APPOINTMENT_SUSSCESS, BOOK_APPOINTMENT_FAILED,
-    CONFIRM_APPOINTMENT_START, CONFIRM_APPOINTMENT_SUSSCESS, CONFIRM_APPOINTMENT_FAILED,
     GET_LIST_SPECIALTY_START, GET_LIST_SPECIALTY_SUSSCESS, GET_LIST_SPECIALTY_FAILED,
     GET_LIST_FACILITY_START, GET_LIST_FACILITY_SUSSCESS, GET_LIST_FACILITY_FAILED,
+    CLEAN_DATA_HOME, CLEAN_LIST_DOCTOR_BY_SPECIALTY, CLEAN_LIST_DOCTOR_BY_FACILITY,
     GET_LIST_DOCTOR_BY_SPECIALTY_START, GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS, GET_LIST_DOCTOR_BY_SPECIALTY_FAILED,
     GET_LIST_DOCTOR_BY_FACILITY_START, GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS, GET_LIST_DOCTOR_BY_FACILITY_FAILED
 } = userSlice.actions;

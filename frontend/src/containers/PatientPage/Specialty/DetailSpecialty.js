@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { handleApiGetListDoctorBySpecialty } from "../../../services/userService";
-import ItemDoctor from "./ItemDoctor";
+import ItemDoctor from "../Doctor/ItemDoctor";
+import { CLEAN_LIST_DOCTOR_BY_SPECIALTY } from "../../../store/slice/userSlice";
 
 const DetailSpecialty = () => {
 
@@ -20,6 +21,10 @@ const DetailSpecialty = () => {
 
     useEffect(() => {
         handleApiGetListDoctorBySpecialty(specialty.id, dispatch, setListDoctor);
+
+        return () => {
+            dispatch(CLEAN_LIST_DOCTOR_BY_SPECIALTY());
+        }
     }, [dispatch, specialty])
 
     return (

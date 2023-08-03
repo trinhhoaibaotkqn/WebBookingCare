@@ -45,7 +45,7 @@ verifyTokenAndAdminAuthor = (req, res, next) => {
         if (req.user.roleid === "R1")
             next();
         else
-            res.status(403).json("You're allowed");
+            res.status(403).json("You're not allowed");
     })
 }
 
@@ -54,7 +54,7 @@ verifyTokenAndDoctorAuthor = (req, res, next) => {
         if (req.user.roleid === "R2")
             next();
         else
-            res.status(403).json("You're allowed");
+            res.status(403).json("You're not allowed");
     })
 }
 
@@ -63,7 +63,7 @@ verifyTokenAndPatientAuthor = (req, res, next) => {
         if (req.user.roleid === "R3")
             next();
         else
-            res.status(403).json("You're allowed");
+            res.status(403).json("You're not allowed");
     })
 }
 

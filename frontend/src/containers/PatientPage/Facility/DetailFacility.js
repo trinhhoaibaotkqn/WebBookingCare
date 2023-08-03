@@ -4,7 +4,8 @@ import "./DetailFacility.scss";
 import { handleApiGetListDoctorByFacility } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import ItemDoctor from "../Specialty/ItemDoctor";
+import ItemDoctor from "../Doctor/ItemDoctor";
+import { CLEAN_LIST_DOCTOR_BY_FACILITY } from "../../../store/slice/userSlice";
 
 
 const DetailFacility = () => {
@@ -18,6 +19,10 @@ const DetailFacility = () => {
 
     useEffect(() => {
         handleApiGetListDoctorByFacility(facility.id, dispatch, setListDoctor);
+
+        return () => {
+            dispatch(CLEAN_LIST_DOCTOR_BY_FACILITY());
+        }
     }, [dispatch, facility])
 
     return (

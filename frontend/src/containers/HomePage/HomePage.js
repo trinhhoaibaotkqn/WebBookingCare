@@ -9,8 +9,19 @@ import LeftMenu from "./LeftMenu";
 
 import "./HomePage.scss";
 import HomeBanner from "./Section/HomeBanner";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { CLEAN_DATA_HOME } from "../../store/slice/userSlice";
 
 const HomePage = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        return () => {
+            dispatch(CLEAN_DATA_HOME());
+        }
+    }, [])
     return (
         <div className="homepage">
             <HomeHeader />

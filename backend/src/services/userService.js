@@ -1,6 +1,7 @@
 const db = require("../models/index");
 const emailService = require("./emailService");
 const { v4: uuidv4 } = require('uuid');
+const { Op } = require("sequelize");
 
 const bookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -24,18 +25,38 @@ const bookAppointment = (data) => {
                 if (!existSchedule) {
                     res.status = 404;
                     res.errCode = 2;
-                    res.message = "Time is not valid";
+                    res.message = "Schedule is not valid";
                     res.booking = {};
                     resolve(res);
+                    return;
                 }
-                if (existSchedule.currentNumber >= existSchedule.maxNumber) {
+
+                const existBookingThisPatient = await db.Booking.findOne({
+                    where: {
+                        doctorId: data.doctorId,
+                        patientId: data.patientId,
+                        date: data.date
+                    }
+                });
+
+                if (existBookingThisPatient) {
                     res.status = 404;
                     res.errCode = 3;
+                    res.message = "You've booked this doctor in this day";
+                    res.booking = {};
+                    resolve(res);
+                    return;
+                }
+
+                if (existSchedule.currentNumber >= existSchedule.maxNumber) {
+                    res.status = 404;
+                    res.errCode = 4;
                     res.message = "Over the number of booking";
                     res.booking = {};
                     resolve(res);
+                    return;
                 }
-                if (existSchedule && existSchedule.currentNumber < existSchedule.maxNumber) {
+                if (!existBookingThisPatient && existSchedule && existSchedule.currentNumber < existSchedule.maxNumber) {
                     const currentNum = existSchedule.currentNumber;
                     const token = uuidv4();
                     const url = createUrlValidate(token, data.doctorId);
@@ -130,7 +151,8 @@ const getTopDoctorHome = (limit) => {
                                 model: db.Schedule,
                                 as: 'scheduleData',
                                 where: {
-                                    date: date
+                                    date: date,
+                                    currentNumber: { [Op.lt]: 3 }
                                 },
                                 required: false,
                                 attributes: ['date', "timeType"],
@@ -178,7 +200,8 @@ const getAllDoctorBySpecialty = (specialtyId) => {
                                 model: db.Schedule,
                                 as: 'scheduleData',
                                 where: {
-                                    date: date
+                                    date: date,
+                                    currentNumber: { [Op.lt]: 3 }
                                 },
                                 required: false,
                                 attributes: ['date', "timeType"],
@@ -226,7 +249,8 @@ const getAllDoctorByClinic = (clinicId) => {
                                 model: db.Schedule,
                                 as: 'scheduleData',
                                 where: {
-                                    date: date
+                                    date: date,
+                                    currentNumber: { [Op.lt]: 3 }
                                 },
                                 required: false,
                                 attributes: ['date', "timeType"],

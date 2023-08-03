@@ -38,7 +38,7 @@ const BookingModal = (props) => {
                     toast.error("Some required fiels are empty");
                 } else {
                     const dataBooking = {
-                        doctorId: doctor.id,
+                        doctorId: doctor.doctorId,
                         doctorName: doctor.doctorInfoData.name,
                         date: timeSelected.date,
                         timeType: timeSelected.timeType,
@@ -54,7 +54,7 @@ const BookingModal = (props) => {
                         provinceData: doctor.provinceData,
                         priceData: doctor.priceData
                     }
-                    await handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason);
+                    await handleApiBookAppointment(dataBooking, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason, user);
                 }
             }
         }

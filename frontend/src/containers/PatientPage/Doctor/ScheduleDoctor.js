@@ -3,14 +3,13 @@ import { ImCalendar } from 'react-icons/im';
 import "./ScheduleDoctor.scss";
 import moment from "moment";
 import 'moment/locale/vi';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import CommonUtils from '../../../utils/CommonUtils';
 import { handleApiGetScheduleByDay } from '../../../services/userService';
 
 const ScheduleDoctor = (props) => {
     let { doctor, setTimeSelected, setIsShow, toggleBooked, componentSpecialty } = props;
-    const dispatch = useDispatch();
     const language = useSelector(state => state.common.language);
     const [isShowMorePrice, setIsShowMorePrice] = useState(false);
 
@@ -59,9 +58,9 @@ const ScheduleDoctor = (props) => {
                 date: selectedDay,
                 doctorId: doctor.doctorId
             }
-            handleApiGetScheduleByDay(data, dispatch, setListTime);
+            handleApiGetScheduleByDay(data, setListTime);
         }
-    }, [toggleChangeDay, dispatch, toggleBooked]);
+    }, [toggleChangeDay, toggleBooked]);
 
     return (
         <div className="schedule-container">
