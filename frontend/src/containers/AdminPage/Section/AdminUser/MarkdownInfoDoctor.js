@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { handleApiSaveInfoDoctor } from '../../../../services/adminService';
 import CommonUtils from '../../../../utils/CommonUtils';
+import { CLEAN_INFO_DOCTOR } from '../../../../store/slice/adminSlice';
 
 const MarkdownInfoDoctor = () => {
     const dispatch = useDispatch()
@@ -48,6 +49,10 @@ const MarkdownInfoDoctor = () => {
         setDescription(infoDoctor?.description);
         setContentHTML(infoDoctor?.contentHTML);
         setContentMarkdown(infoDoctor?.contentMarkdown);
+
+        return () => {
+            dispatch(CLEAN_INFO_DOCTOR());
+        }
     }, [infoDoctor, dispatch]);
 
     useEffect(() => {

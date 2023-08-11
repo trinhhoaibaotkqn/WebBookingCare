@@ -14,7 +14,7 @@ import { createAxiosJWT } from "./authService";
 export const handleApiBookAppointment = async (data, dispatch, setIsShow, setToggleBooked, toggleBooked, setReason, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post(`http://localhost:8080/user/book-appointment`, data,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/user/book-appointment`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -33,7 +33,7 @@ export const handleApiBookAppointment = async (data, dispatch, setIsShow, setTog
 
 export const handleApiConfirmAppointment = async (data, dispatch, setErrCode) => {
     try {
-        const res = await axios.post(`http://localhost:8080/user/verify-booking-appointment`, data,
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/verify-booking-appointment`, data,
             {
                 "withCredentials": true
             }
@@ -54,7 +54,7 @@ export const handleGetAllSpecialty = async (limit, currentPage, dispatch, setLis
     dispatch(GET_LIST_SPECIALTY_START());
     try {
         console.log("call api get list specialty")
-        const res = await axios.get(`http://localhost:8080/user/get-all-specialty`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-all-specialty`,
             {
                 params: {
                     limit: limit,
@@ -76,7 +76,7 @@ export const handleApiGetAllFacility = async (limit, currentPage, dispatch, setL
     dispatch(GET_LIST_FACILITY_START());
     try {
         console.log("call api get list facility")
-        const res = await axios.get(`http://localhost:8080/user/get-all-clinic`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-all-clinic`,
             {
                 params: {
                     limit: limit,
@@ -98,7 +98,7 @@ export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, s
     dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_START());
     try {
         console.log("call api get list doctor by specialty")
-        const res = await axios.get(`http://localhost:8080/user/get-all-doctor-by-specialty/${specialtyId}`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-all-doctor-by-specialty/${specialtyId}`,
             {
                 params: {
                     limit: limit,
@@ -120,7 +120,7 @@ export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, set
     dispatch(GET_LIST_DOCTOR_BY_FACILITY_START());
     try {
         console.log("call api get list doctor by facility")
-        const res = await axios.get(`http://localhost:8080/user/get-all-doctor-by-clinic/${facilityId}`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-all-doctor-by-clinic/${facilityId}`,
             {
                 params: {
                     limit: limit,
@@ -142,7 +142,7 @@ export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => 
     dispatch(GET_TOP_DOCTORS_START());
     try {
         console.log("call api get top doctor")
-        const res = await axios.get(`http://localhost:8080/user/get-top-doctor-home/${limit}`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-top-doctor-home/${limit}`,
             {
                 "withCredentials": true
             });
@@ -158,7 +158,7 @@ export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => 
 export const handleApiGetScheduleByDay = async (data, setListTime) => {
     try {
         console.log(">>>>>call api schedule doctor");
-        const res = await axios.get("http://localhost:8080/user/get-schedule-doctor",
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-schedule-doctor`,
             {
                 params: data
             });
@@ -173,7 +173,7 @@ export const handleApiGetScheduleByDay = async (data, setListTime) => {
 export const handleApiGetTopClinic = async (limit, setListFacility) => {
     try {
         console.log("call api get top facility")
-        const res = await axios.get(`http://localhost:8080/user/get-top-clinic`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-top-clinic`,
             {
                 params: { limit: limit },
                 "withCredentials": true
@@ -189,7 +189,7 @@ export const handleApiGetTopClinic = async (limit, setListFacility) => {
 export const handleApiGetTopSpecialty = async (limit, setListSpecialty) => {
     try {
         console.log("call api get top specialty")
-        const res = await axios.get(`http://localhost:8080/user/get-top-specialty`,
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-top-specialty`,
             {
                 params: { limit: limit },
                 "withCredentials": true

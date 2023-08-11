@@ -13,11 +13,50 @@
     "homebanner": {
         "title1": "Nền tảng y tế",
         "title2": "Chăm sóc sức khỏe toàn diện",
-        "text-search": "Tìm bác sĩ"
+        "text-search": "Tìm bác sĩ",
+        "item1": "Khám chuyên khoa",
+        "item2": "Khám tổng quát",
+        "item3": "Xét nghiệm y học",
+        "item4": "Sức khỏe tinh thần",
+        "item5": "Sức khỏe doanh nghiệp",
+        "item6": "Khám nha khoa"
     },
     "confirmBooking": {
         "errCode0": "Xác nhận lịch hẹn thành công",
         "errCode1": "Lịch hẹn không tồn tại",
         "errCode3": "Lịch hẹn đã kích hoạt rồi"
+    },
+    "leftMenu": {
+        "option1": "Đăng nhập",
+        "option2": "Đăng ký",
+        "option3": "Bác sỹ",
+        "option4": "Chuyên khoa",
+        "option5": "Cơ sở y tế",
+        "option6": "Cẩm nang",
+        "option7": "Câu hỏi thường gặp",
+        "option8": "Điều khoản sử dụng",
+        "optionPatient": "Trang cá nhân bệnh nhân",
+        "optionDoctorAdmin": "Trang quản lý"
+    },
+    "btnSeeMore": "Xem thêm",
+    "specialty": {
+        "title": "Chuyên khoa phổ biến"
+    },
+    "facility": {
+        "title": "Cơ sở y tế nổi bật"
+    },
+    "outstandingDoctor": {
+        "title": "Bác sĩ nổi bật tuần qua"
+    },
+    "handbook": {
+        "title": "Cẩm nang"
+    },
+    "detailDoctor": {
+        "schedule": "Lịch",
+        "notification": "Không có lịch hẹn nào, vui lòng chọn những ngày khác",
+        "titleAddress": "Địa chỉ khám",
+        "titlePrice": "Giá khám",
+        "seeMore": "Xem chi tiết",
+        "hide": "Ẩn bảng giá"
     }
 }

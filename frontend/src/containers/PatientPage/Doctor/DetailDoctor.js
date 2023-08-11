@@ -5,20 +5,30 @@ import ScheduleDoctor from "./ScheduleDoctor";
 import BookingModal from "./BookingModal";
 import { useState } from "react";
 import DescriptionDoctor from "./DescriptionDoctor";
+import { useSelector } from "react-redux";
 
 const DetailDoctor = () => {
 
     const location = useLocation();
     const doctor = location.state.doctor;
+    const language = useSelector(state => state.common.language);
 
     const [isShow, setIsShow] = useState(false);
     const [timeSelected, setTimeSelected] = useState();
     const [toggleBooked, setToggleBooked] = useState(false);
 
+    let title;
+    if (language === "vi") {
+        title = `${doctor.doctorInfoData.positionData.valueVi === "Không" ? "" : `${doctor.doctorInfoData.positionData.valueVi}, `}Bác sỹ ${doctor.doctorInfoData.name}`
+    }
+    else {
+        title = `${doctor.doctorInfoData.positionData.valueEn === "None" ? "" : `${doctor.doctorInfoData.positionData.valueEn}, `}Doctor ${doctor.doctorInfoData.name}`
+    }
+
     return (
         <div className="detail-doctor-container">
             <HeaderDetail
-                title={`Phó giáo sư, tiến sĩ, bác sĩ ${doctor.doctorInfoData.name}`}
+                title={title}
             />
 
             <DescriptionDoctor

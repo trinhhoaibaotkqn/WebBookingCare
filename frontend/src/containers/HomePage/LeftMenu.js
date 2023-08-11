@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MENU } from "../../store/slice/commonSlice";
 import { RxExit } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
-import "./LeftMenu.scss"
+import "./LeftMenu.scss";
+import { FormattedMessage } from "react-intl";
 
 const LeftMenu = () => {
     const dispatch = useDispatch();
@@ -33,25 +34,25 @@ const LeftMenu = () => {
                 </div>
                 <div className="item-container">
                     {patient ?
-                        <NavLink className="menu-item" to="/personal-page">Электронная медицинская карта</NavLink>
+                        <NavLink className="menu-item" to="/personal-page"><FormattedMessage id="leftMenu.optionPatient" /></NavLink>
                         :
                         doctor ?
-                            <NavLink className="menu-item" to="/system/doctor/schedule">Управление страницей</NavLink>
+                            <NavLink className="menu-item" to="/system/doctor/schedule"><FormattedMessage id="leftMenu.optionDoctorAdmin" /></NavLink>
                             :
                             admin ?
-                                <NavLink className="menu-item" to="/system/admin/user">Управление страницей</NavLink>
+                                <NavLink className="menu-item" to="/system/admin/user"><FormattedMessage id="leftMenu.optionDoctorAdmin" /></NavLink>
                                 :
                                 <>
-                                    <NavLink className="menu-item" to="/login">Đăng nhập</NavLink>
-                                    <NavLink className="menu-item" to="/register">Đăng kí</NavLink>
+                                    <NavLink className="menu-item" to="/login"><FormattedMessage id="leftMenu.option1" /></NavLink>
+                                    <NavLink className="menu-item" to="/register"><FormattedMessage id="leftMenu.option2" /></NavLink>
                                 </>
                     }
-                    <NavLink className="menu-item">Врач</NavLink>
-                    <NavLink className="menu-item">Справочник</NavLink>
-                    <NavLink className="menu-item">Контакт</NavLink>
-                    <NavLink className="menu-item">Вопросы</NavLink>
-                    <NavLink className="menu-item">Условия эксплуатации</NavLink>
-                    <NavLink className="menu-item">Жаловаться</NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option3" /></NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option4" /></NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option5" /></NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option6" /></NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option7" /></NavLink>
+                    <NavLink className="menu-item"><FormattedMessage id="leftMenu.option8" /></NavLink>
                 </div>
             </div>
         </div>

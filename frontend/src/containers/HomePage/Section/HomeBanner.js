@@ -20,27 +20,27 @@ const HomeBanner = () => {
             <div className="content-down">
                 <div className="option">
                     <div className="icon-option"><FaHospitalAlt /></div>
-                    <div className="option-title">Экспертиза<br></br>специалиста</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item1" /></div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><GiPersonInBed /></div>
-                    <div className="option-title">Общий<br></br>осмотр</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item2" /></div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaMicroscope /></div>
-                    <div className="option-title">Медицинский<br></br>тест</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item3" /></div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaStethoscope /></div>
-                    <div className="option-title">Душевное<br></br>здоровье</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item4" /></div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaAmbulance /></div>
-                    <div className="option-title">Здоровье<br></br>бизнеса</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item5" /></div>
                 </div>
                 <div className="option">
                     <div className="icon-option"><FaTooth /></div>
-                    <div className="option-title">Стоматологический<br></br>осмотр</div>
+                    <div className="option-title"><FormattedMessage id="homebanner.item6" /></div>
                 </div>
             </div>
         </div>

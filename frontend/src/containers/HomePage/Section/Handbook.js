@@ -2,6 +2,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import urlImage from "../../../assets/images/cam-nang-1.png";
+import { FormattedMessage } from "react-intl";
+
 const Handbook = () => {
     let settings = {
         dots: false,
@@ -25,8 +27,8 @@ const Handbook = () => {
         <div className="section-share section-gray">
             <div className="section-content">
                 <div className="section-header">
-                    <div className="title">Cẩm nang</div>
-                    <div className="header-button">xem thêm</div>
+                    <div className="title"><FormattedMessage id="handbook.title" /></div>
+                    <div className="header-button"><FormattedMessage id="btnSeeMore" /></div>
                 </div>
                 <Slider {...settings}>
                     <div>

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import CommonUtils from "../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
 const Facility = () => {
     let settings = {
@@ -41,8 +42,8 @@ const Facility = () => {
         <div className="section-share section-facility section-gray">
             <div className="section-content">
                 <div className="section-header">
-                    <div className="title">Выдающееся медицинское учреждение</div>
-                    <div className="header-button" onClick={() => navigate("/all-facilities")}>Подробнее</div>
+                    <div className="title"><FormattedMessage id="facility.title" /></div>
+                    <div className="header-button" onClick={() => navigate("/all-facilities")}><FormattedMessage id="btnSeeMore" /></div>
                 </div>
                 <Slider {...settings}>
                     {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {

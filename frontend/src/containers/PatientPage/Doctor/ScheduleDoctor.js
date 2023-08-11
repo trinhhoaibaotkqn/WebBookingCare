@@ -6,6 +6,7 @@ import 'moment/locale/vi';
 import { useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import CommonUtils from '../../../utils/CommonUtils';
+import { FormattedMessage } from "react-intl";
 import { handleApiGetScheduleByDay } from '../../../services/userService';
 
 const ScheduleDoctor = (props) => {
@@ -37,11 +38,13 @@ const ScheduleDoctor = (props) => {
         let arr = []
         for (let i = 0; i < 7; i++) {
             let obj = {};
-            if (language === languages.EN) {
-                obj.label = moment(new Date()).add(i, 'days').locale("en").format('ddd - DD/MM');
-            } else {
+
+            if (language === languages.VI) {
                 let label = moment(new Date()).add(i, 'days').locale("vi").format('dddd - DD/MM');
                 obj.label = CommonUtils.capitalizeFirstLetter(label);
+            }
+            else {
+                obj.label = moment(new Date()).add(i, 'days').locale("en").format('ddd - DD/MM');
             }
             obj.value = moment(new Date()).add(i, 'days').locale("vi").format('dd');
             obj.date = new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000);
@@ -80,7 +83,7 @@ const ScheduleDoctor = (props) => {
                             })}
                         </select>
                     </div>
-                    <div className="icon-schedule"><ImCalendar /> schedule</div>
+                    <div className="icon-schedule"><ImCalendar /> <FormattedMessage id="detailDoctor.schedule" /></div>
                 </div>
                 <div className="schedule-content-down">
                     <div className="time-option">
@@ -91,19 +94,19 @@ const ScheduleDoctor = (props) => {
                                     className="child-time-option"
                                     onClick={() => { handleOpenModal(item) }}
                                 >
-                                    {language === languages.EN ? item.timeData.valueEn : item.timeData.valueVi}
+                                    {language === languages.VI ? item.timeData.valueVi : item.timeData.valueEn}
                                 </div>
                             )
                         })
                             :
-                            <div style={{ gridColumn: "1/5" }}>Không có lịch hẹn nào, vui lòng chọn những ngày khác</div>
+                            <div style={{ gridColumn: "1/5" }}><FormattedMessage id="detailDoctor.notification" /></div>
                         }
                     </div>
                     <div className="more-info-booking">
                         {doctor ?
                             <>
                                 <div className="adrress-clinic-container">
-                                    <div className="title-clinic">ĐỊA CHỈ KHÁM</div>
+                                    <div className="title-clinic"><FormattedMessage id="detailDoctor.titleAddress" /></div>
                                     <div className="name-clinic">{doctor.nameClinic}</div>
                                     <div className="address-clinic">
                                         {doctor.addressClinic}, {language === languages.EN ? doctor.provinceData.valueEn : doctor.provinceData.valueVi}
@@ -112,19 +115,19 @@ const ScheduleDoctor = (props) => {
                                 <div className="price-container">
                                     {!isShowMorePrice ?
                                         <div className='price-content-common'>
-                                            <div className='label-price'>GIÁ KHÁM: </div>
+                                            <div className='label-price'><FormattedMessage id="detailDoctor.titlePrice" />:</div>
                                             <div className='price'>
                                                 {language === languages.EN ? `${doctor.priceData.valueEn}$.` : `${doctor.priceData.valueVi}đ.`}
                                             </div>
-                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(true)}>Xem chi tiết</div>
+                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(true)}><FormattedMessage id="detailDoctor.seeMore" /></div>
                                         </div>
                                         :
                                         <div className='price-content-detail'>
-                                            <div className='label-price'>GIÁ KHÁM: </div>
+                                            <div className='label-price'><FormattedMessage id="detailDoctor.titlePrice" />: </div>
                                             <div className='more-info-price'>
                                                 <div className='price-content'>
                                                     <div className='price'>
-                                                        <span>GIÁ KHÁM</span>
+                                                        <span><FormattedMessage id="detailDoctor.titlePrice" /></span>
                                                         <span>
                                                             {language === languages.EN ? `${doctor.priceData.valueEn}$` : `${doctor.priceData.valueVi}đ`}
                                                         </span>
@@ -140,7 +143,7 @@ const ScheduleDoctor = (props) => {
                                                     }
                                                 </div>
                                             </div>
-                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(false)}>Ẩn bảng giá</div>
+                                            <div className='hide-detail' onClick={() => setIsShowMorePrice(false)}><FormattedMessage id="detailDoctor.hide" /></div>
                                         </div>
                                     }
                                 </div>

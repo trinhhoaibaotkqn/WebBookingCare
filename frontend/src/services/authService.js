@@ -10,7 +10,7 @@ import {
 export const handleApiRegister = async (user, toast, dispatch, navigate, doctor) => {
     dispatch(REGISTER_START());
     try {
-        const res = await axios.post("http://localhost:8080/auth/register", user);
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/register`, user);
         if (res.data && res.data.errCode === 0) {
             dispatch(REGISTER_SUCCESS());
             toast.success(res.data.message);
@@ -29,7 +29,7 @@ export const handleApiRegister = async (user, toast, dispatch, navigate, doctor)
 export const handleApiLoginUser = async (user, toast, dispatch) => {
     dispatch(LOGIN_START());
     try {
-        const res = await axios.post("http://localhost:8080/auth/login", user,
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, user,
             {
                 "withCredentials": true
             });
@@ -48,7 +48,7 @@ export const handleApiLogOut = async (user, id, dispatch, navigate,) => {
     dispatch(LOGOUT_START());
     let axiosJWT = createAxiosJWT(user, dispatch);
     try {
-        await axiosJWT.post("http://localhost:8080/auth/logout", id, {
+        await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/auth/logout`, id, {
             headers: { token: `Bearer ${user.accessToken}` },
             "withCredentials": true,
         });
@@ -68,7 +68,7 @@ export const createAxiosJWT = (user, dispatch) => {
 
             if (tokenDecoded.exp < date.getTime() / 1000) {
                 try {
-                    const res = await axios.post("http://localhost:8080/auth/refresh-token", 1, { "withCredentials": true });
+                    const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/refresh-token`, 1, { "withCredentials": true });
                     var dataToken = res.data;
                 } catch (err) {
                     console.log(err);

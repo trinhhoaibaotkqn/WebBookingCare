@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleApiGetTopDoctor } from "../../../services/userService";
 import { useNavigate } from "react-router-dom";
 import CommonUtils from "../../../utils/CommonUtils";
+import { FormattedMessage } from "react-intl";
 
 const OutStandingDoctor = () => {
 
@@ -41,7 +42,7 @@ const OutStandingDoctor = () => {
         <div className="section-share section-doctor">
             <div className="section-content">
                 <div className="section-header">
-                    <div className="title">Bác sĩ nổi bật tuần qua</div>
+                    <div className="title"><FormattedMessage id="outstandingDoctor.title" /></div>
                     {/* <div className="header-button" onClick={() => navigate("/all-doctors")}>xem thêm</div> */}
                 </div>
                 <Slider {...settings}>
@@ -50,8 +51,8 @@ const OutStandingDoctor = () => {
                         if (language === "vi") {
                             title = `${item.doctorInfoData.positionData.valueVi === "Không" ? "" : `${item.doctorInfoData.positionData.valueVi}, `}Bác sỹ ${item.doctorInfoData.name}`
                         }
-                        if (language === "en") {
-                            title = `${item.doctorInfoData.positionData.valueEn === "None" ? "" : `${item.doctorInfoData.positionData.valueEn}, `}Bác sỹ ${item.doctorInfoData.name}`
+                        else {
+                            title = `${item.doctorInfoData.positionData.valueEn === "None" ? "" : `${item.doctorInfoData.positionData.valueEn}, `}Doctor ${item.doctorInfoData.name}`
                         }
                         return (
                             <div key={item.id}

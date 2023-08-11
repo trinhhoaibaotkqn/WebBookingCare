@@ -13,11 +13,50 @@
     "homebanner": {
         "title1": "Медицинское обслуживание",
         "title2": "Комплексное медицинское обслуживание",
-        "text-search": "Поиск врача"
+        "text-search": "Поиск врача",
+        "item1": "Осмотр специалиста",
+        "item2": "Общий осмотр",
+        "item3": "Медицинский тест",
+        "item4": "Психическое здоровье",
+        "item5": "Здоровье бизнеса",
+        "item6": "Стоматологический осмотр"
     },
     "confirmBooking": {
         "errCode0": "Confirm appointment susscessfully",
         "errCode1": "Appointment doesn't exist",
         "errCode3": "Appointment already has been activated"
+    },
+    "leftMenu": {
+        "option1": "Войти",
+        "option2": "Зарегистрироваться",
+        "option3": "Доктор",
+        "option4": "Cпециальность",
+        "option5": "Медицинское учреждение",
+        "option6": "Руководство",
+        "option7": "Часто задаваемые вопросы",
+        "option8": "Условия использования",
+        "optionPatient": "Профиль пациента",
+        "optionDoctorAdmin": "Страница управления"
+    },
+    "btnSeeMore": "подробнее",
+    "specialty": {
+        "title": "Популярная специальность"
+    },
+    "facility": {
+        "title": "Популярное медицинское учреждение"
+    },
+    "outstandingDoctor": {
+        "title": "Популяный доктор на прошлой неделе"
+    },
+    "handbook": {
+        "title": "Справочник"
+    },
+    "detailDoctor": {
+        "schedule": "Расписание",
+        "notification": "Нет расписаний, пожалуйста, выберите другую дату",
+        "titleAddress": "Адрес экзамена",
+        "titlePrice": "Стоимость экспертизы",
+        "seeMore": "Подробнее",
+        "hide": "Скрыть прайс-лист"
     }
 }

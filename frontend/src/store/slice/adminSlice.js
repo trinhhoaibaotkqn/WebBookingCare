@@ -142,6 +142,10 @@ const adminSlice = createSlice({
             state.allFacilities.isFetching = false;
             state.allFacilities.error = true;
         },
+        CLEAN_LIST_NAME_SPECIALTY_AND_FACILITY: (state) => {
+            state.allFacilities.listNameFacilities = null;
+            state.allSpecialties.listNameSpecialties = null;
+        },
 
         GET_INFO_DOCTOR_START: (state) => {
             state.infoDoctor.isFetching = true;
@@ -180,6 +184,12 @@ const adminSlice = createSlice({
         GET_CODE_FAILED: (state) => {
             state.code.isFetching = false;
             state.code.error = true;
+        },
+
+        CLEAN_ALL_CODE: (state) => {
+            state.code.listRole = null;
+            state.code.listGender = null;
+            state.code.listPosition = null;
         },
 
         GET_SPECIALTY_START: (state) => {
@@ -264,7 +274,8 @@ export const {
     GET_SPECIALTY_START, GET_SPECIALTY_SUCCESS, GET_SPECIALTY_FAILED,
     GET_FACILITY_START, GET_FACILITY_SUCCESS, GET_FACILITY_FAILED,
     CREATE_FACILITY_SUCCESS, EDIT_FACILITY_SUCCESS, DELETE_FACILITY_SUCCESS,
-    CREATE_SPECIALTY_SUCCESS, EDIT_SPECIALTY_SUCCESS, DELETE_SPECIALTY_SUCCESS
+    CREATE_SPECIALTY_SUCCESS, EDIT_SPECIALTY_SUCCESS, DELETE_SPECIALTY_SUCCESS,
+    CLEAN_ALL_CODE, CLEAN_LIST_NAME_SPECIALTY_AND_FACILITY
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

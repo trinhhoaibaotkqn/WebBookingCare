@@ -13,11 +13,50 @@
     "homebanner": {
         "title1": "Medical service",
         "title2": "Comprehensive health care",
-        "text-search": "Search doctor"
+        "text-search": "Search doctor",
+        "item1": "Specialist examination",
+        "item2": "General examination",
+        "item3": "Medical test",
+        "item4": "Mental Health",
+        "item5": "Business Health",
+        "item6": "Dental examination"
     },
     "confirmBooking": {
         "errCode0": "Confirm appointment susscessfully",
         "errCode1": "Appointment doesn't exist",
         "errCode3": "Appointment already has been activated"
+    },
+    "leftMenu": {
+        "option1": "Login",
+        "option2": "Register",
+        "option3": "Doctor",
+        "option4": "Specialty",
+        "option5": "Medical facility",
+        "option6": "Handbook",
+        "option7": "Frequently Asked Questions",
+        "option8": "Terms of Use",
+        "optionPatient": "Patient Profile",
+        "optionDoctorAdmin": "Management page"
+    },
+    "btnSeeMore": "More",
+    "specialty": {
+        "title": "Popular specialty"
+    },
+    "facility": {
+        "title": "Outstanding Medical Facility"
+    },
+    "outstandingDoctor": {
+        "title": "Outstanding doctor Last Week"
+    },
+    "handbook": {
+        "title": "Handbook"
+    },
+    "detailDoctor": {
+        "schedule": "Schedule",
+        "notification": "No appointment available, please choose another date",
+        "titleAddress": "Examination address",
+        "titlePrice": "Examination price",
+        "seeMore": "View details",
+        "hide": "Hide price list"
     }
 }

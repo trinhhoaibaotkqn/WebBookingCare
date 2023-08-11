@@ -34,7 +34,7 @@ export const handleApiGetAllCode = async (TYPE, dispatch, user) => {
     }
     try {
         let axiosJWT = createAxiosJWT(user, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-allcode/${TYPE}`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/doctor/get-allcode/${TYPE}`,
             {
                 headers: { token: `Bearer ${user.accessToken}` },
                 "withCredentials": true
@@ -79,7 +79,7 @@ export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setLi
     try {
         console.log(">>>>>call api schedule");
         let axiosJWT = createAxiosJWT(doctor, dispatch);
-        const res = await axiosJWT.get("http://localhost:8080/doctor/get-schedule",
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/doctor/get-schedule`,
             {
                 params: {
                     doctorId: doctor?.id,
@@ -101,7 +101,7 @@ export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setLi
 export const handleApiSaveSheduleDoctor = async (data, dispatch, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post(`http://localhost:8080/doctor/save-schedule`, data,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/doctor/save-schedule`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -119,7 +119,7 @@ export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue) 
     try {
         console.log(">>>>>call api doctor info");
         let axiosJWT = createAxiosJWT(doctor, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-doctor-info/${doctor.id}`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/doctor/get-doctor-info/${doctor.id}`,
             {
                 headers: { token: `Bearer ${doctor.accessToken}` },
                 "withCredentials": true
@@ -136,7 +136,7 @@ export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue) 
 export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.put(`http://localhost:8080/doctor/save-doctor-info`, data,
+        const res = await axiosJWT.put(`${process.env.REACT_APP_BACKEND_URL}/doctor/save-doctor-info`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -153,7 +153,7 @@ export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin) => 
 export const handleApiGetListAppointment = async (data, dispatch, setListAppointment, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/doctor/get-list-appointment`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/doctor/get-list-appointment`,
             {
                 params: data,
                 headers: { token: `Bearer ${userLogin.accessToken}` },
@@ -171,7 +171,7 @@ export const handleApiGetListAppointment = async (data, dispatch, setListAppoint
 export const handleApiDoneAppointment = async (data, dispatch, setIsOpenModal, toggleUpdateData, setToggleUpdateData, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.put(`http://localhost:8080/doctor/done-appointment`, data,
+        const res = await axiosJWT.put(`${process.env.REACT_APP_BACKEND_URL}/doctor/done-appointment`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true

@@ -39,13 +39,14 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosJWT } from "./authService";
+// import.meta.env;
 
 export const handleApiGetCodeFromDB = async (dispatch, user, type) => {
     dispatch(GET_CODE_START());
     try {
         console.log(">>>>>call api code", type);
         let axiosJWT = createAxiosJWT(user, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-code/${type}`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-code/${type}`,
             {
                 headers: { token: `Bearer ${user.accessToken}` },
                 "withCredentials": true
@@ -85,7 +86,7 @@ export const handleApiGetListUsers = async (keyRole, dispatch, user, setData, cu
     try {
         console.log(">>>>>>call api get list users");
         let axiosJWT = createAxiosJWT(user, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-user/${keyRole}`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-user/${keyRole}`,
             {
                 params: { currentPage },
                 headers: { token: `Bearer ${user.accessToken}` },
@@ -127,7 +128,7 @@ export const handleApiGetListUsers = async (keyRole, dispatch, user, setData, cu
 export const handleApiCreateUser = async (user, dispatch, handleListenChange, handleModalAdd, clearModal, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post("http://localhost:8080/admin/create-new-user", user,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/admin/create-new-user`, user,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -146,7 +147,7 @@ export const handleApiCreateUser = async (user, dispatch, handleListenChange, ha
 export const handleApiEditUser = async (id, user, dispatch, handleListenChange, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.patch(`http://localhost:8080/admin/edit-user/${id}`, user,
+        const res = await axiosJWT.patch(`${process.env.REACT_APP_BACKEND_URL}/admin/edit-user/${id}`, user,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -164,7 +165,7 @@ export const handleApiEditUser = async (id, user, dispatch, handleListenChange, 
 export const handleApiDeleteUser = async (id, dispatch, handleListenChange, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.delete(`http://localhost:8080/admin/delete-user/${id}`,
+        const res = await axiosJWT.delete(`${process.env.REACT_APP_BACKEND_URL}/admin/delete-user/${id}`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -184,7 +185,7 @@ export const handleApiGetListNameFacility = async (dispatch, userLogin) => {
     dispatch(GET_LIST_NAME_FACILITY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-name-clinic`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-list-name-clinic`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -203,7 +204,7 @@ export const handleApiGetListNameSpecialty = async (dispatch, userLogin) => {
     dispatch(GET_LIST_NAME_SPECIALTY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-name-specialty`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-list-name-specialty`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -220,7 +221,7 @@ export const handleApiGetListNameSpecialty = async (dispatch, userLogin) => {
 export const handleApiSaveInfoDoctor = async (data, dispatch, navigate, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post(`http://localhost:8080/admin/save-info-doctor`, data,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/admin/save-info-doctor`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -240,7 +241,7 @@ export const handleApiGetInfoDoctor = async (doctorId, dispatch, userLogin) => {
     dispatch(GET_INFO_DOCTOR_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-info-doctor/${doctorId}`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-info-doctor/${doctorId}`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -258,7 +259,7 @@ export const handleApiGetInfoDoctor = async (doctorId, dispatch, userLogin) => {
 export const handleApiCreateSpecialty = async (data, dispatch, setIsOpenAdd, clearModal, handleListenChange, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post("http://localhost:8080/admin/create-new-specialty", data,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/admin/create-new-specialty`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -279,7 +280,7 @@ export const handleApiGetListSpecialty = async (dispatch, setListSpecialty, user
     dispatch(GET_SPECIALTY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-specialty`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-list-specialty`,
             {
                 params: { currentPage },
                 headers: { token: `Bearer ${userLogin.accessToken}` },
@@ -299,7 +300,7 @@ export const handleApiGetListSpecialty = async (dispatch, setListSpecialty, user
 export const handleApiEditSpecialty = async (id, data, dispatch, handleListenChange, setIsOpenEdit, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.patch(`http://localhost:8080/admin/edit-specialty/${id}`, data,
+        const res = await axiosJWT.patch(`${process.env.REACT_APP_BACKEND_URL}/admin/edit-specialty/${id}`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -319,7 +320,7 @@ export const handleApiEditSpecialty = async (id, data, dispatch, handleListenCha
 export const handleApiDeleteSpecialty = async (id, dispatch, handleListenChange, setIsOpenDelete, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.delete(`http://localhost:8080/admin/delete-specialty/${id}`,
+        const res = await axiosJWT.delete(`${process.env.REACT_APP_BACKEND_URL}/admin/delete-specialty/${id}`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -340,7 +341,7 @@ export const handleApiDeleteSpecialty = async (id, dispatch, handleListenChange,
 export const handleApiCreateFacility = async (data, dispatch, setIsOpenAdd, clearModal, handleListenChange, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.post("http://localhost:8080/admin/create-new-clinic", data,
+        const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/admin/create-new-clinic`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -361,7 +362,7 @@ export const handleApiGetListFacility = async (dispatch, setListFacility, userLo
     dispatch(GET_FACILITY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-clinic`,
+        const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/admin/get-list-clinic`,
             {
                 params: { currentPage },
                 headers: { token: `Bearer ${userLogin.accessToken}` },
@@ -382,7 +383,7 @@ export const handleApiGetListFacility = async (dispatch, setListFacility, userLo
 export const handleApiEditFacility = async (id, data, dispatch, handleListenChange, setIsOpenEdit, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.patch(`http://localhost:8080/admin/edit-clinic/${id}`, data,
+        const res = await axiosJWT.patch(`${process.env.REACT_APP_BACKEND_URL}/edit-clinic/${id}`, data,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
@@ -402,7 +403,7 @@ export const handleApiEditFacility = async (id, data, dispatch, handleListenChan
 export const handleApiDeleteFacility = async (id, dispatch, handleListenChange, setIsOpenDelete, userLogin) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
-        const res = await axiosJWT.delete(`http://localhost:8080/admin/delete-clinic/${id}`,
+        const res = await axiosJWT.delete(`${process.env.REACT_APP_BACKEND_URL}/admin/delete-clinic/${id}`,
             {
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true

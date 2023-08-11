@@ -13,8 +13,8 @@ const DescriptionDoctor = (props) => {
     if (language === "vi") {
         name = `${doctor.doctorInfoData.positionData.valueVi === "Không" ? "" : `${doctor.doctorInfoData.positionData.valueVi}, `}Bác sỹ ${doctor.doctorInfoData.name}`
     }
-    if (language === "en") {
-        name = `${doctor.doctorInfoData.positionData.valueEn === "None" ? "" : `${doctor.doctorInfoData.positionData.valueEn}, `}Bác sỹ ${doctor.name}`
+    else {
+        name = `${doctor.doctorInfoData.positionData.valueEn === "None" ? "" : `${doctor.doctorInfoData.positionData.valueEn}, `}Doctor ${doctor.doctorInfoData.name}`
     }
 
     const handleClickNameDoctor = (e) => {

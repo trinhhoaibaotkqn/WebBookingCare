@@ -3,6 +3,7 @@ import AdminHeader from "./AdminHeader";
 import { handleApiGetCodeFromDB } from "../../services/adminService";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { CLEAN_ALL_CODE } from "../../store/slice/adminSlice";
 
 const AdminHome = () => {
     const ROLE = "ROLE";
@@ -15,6 +16,10 @@ const AdminHome = () => {
         handleApiGetCodeFromDB(dispatch, userLogin, ROLE);
         handleApiGetCodeFromDB(dispatch, userLogin, GENDER);
         handleApiGetCodeFromDB(dispatch, userLogin, POSITION);
+
+        return () => {
+            dispatch(CLEAN_ALL_CODE());
+        }
     }, [dispatch]);
 
     return (
