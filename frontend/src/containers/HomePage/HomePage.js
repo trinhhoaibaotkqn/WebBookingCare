@@ -21,7 +21,7 @@ const HomePage = () => {
         return () => {
             dispatch(CLEAN_DATA_HOME());
         }
-    }, [])
+    }, [dispatch])
     return (
         <div className="homepage">
             <HomeHeader />

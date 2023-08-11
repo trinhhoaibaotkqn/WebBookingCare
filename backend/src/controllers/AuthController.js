@@ -75,9 +75,9 @@ class AuthController {
                 res.cookie("refreshToken", refreshToken,
                     {
                         httpOnly: true,
-                        secure: false,//when deploy change to true
+                        secure: true,//when deploy change to true
                         path: "/",
-                        sameSite: "strict",
+                        sameSite: "none",
                     }
                 )
                 return res.status(200).json({
@@ -102,9 +102,9 @@ class AuthController {
         res.cookie("refreshToken", newRefreshToken,
             {
                 httpOnly: true,
-                secure: false,//when deploy change to true
+                secure: true,//when deploy change to true
                 path: "/",
-                sameSite: "strict",
+                sameSite: "none",
             }
         );
         res.status(200).json({ accessToken: accessToken })

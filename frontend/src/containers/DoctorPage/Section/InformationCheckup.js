@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import { handleApiGetDoctorInfo, handleApiSaveDataDoctorInfo } from "../../../services/doctorService";
-import {
-    GET_DOCTOR_INFO_FAILED,
-    GET_DOCTOR_INFO_START, GET_DOCTOR_INFO_SUSSCESS
-} from "../../../store/slice/doctorSlice";
-import axios from "axios";
 
 const InformationCheckup = () => {
     const dispatch = useDispatch();

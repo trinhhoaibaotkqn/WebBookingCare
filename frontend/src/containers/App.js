@@ -42,6 +42,28 @@ import AllFacility from './PatientPage/Facility/AllFacility';
 import AllSpecialty from './PatientPage/Specialty/AllSpecialty';
 import AllDoctor from './PatientPage/Doctor/AllDoctor';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDX-_ufPY0rtodcW-8vp8n8cimQz_H-WNE",
+  authDomain: "febookingcare-63eaa.firebaseapp.com",
+  projectId: "febookingcare-63eaa",
+  storageBucket: "febookingcare-63eaa.appspot.com",
+  messagingSenderId: "852585323466",
+  appId: "1:852585323466:web:7ed137bc65b7a1bd158d33",
+  measurementId: "G-LNP98L0W60"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
   const language = useSelector((state) => state.common.language);
