@@ -10,6 +10,7 @@ import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import ModalEditFacility from './ModalEditFacility';
 import ModalDeleteFacility from './ModalDeleteFacility';
 import CommonUtils from '../../../../utils/CommonUtils';
+import Pagination from '../../../../components/Pagination';
 
 const AdminFacility = () => {
 
@@ -23,6 +24,10 @@ const AdminFacility = () => {
     const [dataEdit, setDataEdit] = useState();
     const [dataDelete, setDataDelete] = useState();
     const [listenChange, setListenChange] = useState(false);
+
+    const [totalPage, setTotalPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(0);
 
     const handleListenChange = () => {
         setListenChange(!listenChange);
@@ -40,8 +45,8 @@ const AdminFacility = () => {
     }
 
     useEffect(() => {
-        handleApiGetListFacility(dispatch, setListFacility, userLogin)
-    }, [dispatch, listenChange])
+        handleApiGetListFacility(dispatch, setListFacility, userLogin, currentPage, setTotalPage, setPerPage)
+    }, [dispatch, listenChange, currentPage])
 
     return (
         <div className="section-admin-container">
@@ -75,7 +80,7 @@ const AdminFacility = () => {
                             {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
                                 return (
                                     <tr key={item.id}>
-                                        <td>{index + 1}</td>
+                                        <td>{index + 1 + (currentPage - 1) * perPage}</td>
                                         <td>{item.name}</td>
                                         <td>{item.address}</td>
                                         <td>
@@ -98,6 +103,13 @@ const AdminFacility = () => {
                     </table>
                 </div>
             </div>
+
+            <Pagination
+                totalPage={totalPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
+
             <ModalAddNewFacility
                 isOpenAdd={isOpenAdd}
                 setIsOpenAdd={setIsOpenAdd}

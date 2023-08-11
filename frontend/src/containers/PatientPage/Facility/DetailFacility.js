@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import HeaderDetail from "../HeaderDetail";
 import "./DetailFacility.scss";
 import { handleApiGetListDoctorByFacility } from "../../../services/userService";
+import Pagination from "../../../components/Pagination";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import ItemDoctor from "../Doctor/ItemDoctor";
@@ -17,13 +18,17 @@ const DetailFacility = () => {
 
     const [listDoctor, setListDoctor] = useState();
 
+    const [totalPage, setTotalPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const LIMIT = 2;
+
     useEffect(() => {
-        handleApiGetListDoctorByFacility(facility.id, dispatch, setListDoctor);
+        handleApiGetListDoctorByFacility(facility.id, dispatch, setListDoctor, LIMIT, currentPage, setTotalPage);
 
         return () => {
             dispatch(CLEAN_LIST_DOCTOR_BY_FACILITY());
         }
-    }, [dispatch, facility])
+    }, [dispatch, facility, currentPage])
 
     return (
         <div className="detail-facility-container">
@@ -56,6 +61,11 @@ const DetailFacility = () => {
                     })}
                 </div>
             </div>
+            <Pagination
+                totalPage={totalPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
             <div id="description" className="description-facility">
                 <div className="title-description">Giới thiệu</div>
                 <div dangerouslySetInnerHTML={{ __html: facility.descriptionHTML }}></div>

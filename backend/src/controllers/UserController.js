@@ -24,6 +24,32 @@ class UserController {
         }
     }
 
+    getTopClinic = async (req, res) => {
+        try {
+            let limitInput = req.query.limit;
+            let limit = limitInput ? parseInt(limitInput) : 10;
+            let data = await userService.getTopClinic(limit);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
+    getTopSpecialty = async (req, res) => {
+        try {
+            let limitInput = req.query.limit;
+            let limit = limitInput ? parseInt(limitInput) : 10;
+            let data = await userService.getTopSpecialty(limit);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
+        } catch (err) {
+            res.status(500).json("Server error");
+        }
+    }
+
     //[GET] get-detail-doctor/:id
     // getDetailDoctor = async (req, res) => {
     //     try {
@@ -132,12 +158,14 @@ class UserController {
 
     getAllSpecialty = async (req, res) => {
         try {
-            const listSpecialty = await db.Specialty.findAll();
-            res.status(200).json({
-                errCode: 0,
-                message: "Get all specialty successfully",
-                data: listSpecialty
-            })
+            let limitInput = req.query?.limit;
+            let currentPage = req.query?.currentPage;
+            let limit = limitInput ? parseInt(limitInput) : 9;
+            let numPage = limitInput ? parseInt(currentPage) : 9;
+            let data = await userService.getAllSpecialty(limit, numPage);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -145,12 +173,14 @@ class UserController {
 
     getAllClinic = async (req, res) => {
         try {
-            const listClinic = await db.Clinic.findAll();
-            res.status(200).json({
-                errCode: 0,
-                message: "Get all clinic successfully",
-                data: listClinic
-            })
+            let limitInput = req.query?.limit;
+            let currentPage = req.query?.currentPage;
+            let limit = limitInput ? parseInt(limitInput) : 9;
+            let numPage = limitInput ? parseInt(currentPage) : 9;
+            let data = await userService.getAllClinic(limit, numPage);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -158,8 +188,12 @@ class UserController {
 
     getAllDoctorBySpecialty = async (req, res) => {
         try {
+            let limitInput = req.query?.limit;
+            let currentPage = req.query?.currentPage;
+            let limit = limitInput ? parseInt(limitInput) : 9;
+            let numPage = limitInput ? parseInt(currentPage) : 9;
             let specialtyId = req.params.specialtyId;
-            let data = await userService.getAllDoctorBySpecialty(specialtyId);
+            let data = await userService.getAllDoctorBySpecialty(specialtyId, limit, numPage);
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);
@@ -170,8 +204,12 @@ class UserController {
 
     getAllDoctorByClinic = async (req, res) => {
         try {
+            let limitInput = req.query?.limit;
+            let currentPage = req.query?.currentPage;
+            let limit = limitInput ? parseInt(limitInput) : 9;
+            let numPage = limitInput ? parseInt(currentPage) : 9;
             let clinicId = req.params.clinicId;
-            let data = await userService.getAllDoctorByClinic(clinicId);
+            let data = await userService.getAllDoctorByClinic(clinicId, limit, numPage);
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);

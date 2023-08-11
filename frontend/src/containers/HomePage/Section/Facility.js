@@ -2,7 +2,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { useEffect } from "react";
-import { handleApiGetAllFacility } from "../../../services/userService";
+import { handleApiGetTopClinic } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import CommonUtils from "../../../utils/CommonUtils";
@@ -29,11 +29,12 @@ const Facility = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const LIMIT = 8;
 
     const [listFacility, setListFacility] = useState();
 
     useEffect(() => {
-        handleApiGetAllFacility(dispatch, setListFacility)
+        handleApiGetTopClinic(LIMIT, setListFacility);
     }, [dispatch])
 
     return (
@@ -41,7 +42,7 @@ const Facility = () => {
             <div className="section-content">
                 <div className="section-header">
                     <div className="title">Выдающееся медицинское учреждение</div>
-                    <div className="header-button">Подробнее</div>
+                    <div className="header-button" onClick={() => navigate("/all-facilities")}>Подробнее</div>
                 </div>
                 <Slider {...settings}>
                     {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {

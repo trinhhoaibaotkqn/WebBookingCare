@@ -2,6 +2,8 @@ const db = require("../models/index");
 const bcrypt = require('bcrypt');
 const ResponseForm = require("../utils/ResponseForm");
 
+const LIMITDATAPAGE = 3;
+
 const getCode = (type) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -24,17 +26,36 @@ const getCode = (type) => {
         }
     })
 }
-
-const getAllUserByRole = (roleid) => {
+//------------------------USER------------------------
+const getAllUserByRole = (roleid, currentPage) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const data = await db.User.findAll({
+            let numPage = parseInt(currentPage);
+            const { count, rows } = await db.User.findAndCountAll({
+                limit: LIMITDATAPAGE,
+                offset: LIMITDATAPAGE * (numPage - 1),
                 where: {
                     roleid: roleid
                 }, attributes: { exclude: ['password'] },
             });
-            const res = new ResponseForm(200, 0, "Get data successfully", data);
-            resolve(res);
+            let totalPage = Math.ceil(count / LIMITDATAPAGE);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+                return;
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: LIMITDATAPAGE,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get data successfully", data);
+                resolve(res);
+                return;
+            }
         } catch (err) {
             reject(err);
         }
@@ -246,7 +267,7 @@ const deleteUser = (id) => {
         }
     })
 }
-
+//--------------INFO DOCTOR--------------------
 const getListNameClinic = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -268,6 +289,22 @@ const getListNameSpecialty = () => {
                 attributes: ["id", "name"],
             });
             const res = new ResponseForm(200, 0, "Get data successfully", data);
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getInfoDoctor = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const data = await db.Markdown.findOne({
+                where: {
+                    doctorInfoId: doctorId
+                }
+            })
+            const res = new ResponseForm(200, 0, "Get information doctor successfully", data)
             resolve(res);
         } catch (err) {
             reject(err);
@@ -315,6 +352,37 @@ const saveInfoDoctor = (data) => {
                     res.info = content;
                     resolve(res);
                 }
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+//----------------SPECIALTY----------------------
+const getAllSpecialty = (currentPage) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let numPage = parseInt(currentPage);
+            const { count, rows } = await db.Specialty.findAndCountAll({
+                limit: LIMITDATAPAGE,
+                offset: LIMITDATAPAGE * (numPage - 1),
+            });
+            let totalPage = Math.ceil(count / LIMITDATAPAGE);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: LIMITDATAPAGE,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get list specialty successfully", data);
+                resolve(res);
+                return;
             }
         } catch (err) {
             reject(err);
@@ -448,6 +516,38 @@ const deleteSpecialty = (id) => {
                 res.errCode = 0;
                 res.message = "Delete specialty successfully";
                 resolve(res);
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+//--------------------------CLINIC--------------
+const getAllClinic = (currentPage) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let numPage = parseInt(currentPage);
+            const { count, rows } = await db.Clinic.findAndCountAll({
+                limit: LIMITDATAPAGE,
+                offset: LIMITDATAPAGE * (numPage - 1),
+            });
+            let totalPage = Math.ceil(count / LIMITDATAPAGE);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: LIMITDATAPAGE,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get list Clinic successfully", data);
+                resolve(res);
+                return;
             }
         } catch (err) {
             reject(err);
@@ -590,22 +690,6 @@ const deleteClinic = (id) => {
     })
 }
 
-const getInfoDoctor = (doctorId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const data = await db.Markdown.findOne({
-                where: {
-                    doctorInfoId: doctorId
-                }
-            })
-            const res = new ResponseForm(200, 0, "Get information doctor successfully", data)
-            resolve(res);
-        } catch (err) {
-            reject(err);
-        }
-    })
-}
-
 const isValidValue = async (type, key,) => {
     let value = await db.Allcode.findOne({
         where: {
@@ -625,5 +709,6 @@ module.exports = {
     createUser, editUser, deleteUser, saveInfoDoctor,
     getListNameClinic, getListNameSpecialty,
     createSpecialty, editSpecialty, deleteSpecialty,
-    createClinic, editClinic, deleteClinic
+    createClinic, editClinic, deleteClinic, getAllSpecialty,
+    getAllClinic
 }

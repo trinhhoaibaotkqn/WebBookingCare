@@ -2,6 +2,7 @@ const db = require("../models/index");
 const emailService = require("./emailService");
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require("sequelize");
+const ResponseForm = require("../utils/ResponseForm");
 
 const bookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -174,12 +175,50 @@ const getTopDoctorHome = (limit) => {
     })
 }
 
-const getAllDoctorBySpecialty = (specialtyId) => {
+const getTopClinic = (limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            const listClinic = await db.Clinic.findAll({
+                limit: limit
+            });
+            res.status = 200;
+            res.errCode = 0;
+            res.message = "Get list top clinic successfully";
+            res.data = listClinic;
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getTopSpecialty = (limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let res = {};
+            const listSpecialty = await db.Specialty.findAll({
+                limit: limit
+            });
+            res.status = 200;
+            res.errCode = 0;
+            res.message = "Get list top specialty successfully";
+            res.data = listSpecialty;
+            resolve(res);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getAllDoctorBySpecialty = (specialtyId, limit, numPage) => {
     return new Promise(async (resolve, reject) => {
         try {
             let res = {};
             let date = new Date();
-            const listDoctors = await db.DoctorInfo.findAll({
+            const { count, rows } = await db.DoctorInfo.findAndCountAll({
+                limit: limit,
+                offset: limit * (numPage - 1),
                 attributes: {
                     exclude: ['paymentId', 'priceId', 'provinceId', 'createdAt', 'updatedAt']
                 },
@@ -194,7 +233,7 @@ const getAllDoctorBySpecialty = (specialtyId) => {
                     { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
                     { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                     {
-                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'image'],
+                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'image', "id"],
                         include: [
                             {
                                 model: db.Schedule,
@@ -204,7 +243,8 @@ const getAllDoctorBySpecialty = (specialtyId) => {
                                     currentNumber: { [Op.lt]: 3 }
                                 },
                                 required: false,
-                                attributes: ['date', "timeType"],
+                                separate: true,
+                                attributes: ['date', "timeType", "doctorId"],
                                 include: [{ model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }]
                             },
                             { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }
@@ -212,23 +252,37 @@ const getAllDoctorBySpecialty = (specialtyId) => {
                     }
                 ]
             });
-            res.status = 200;
-            res.errCode = 0;
-            res.message = "Get list doctor by specialty successfully";
-            res.data = listDoctors;
-            resolve(res);
+            let totalPage = Math.ceil(count / limit);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+                return;
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: limit,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get list doctor by specialty successfully", data);
+                resolve(res);
+                return;
+            }
         } catch (err) {
             reject(err);
         }
     })
 }
 
-const getAllDoctorByClinic = (clinicId) => {
+const getAllDoctorByClinic = (clinicId, limit, numPage) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let res = {};
             let date = new Date();
-            const listDoctors = await db.DoctorInfo.findAll({
+            const { count, rows } = await db.DoctorInfo.findAndCountAll({
+                limit: limit,
+                offset: limit * (numPage - 1),
                 attributes: {
                     exclude: ['paymentId', 'priceId', 'provinceId', 'createdAt', 'updatedAt']
                 },
@@ -243,7 +297,7 @@ const getAllDoctorByClinic = (clinicId) => {
                     { model: db.Allcode, as: 'provinceData', attributes: ['valueEn', 'valueVi'] },
                     { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
                     {
-                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'image'],
+                        model: db.User, as: 'doctorInfoData', attributes: ['name', 'id', 'image'],
                         include: [
                             {
                                 model: db.Schedule,
@@ -253,19 +307,33 @@ const getAllDoctorByClinic = (clinicId) => {
                                     currentNumber: { [Op.lt]: 3 }
                                 },
                                 required: false,
-                                attributes: ['date', "timeType"],
+                                separate: true,
+                                attributes: ['date', "timeType", "doctorId"],
                                 include: [{ model: db.Allcode, as: 'timeData', attributes: ['valueEn', 'valueVi'] }]
                             },
                             { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }
                         ]
                     }
-                ]
+                ],
             });
-            res.status = 200;
-            res.errCode = 0;
-            res.message = "Get list doctor by specialty successfully";
-            res.data = listDoctors;
-            resolve(res);
+            let totalPage = Math.ceil(count / limit);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+                return;
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: limit,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get list doctor by clinic successfully", data);
+                resolve(res);
+                return;
+            }
         } catch (err) {
             reject(err);
         }
@@ -276,4 +344,69 @@ const createUrlValidate = (token, id) => {
     return `${process.env.REACT_APP_URL}/verify-booking-appointment?token=${token}&nonce=${id}`;
 }
 
-module.exports = { bookAppointment, verifyBookingAppointment, getAllDoctorBySpecialty, getTopDoctorHome, getAllDoctorByClinic }
+const getAllSpecialty = (limit, numPage) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { count, rows } = await db.Specialty.findAndCountAll({
+                limit: limit,
+                offset: limit * (numPage - 1),
+            });
+            let totalPage = Math.ceil(count / limit);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: limit,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get all specialties successfully", data);
+                resolve(res);
+                return;
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+const getAllClinic = (limit, numPage) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { count, rows } = await db.Clinic.findAndCountAll({
+                limit: limit,
+                offset: limit * (numPage - 1),
+            });
+            let totalPage = Math.ceil(count / limit);
+            if (numPage > totalPage) {
+                const res = new ResponseForm(404, 1, "Page is not valid", []);
+                resolve(res);
+            }
+            else {
+                let data = {
+                    page: numPage,
+                    perPage: limit,
+                    totalPage: totalPage,
+                    total: count,
+                    data: rows
+                }
+                const res = new ResponseForm(200, 0, "Get all Clinic successfully", data);
+                resolve(res);
+                return;
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+
+}
+
+module.exports = {
+    bookAppointment, verifyBookingAppointment, getAllDoctorBySpecialty,
+    getTopDoctorHome, getAllDoctorByClinic, getTopClinic, getTopSpecialty,
+    getAllSpecialty, getAllClinic
+}

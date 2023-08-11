@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { handleGetAllSpecialty } from "../../../services/userService";
+import { handleApiGetTopSpecialty } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import CommonUtils from "../../../utils/CommonUtils";
@@ -28,11 +28,12 @@ const Specialty = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const LIMIT = 8;
 
     const [listSpecialty, setListSpecialty] = useState();
 
     useEffect(() => {
-        handleGetAllSpecialty(dispatch, setListSpecialty);
+        handleApiGetTopSpecialty(LIMIT, setListSpecialty);
     }, [dispatch])
 
     return (
@@ -40,7 +41,7 @@ const Specialty = () => {
             <div className="section-content">
                 <div className="section-header">
                     <div className="title">Популярные специальности</div>
-                    <div className="header-button">Подробнее</div>
+                    <div className="header-button" onClick={() => navigate("/all-specialties")}>Подробнее</div>
                 </div>
                 <Slider {...settings}>
                     {listSpecialty && listSpecialty.length > 0 && listSpecialty.map((item) => {

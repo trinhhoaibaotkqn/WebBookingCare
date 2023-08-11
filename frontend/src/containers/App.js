@@ -38,6 +38,9 @@ import DetailFacility from './PatientPage/Facility/DetailFacility';
 import IsDoctor from '../components/IsDoctor';
 import IsAdmin from '../components/IsAdmin';
 import IsPatient from '../components/IsPatient';
+import AllFacility from './PatientPage/Facility/AllFacility';
+import AllSpecialty from './PatientPage/Specialty/AllSpecialty';
+import AllDoctor from './PatientPage/Doctor/AllDoctor';
 
 function App() {
   const messages = LanguageUtils.getFlattenedMessages();
@@ -52,6 +55,9 @@ function App() {
             <Routes>
               <Route exact path="/login" element={<IsNotAuthenticated><Login /></IsNotAuthenticated>} />
               <Route exact path="/register" element={<IsNotAuthenticated><Register /></IsNotAuthenticated>} />
+              <Route exact path="/all-facilities" element={<AllFacility />} />
+              <Route exact path="/all-specialties" element={<AllSpecialty />} />
+              <Route exact path="/all-doctors" element={<AllDoctor />} />
               <Route exact path="/personal-page" element={<IsPatient><PatientHome /></IsPatient>} />
               <Route exact path="/detail-doctor/:name" element={<DetailDoctor />} />
               <Route exact path="/detail-specialty/:name" element={<DetailSpecialty />} />

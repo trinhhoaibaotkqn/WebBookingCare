@@ -22,7 +22,7 @@ const HeaderDetail = (props) => {
                     </div>
                     <div className="title-detail">{title}</div>
                 </div>
-                <div className="icon-back" onClick={() => navigate("/")}>
+                <div className="icon-back" onClick={() => navigate(-1)}>
                     <ImArrowRight />
                 </div>
                 <LeftMenu />

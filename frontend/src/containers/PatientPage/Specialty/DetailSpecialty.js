@@ -7,6 +7,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { handleApiGetListDoctorBySpecialty } from "../../../services/userService";
 import ItemDoctor from "../Doctor/ItemDoctor";
 import { CLEAN_LIST_DOCTOR_BY_SPECIALTY } from "../../../store/slice/userSlice";
+import Pagination from "../../../components/Pagination";
 
 const DetailSpecialty = () => {
 
@@ -17,15 +18,17 @@ const DetailSpecialty = () => {
     const [showHide, setShowHide] = useState(true);
     const [listDoctor, setListDoctor] = useState();
 
-
+    const [totalPage, setTotalPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const LIMIT = 2;
 
     useEffect(() => {
-        handleApiGetListDoctorBySpecialty(specialty.id, dispatch, setListDoctor);
+        handleApiGetListDoctorBySpecialty(specialty.id, dispatch, setListDoctor, LIMIT, currentPage, setTotalPage);
 
         return () => {
             dispatch(CLEAN_LIST_DOCTOR_BY_SPECIALTY());
         }
-    }, [dispatch, specialty])
+    }, [dispatch, specialty, currentPage])
 
     return (
         <div className="detail-specialty-container">
@@ -50,6 +53,11 @@ const DetailSpecialty = () => {
                     })}
                 </div>
             </div>
+            <Pagination
+                totalPage={totalPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </div>
     )
 }

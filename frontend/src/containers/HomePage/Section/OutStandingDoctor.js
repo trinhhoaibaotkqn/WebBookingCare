@@ -42,7 +42,7 @@ const OutStandingDoctor = () => {
             <div className="section-content">
                 <div className="section-header">
                     <div className="title">Bác sĩ nổi bật tuần qua</div>
-                    <div className="header-button">xem thêm</div>
+                    {/* <div className="header-button" onClick={() => navigate("/all-doctors")}>xem thêm</div> */}
                 </div>
                 <Slider {...settings}>
                     {listDoctors && listDoctors.map(item => {

@@ -50,68 +50,88 @@ export const handleApiConfirmAppointment = async (data, dispatch, setErrCode) =>
     }
 }
 
-export const handleGetAllSpecialty = async (dispatch, setListSpecialty) => {
+export const handleGetAllSpecialty = async (limit, currentPage, dispatch, setListSpecialty, setTotalPage) => {
     dispatch(GET_LIST_SPECIALTY_START());
     try {
         console.log("call api get list specialty")
         const res = await axios.get(`http://localhost:8080/user/get-all-specialty`,
             {
+                params: {
+                    limit: limit,
+                    currentPage: currentPage
+                },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            setListSpecialty(res.data.data);
-            dispatch(GET_LIST_SPECIALTY_SUSSCESS(res.data.data));
+            setListSpecialty(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            dispatch(GET_LIST_SPECIALTY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
         dispatch(GET_LIST_SPECIALTY_FAILED());
     }
 }
 
-export const handleApiGetAllFacility = async (dispatch, setListFacility) => {
+export const handleApiGetAllFacility = async (limit, currentPage, dispatch, setListFacility, setTotalPage) => {
     dispatch(GET_LIST_FACILITY_START());
     try {
         console.log("call api get list facility")
         const res = await axios.get(`http://localhost:8080/user/get-all-clinic`,
             {
+                params: {
+                    limit: limit,
+                    currentPage: currentPage
+                },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            setListFacility(res.data.data);
-            dispatch(GET_LIST_FACILITY_SUSSCESS(res.data.data));
+            setListFacility(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            dispatch(GET_LIST_FACILITY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
         dispatch(GET_LIST_FACILITY_FAILED());
     }
 }
 
-export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, setListDoctor) => {
+export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, setListDoctor, limit, currentPage, setTotalPage) => {
     dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_START());
     try {
         console.log("call api get list doctor by specialty")
         const res = await axios.get(`http://localhost:8080/user/get-all-doctor-by-specialty/${specialtyId}`,
             {
+                params: {
+                    limit: limit,
+                    currentPage: currentPage
+                },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            setListDoctor(res.data.data);
-            dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS(res.data.data));
+            setListDoctor(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
         dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_FAILED());
     }
 }
 
-export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, setListDoctor) => {
+export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, setListDoctor, limit, currentPage, setTotalPage) => {
     dispatch(GET_LIST_DOCTOR_BY_FACILITY_START());
     try {
         console.log("call api get list doctor by facility")
         const res = await axios.get(`http://localhost:8080/user/get-all-doctor-by-clinic/${facilityId}`,
             {
+                params: {
+                    limit: limit,
+                    currentPage: currentPage
+                },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            setListDoctor(res.data.data);
-            dispatch(GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS(res.data.data));
+            setListDoctor(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            dispatch(GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
         dispatch(GET_LIST_DOCTOR_BY_FACILITY_FAILED());
@@ -147,5 +167,37 @@ export const handleApiGetScheduleByDay = async (data, setListTime) => {
         }
     } catch (err) {
         setListTime([]);
+    }
+}
+
+export const handleApiGetTopClinic = async (limit, setListFacility) => {
+    try {
+        console.log("call api get top facility")
+        const res = await axios.get(`http://localhost:8080/user/get-top-clinic`,
+            {
+                params: { limit: limit },
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            setListFacility(res.data.data);
+        }
+    } catch (err) {
+        toast.error("SERVER ERROR");
+    }
+}
+
+export const handleApiGetTopSpecialty = async (limit, setListSpecialty) => {
+    try {
+        console.log("call api get top specialty")
+        const res = await axios.get(`http://localhost:8080/user/get-top-specialty`,
+            {
+                params: { limit: limit },
+                "withCredentials": true
+            });
+        if (res.data && res.data.errCode === 0) {
+            setListSpecialty(res.data.data);
+        }
+    } catch (err) {
+        toast.error("SERVER ERROR");
     }
 }

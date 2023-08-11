@@ -1,7 +1,9 @@
+import IsDeveloping from "../../../components/IsDeleloping";
+
 const AdminHandbook = () => {
     return (
         <div>
-            AdminHandbook
+            <IsDeveloping />
         </div>
     )
 }

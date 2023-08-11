@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit, MdDeleteForever } from "react-icons/md";
 import ModalEditSpecialty from './ModalEditSpecialty';
 import ModalDeleteSpecialty from './ModalDeleteSpecialty';
+import Pagination from '../../../../components/Pagination';
 
 const AdminSpecialty = () => {
     const userLogin = useSelector(state => state.auth.login.currentUser);
@@ -19,6 +20,10 @@ const AdminSpecialty = () => {
     const [dataEdit, setDataEdit] = useState();
     const [dataDelete, setDataDelete] = useState();
     const [listenChange, setListenChange] = useState(false);
+
+    const [totalPage, setTotalPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(0);
 
     const handleListenChange = () => {
         setListenChange(!listenChange);
@@ -38,8 +43,8 @@ const AdminSpecialty = () => {
     }
 
     useEffect(() => {
-        handleApiGetListSpecialty(dispatch, setListSpecialty, userLogin);
-    }, [dispatch, listenChange])
+        handleApiGetListSpecialty(dispatch, setListSpecialty, userLogin, currentPage, setTotalPage, setPerPage);
+    }, [dispatch, listenChange, currentPage])
 
     return (
         <div className="section-admin-container">
@@ -72,7 +77,7 @@ const AdminSpecialty = () => {
                             {listSpecialty && listSpecialty.length > 0 && listSpecialty.map((item, index) => {
                                 return (
                                     <tr key={item.id}>
-                                        <td>{index + 1}</td>
+                                        <td>{index + 1 + (currentPage - 1) * perPage}</td>
                                         <td>{item.name}</td>
                                         {/* <td></td> */}
                                         <td>
@@ -95,6 +100,13 @@ const AdminSpecialty = () => {
                     </table>
                 </div>
             </div>
+
+            <Pagination
+                totalPage={totalPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
+
             <ModalAddNewSpecialty
                 isOpenAdd={isOpenAdd}
                 setIsOpenAdd={setIsOpenAdd}

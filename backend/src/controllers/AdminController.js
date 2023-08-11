@@ -19,7 +19,8 @@ class AdminController {
     getAllUserByRole = async (req, res) => {
         try {
             const roleid = req.params.role;
-            let data = await adminService.getAllUserByRole(roleid);
+            const currentPage = req.query?.currentPage;
+            let data = await adminService.getAllUserByRole(roleid, currentPage);
             let statusCode = data.status;
             delete data.status;
             return res.status(statusCode).json(data);
@@ -106,12 +107,10 @@ class AdminController {
 
     getAllSpecialty = async (req, res) => {
         try {
-            const specialty = await db.Specialty.findAll();
-            res.status(200).json({
-                errCode: 0,
-                message: "Get list specialty successfully",
-                data: specialty
-            });
+            let data = await adminService.getAllSpecialty(req.query?.currentPage);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }
@@ -155,12 +154,10 @@ class AdminController {
 
     getAllClinic = async (req, res) => {
         try {
-            const clinic = await db.Clinic.findAll();
-            res.status(200).json({
-                errCode: 0,
-                message: "Get list Clinic successfully",
-                data: clinic
-            });
+            let data = await adminService.getAllClinic(req.query?.currentPage);
+            let statusCode = data.status;
+            delete data.status;
+            return res.status(statusCode).json(data);
         } catch (err) {
             res.status(500).json("Server error");
         }

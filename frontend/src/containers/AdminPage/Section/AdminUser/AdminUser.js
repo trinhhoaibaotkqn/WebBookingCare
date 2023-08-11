@@ -20,6 +20,7 @@ import {
 import CommonUtils from "../../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
 import { handleApiGetInfoDoctor, handleApiGetListNameFacility, handleApiGetListNameSpecialty, handleApiGetListUsers } from "../../../../services/adminService";
+import Pagination from "../../../../components/Pagination";
 
 const AdminUser = () => {
     const dispatch = useDispatch();
@@ -46,6 +47,9 @@ const AdminUser = () => {
     const [data, setData] = useState();
     const [dataEdit, setDataEdit] = useState();
     const [dataDelete, setDataDelete] = useState();
+    const [totalPage, setTotalPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(0);
 
     const handleModalAdd = () => {
         setModalAdd(!modalAdd);
@@ -59,6 +63,7 @@ const AdminUser = () => {
         setDataDelete(user);
     }
     const handleClickOption = (ROLE) => {
+        setCurrentPage(1);
         switch (ROLE) {
             case "R1":
                 dispatch(OPEN_AMIN());
@@ -89,17 +94,17 @@ const AdminUser = () => {
 
     useEffect(() => {
         if (optionDoctor)
-            handleApiGetListUsers("R2", dispatch, user, setData);
+            handleApiGetListUsers("R2", dispatch, user, setData, currentPage, setTotalPage, setPerPage);
         if (optionPatient)
-            handleApiGetListUsers("R3", dispatch, user, setData);
+            handleApiGetListUsers("R3", dispatch, user, setData, currentPage, setTotalPage, setPerPage);
         if (optionAdmin)
-            handleApiGetListUsers("R1", dispatch, user, setData);
+            handleApiGetListUsers("R1", dispatch, user, setData, currentPage, setTotalPage, setPerPage);
 
         return () => {
             console.log(">>>>>>clean up")
             dispatch(CLEAN_ALL_LIST());
         }
-    }, [dispatch, optionDoctor, optionPatient, optionAdmin, listenUpdate]);
+    }, [dispatch, optionDoctor, optionPatient, optionAdmin, listenUpdate, currentPage]);
 
     useEffect(() => {
         handleApiGetListNameFacility(dispatch, user);
@@ -151,7 +156,7 @@ const AdminUser = () => {
                             </tr>
                             {isReady && data && data.length > 0 && data.map((item, index) => {
                                 return (<tr key={item.id}>
-                                    <td>{index + 1}</td>
+                                    <td>{index + 1 + (currentPage - 1) * perPage}</td>
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
                                     <td>
@@ -219,6 +224,12 @@ const AdminUser = () => {
                     </table>
                 </div>
             </div>
+
+            <Pagination
+                totalPage={totalPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
 
             <ModalAddNewUser
                 modalAdd={modalAdd}

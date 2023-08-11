@@ -69,7 +69,7 @@ export const handleApiGetCodeFromDB = async (dispatch, user, type) => {
     }
 }
 
-export const handleApiGetListUsers = async (keyRole, dispatch, user, setData) => {
+export const handleApiGetListUsers = async (keyRole, dispatch, user, setData, currentPage, setTotalPage, setPerPage) => {
     switch (keyRole) {
         case "R1":
             dispatch(GET_ADMIN_START());
@@ -87,20 +87,23 @@ export const handleApiGetListUsers = async (keyRole, dispatch, user, setData) =>
         let axiosJWT = createAxiosJWT(user, dispatch);
         const res = await axiosJWT.get(`http://localhost:8080/admin/get-user/${keyRole}`,
             {
+                params: { currentPage },
                 headers: { token: `Bearer ${user.accessToken}` },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            setData(res.data.data);
+            setTotalPage(res.data.data.totalPage);
+            setPerPage(res.data.data.perPage);
+            setData(res.data.data.data);
             switch (keyRole) {
                 case "R1":
-                    dispatch(GET_ADMIN_SUCCESS(res.data.data));
+                    dispatch(GET_ADMIN_SUCCESS(res.data.data.data));
                     break;
                 case "R2":
-                    dispatch(GET_DOCTOR_SUCCESS(res.data.data));
+                    dispatch(GET_DOCTOR_SUCCESS(res.data.data.data));
                     break;
                 case "R3":
-                    dispatch(GET_PATIENT_SUCCESS(res.data.data));
+                    dispatch(GET_PATIENT_SUCCESS(res.data.data.data));
                     break;
                 default:
             }
@@ -177,6 +180,7 @@ export const handleApiDeleteUser = async (id, dispatch, handleListenChange, user
 }
 
 export const handleApiGetListNameFacility = async (dispatch, userLogin) => {
+    console.log(">>>>>>>>>>>>call api list facility");
     dispatch(GET_LIST_NAME_FACILITY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
@@ -195,6 +199,7 @@ export const handleApiGetListNameFacility = async (dispatch, userLogin) => {
 }
 
 export const handleApiGetListNameSpecialty = async (dispatch, userLogin) => {
+    console.log(">>>>>>>>>>>>call api list specialty");
     dispatch(GET_LIST_NAME_SPECIALTY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
@@ -270,18 +275,21 @@ export const handleApiCreateSpecialty = async (data, dispatch, setIsOpenAdd, cle
     }
 }
 
-export const handleApiGetListSpecialty = async (dispatch, setListSpecialty, userLogin) => {
+export const handleApiGetListSpecialty = async (dispatch, setListSpecialty, userLogin, currentPage, setTotalPage, setPerPage) => {
     dispatch(GET_SPECIALTY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
         const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-specialty`,
             {
+                params: { currentPage },
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            dispatch(GET_SPECIALTY_SUCCESS(res.data.data));
-            setListSpecialty(res.data.data);
+            dispatch(GET_SPECIALTY_SUCCESS(res.data.data.data));
+            setListSpecialty(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            setPerPage(res.data.data.perPage)
         }
     } catch (err) {
         dispatch(GET_SPECIALTY_FAILED());
@@ -349,21 +357,25 @@ export const handleApiCreateFacility = async (data, dispatch, setIsOpenAdd, clea
     }
 }
 
-export const handleApiGetListFacility = async (dispatch, setListFacility, userLogin) => {
+export const handleApiGetListFacility = async (dispatch, setListFacility, userLogin, currentPage, setTotalPage, setPerPage) => {
     dispatch(GET_FACILITY_START());
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
         const res = await axiosJWT.get(`http://localhost:8080/admin/get-list-clinic`,
             {
+                params: { currentPage },
                 headers: { token: `Bearer ${userLogin.accessToken}` },
                 "withCredentials": true
             });
         if (res.data && res.data.errCode === 0) {
-            dispatch(GET_FACILITY_SUCCESS(res.data.data));
-            setListFacility(res.data.data);
+            dispatch(GET_FACILITY_SUCCESS(res.data.data.data));
+            setListFacility(res.data.data.data);
+            setTotalPage(res.data.data.totalPage);
+            setPerPage(res.data.data.perPage);
         }
     } catch (err) {
         dispatch(GET_FACILITY_FAILED());
+        toast.error(err.response.data.message);
     }
 }
 

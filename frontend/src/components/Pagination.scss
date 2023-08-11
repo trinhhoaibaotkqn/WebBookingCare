@@ -1,0 +1,26 @@
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    gap: 5px;
+
+    .page-element {
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 3px;
+        font-weight: 400;
+
+        &.active {
+            background-color: #18885c;
+            color: #fff;
+        }
+    }
+
+    .page-element:hover {
+        background-color: #18885c;
+        color: #fff;
+    }
+}
