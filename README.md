@@ -44,7 +44,7 @@ Technologies used:
     
     +CSS thuần(không dùng thư viện)
     
-    -Backend: 
+-Backend: 
     
     +Nodejs (expressjs library) 
     
