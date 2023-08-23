@@ -21,9 +21,10 @@ const DetailFacility = () => {
     const [totalPage, setTotalPage] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const LIMIT = 2;
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        handleApiGetListDoctorByFacility(facility.id, dispatch, setListDoctor, LIMIT, currentPage, setTotalPage);
+        handleApiGetListDoctorByFacility(facility.id, dispatch, setListDoctor, LIMIT, currentPage, setTotalPage, setIsLoading);
 
         return () => {
             dispatch(CLEAN_LIST_DOCTOR_BY_FACILITY());
@@ -50,15 +51,29 @@ const DetailFacility = () => {
             <div id="list-doctor" className="list-doctor-container">
                 <div className="title-list-doctor">Bác sỹ</div>
                 <div className="list-doctor-content">
-                    {listDoctor && listDoctor.length > 0 && listDoctor.map((item, index) => {
-                        return (
-                            <div key={index} className="child-doctor">
-                                <ItemDoctor
-                                    doctor={item}
-                                />
-                            </div>
-                        )
-                    })}
+                    {isLoading ?
+                        <>
+                            {Array(LIMIT).fill(0).map((_, index) => {
+                                return (
+                                    <div key={index} className="child-doctor">
+                                        <ItemDoctor
+                                            isLoading={isLoading}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </>
+                        :
+                        (listDoctor && listDoctor.length > 0 && listDoctor.map((item, index) => {
+                            return (
+                                <div key={index} className="child-doctor">
+                                    <ItemDoctor
+                                        doctor={item}
+                                    />
+                                </div>
+                            )
+                        })) || <div>Hiện chưa có bác sỹ</div>
+                    }
                 </div>
             </div>
             <Pagination

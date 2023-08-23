@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "bookingcare",
-    "host": "127.0.0.1",
+    "username": "uxfzmoks3dhugblz",
+    "password": "odENWxLWGnHkFS2Nqopy",
+    "database": "bx6v7targo25hr0n5fqw",
+    "host": "bx6v7targo25hr0n5fqw-mysql.services.clever-cloud.com",
     "dialect": "mysql",
     "logging": false
   },
@@ -15,10 +15,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "bookingcare",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "uxfzmoks3dhugblz",
+    "password": "odENWxLWGnHkFS2Nqopy",
+    "database": "bx6v7targo25hr0n5fqw",
+    "host": "bx6v7targo25hr0n5fqw-mysql.services.clever-cloud.com",
+    "dialect": "mysql",
+    "logging": false
   }
 }

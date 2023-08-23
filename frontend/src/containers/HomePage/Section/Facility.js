@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { handleApiGetTopClinic } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import CommonUtils from "../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import FacilityItem from "./FacilityItem";
 
 const Facility = () => {
     let settings = {
@@ -33,9 +33,10 @@ const Facility = () => {
     const LIMIT = 8;
 
     const [listFacility, setListFacility] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        handleApiGetTopClinic(LIMIT, setListFacility);
+        handleApiGetTopClinic(LIMIT, setListFacility, setIsLoading);
     }, [dispatch])
 
     return (
@@ -45,24 +46,31 @@ const Facility = () => {
                     <div className="title"><FormattedMessage id="facility.title" /></div>
                     <div className="header-button" onClick={() => navigate("/all-facilities")}><FormattedMessage id="btnSeeMore" /></div>
                 </div>
-                <Slider {...settings}>
-                    {listFacility && listFacility.length > 0 && listFacility.map((item, index) => {
-                        return (
-                            <div key={index}
-                                onClick={() => navigate(`/detail-facility/${item.name}`, {
-                                    state: {
-                                        facility: item,
-                                    }
-                                })}
-                            >
-                                <div className="item-content">
-                                    <div className="item-image image-facility" style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item.image)})` }}></div>
-                                    <div className="subs-title">{item.name}</div>
+                {isLoading ?
+                    <Slider {...settings}>
+                        <FacilityItem
+                            isLoading={isLoading} />
+                        <FacilityItem
+                            isLoading={isLoading} />
+                        <FacilityItem
+                            isLoading={isLoading} />
+                        <FacilityItem
+                            isLoading={isLoading} />
+                    </Slider>
+                    :
+                    <Slider {...settings}>
+                        {listFacility && listFacility.length > 0 && listFacility.map((item) => {
+                            return (
+                                <div key={item.id}>
+                                    <FacilityItem
+                                        isLoading={isLoading}
+                                        item={item}
+                                    />
                                 </div>
-                            </div>
-                        )
-                    })}
-                </Slider>
+                            )
+                        })}
+                    </Slider>
+                }
             </div>
         </div>
     )

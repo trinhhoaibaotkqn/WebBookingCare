@@ -50,7 +50,8 @@ export const handleApiConfirmAppointment = async (data, dispatch, setErrCode) =>
     }
 }
 
-export const handleGetAllSpecialty = async (limit, currentPage, dispatch, setListSpecialty, setTotalPage) => {
+export const handleGetAllSpecialty = async (limit, currentPage, dispatch, setListSpecialty, setTotalPage, setIsLoading) => {
+    setIsLoading(true);
     dispatch(GET_LIST_SPECIALTY_START());
     try {
         console.log("call api get list specialty")
@@ -65,14 +66,17 @@ export const handleGetAllSpecialty = async (limit, currentPage, dispatch, setLis
         if (res.data && res.data.errCode === 0) {
             setListSpecialty(res.data.data.data);
             setTotalPage(res.data.data.totalPage);
+            setIsLoading(false);
             dispatch(GET_LIST_SPECIALTY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
+        setIsLoading(false);
         dispatch(GET_LIST_SPECIALTY_FAILED());
     }
 }
 
-export const handleApiGetAllFacility = async (limit, currentPage, dispatch, setListFacility, setTotalPage) => {
+export const handleApiGetAllFacility = async (limit, currentPage, dispatch, setListFacility, setTotalPage, setIsLoading) => {
+    setIsLoading(true);
     dispatch(GET_LIST_FACILITY_START());
     try {
         console.log("call api get list facility")
@@ -87,14 +91,17 @@ export const handleApiGetAllFacility = async (limit, currentPage, dispatch, setL
         if (res.data && res.data.errCode === 0) {
             setListFacility(res.data.data.data);
             setTotalPage(res.data.data.totalPage);
+            setIsLoading(false);
             dispatch(GET_LIST_FACILITY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
+        setIsLoading(false);
         dispatch(GET_LIST_FACILITY_FAILED());
     }
 }
 
-export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, setListDoctor, limit, currentPage, setTotalPage) => {
+export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, setListDoctor, limit, currentPage, setTotalPage, setIsLoading) => {
+    setIsLoading(true)
     dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_START());
     try {
         console.log("call api get list doctor by specialty")
@@ -109,14 +116,17 @@ export const handleApiGetListDoctorBySpecialty = async (specialtyId, dispatch, s
         if (res.data && res.data.errCode === 0) {
             setListDoctor(res.data.data.data);
             setTotalPage(res.data.data.totalPage);
+            setIsLoading(false);
             dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
+        setIsLoading(false);
         dispatch(GET_LIST_DOCTOR_BY_SPECIALTY_FAILED());
     }
 }
 
-export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, setListDoctor, limit, currentPage, setTotalPage) => {
+export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, setListDoctor, limit, currentPage, setTotalPage, setIsLoading) => {
+    setIsLoading(true)
     dispatch(GET_LIST_DOCTOR_BY_FACILITY_START());
     try {
         console.log("call api get list doctor by facility")
@@ -131,14 +141,16 @@ export const handleApiGetListDoctorByFacility = async (facilityId, dispatch, set
         if (res.data && res.data.errCode === 0) {
             setListDoctor(res.data.data.data);
             setTotalPage(res.data.data.totalPage);
+            setIsLoading(false)
             dispatch(GET_LIST_DOCTOR_BY_FACILITY_SUSSCESS(res.data.data.data));
         }
     } catch (err) {
         dispatch(GET_LIST_DOCTOR_BY_FACILITY_FAILED());
+        setIsLoading(false)
     }
 }
 
-export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => {
+export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors, setIsLoading) => {
     dispatch(GET_TOP_DOCTORS_START());
     try {
         console.log("call api get top doctor")
@@ -148,6 +160,7 @@ export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => 
             });
         if (res.data) {
             setListDoctors(res.data.data);
+            setIsLoading(false);
             dispatch(GET_TOP_DOCTORS_SUSSCESS(res.data.data));
         }
     } catch (err) {
@@ -155,7 +168,7 @@ export const handleApiGetTopDoctor = async (limit, dispatch, setListDoctors) => 
     }
 }
 
-export const handleApiGetScheduleByDay = async (data, setListTime) => {
+export const handleApiGetScheduleByDay = async (data, setListTime, setIsLoading) => {
     try {
         console.log(">>>>>call api schedule doctor");
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-schedule-doctor`,
@@ -164,13 +177,14 @@ export const handleApiGetScheduleByDay = async (data, setListTime) => {
             });
         if (res.data && res.data.errCode === 0) {
             setListTime(res.data.data);
+            setIsLoading(false);
         }
     } catch (err) {
         setListTime([]);
     }
 }
 
-export const handleApiGetTopClinic = async (limit, setListFacility) => {
+export const handleApiGetTopClinic = async (limit, setListFacility, setIsLoading) => {
     try {
         console.log("call api get top facility")
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-top-clinic`,
@@ -180,13 +194,14 @@ export const handleApiGetTopClinic = async (limit, setListFacility) => {
             });
         if (res.data && res.data.errCode === 0) {
             setListFacility(res.data.data);
+            setIsLoading(false);
         }
     } catch (err) {
         toast.error("SERVER ERROR");
     }
 }
 
-export const handleApiGetTopSpecialty = async (limit, setListSpecialty) => {
+export const handleApiGetTopSpecialty = async (limit, setListSpecialty, setIsLoading) => {
     try {
         console.log("call api get top specialty")
         const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/get-top-specialty`,
@@ -196,6 +211,7 @@ export const handleApiGetTopSpecialty = async (limit, setListSpecialty) => {
             });
         if (res.data && res.data.errCode === 0) {
             setListSpecialty(res.data.data);
+            setIsLoading(false);
         }
     } catch (err) {
         toast.error("SERVER ERROR");

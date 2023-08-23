@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { languages } from "../../../utils/Constants";
 import { handleApiGetDoctorInfo, handleApiSaveDataDoctorInfo } from "../../../services/doctorService";
+import Loading from "../../../components/Loading";
 
 const InformationCheckup = () => {
     const dispatch = useDispatch();
@@ -19,8 +20,10 @@ const InformationCheckup = () => {
     const [addressClinic, setAddressClinic] = useState("");
     const [nameClinic, setNameClinic] = useState("");
     const [note, setNote] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleClickBtnSave = () => {
+        setIsLoading(true);
         const data = {
             doctorId: doctor.id,
             priceId,
@@ -30,7 +33,7 @@ const InformationCheckup = () => {
             nameClinic,
             note
         }
-        handleApiSaveDataDoctorInfo(data, dispatch, doctor);
+        handleApiSaveDataDoctorInfo(data, dispatch, doctor, setIsLoading);
         setIsEdit(false);
     }
 
@@ -44,7 +47,7 @@ const InformationCheckup = () => {
     }
 
     useEffect(() => {
-        handleApiGetDoctorInfo(dispatch, doctor, setDefaultValue)
+        handleApiGetDoctorInfo(dispatch, doctor, setDefaultValue, setIsLoading)
     }, [dispatch]);
 
     return (
@@ -141,6 +144,7 @@ const InformationCheckup = () => {
                     </div>
                 }
             </div>
+            <Loading isLoading={isLoading} />
         </div>
     )
 }

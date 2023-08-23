@@ -7,7 +7,7 @@ const { connectDB } = require('./config/connectDatabase');
 const route = require("./routes/index");
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 //config
 app.use(express.urlencoded({
@@ -28,5 +28,5 @@ connectDB();
 route(app);
 
 app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`)
+    console.log(`Server running on port: ${port}`);
 })

@@ -6,6 +6,7 @@ import { handleApiGetListAppointment } from "../../../services/doctorService";
 import { languages } from "../../../utils/Constants";//
 import { MdOutlineDone } from "react-icons/md";
 import ModalCompleteAppointment from "./ModalCompleteAppointment";
+import Loading from "../../../components/Loading";
 
 const Appointment = () => {
 
@@ -19,7 +20,7 @@ const Appointment = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [toggleUpdateData, setToggleUpdateData] = useState(false);
     const [dataComplete, setDataComplete] = useState();
-
+    const [isLoading, setIsLoading] = useState(true);
 
 
     const handleClickBtnDone = (item) => {
@@ -33,7 +34,7 @@ const Appointment = () => {
             date: selectedDate
         }
         console.log(">>>>>>call api get list appointment")
-        handleApiGetListAppointment(data, dispatch, setListAppointment, doctor);
+        handleApiGetListAppointment(data, dispatch, setListAppointment, doctor, setIsLoading);
     }, [setListAppointment, selectedDate, dispatch, toggleUpdateData]);
 
     return (
@@ -97,7 +98,7 @@ const Appointment = () => {
                 toggleUpdateData={toggleUpdateData}
                 setToggleUpdateData={setToggleUpdateData}
             />
-
+            <Loading isLoading={isLoading} />
         </div>
     )
 }

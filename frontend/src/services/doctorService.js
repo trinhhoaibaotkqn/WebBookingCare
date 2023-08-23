@@ -75,7 +75,8 @@ export const handleApiGetAllCode = async (TYPE, dispatch, user) => {
     }
 }
 
-export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setListSelectedTime) => {
+export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setListSelectedTime, setIsLoading) => {
+    setIsLoading(true);
     try {
         console.log(">>>>>call api schedule");
         let axiosJWT = createAxiosJWT(doctor, dispatch);
@@ -93,12 +94,13 @@ export const handleApiGetSchedule = async (dispatch, doctor, selectedDate, setLi
                 return element.timeType
             });
             setListSelectedTime(temp);
+            setIsLoading(false);
         }
     } catch (err) {
     }
 }
 
-export const handleApiSaveSheduleDoctor = async (data, dispatch, userLogin) => {
+export const handleApiSaveSheduleDoctor = async (data, dispatch, userLogin, setIsLoading) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
         const res = await axiosJWT.post(`${process.env.REACT_APP_BACKEND_URL}/doctor/save-schedule`, data,
@@ -109,13 +111,14 @@ export const handleApiSaveSheduleDoctor = async (data, dispatch, userLogin) => {
         );
         if (res.data && res.data.errCode === 0) {
             toast.success(res.data.message);
+            setIsLoading(false);
         }
     } catch (err) {
         toast.error(err.response.data.message);
     }
 }
 
-export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue) => {
+export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue, setIsLoading) => {
     try {
         console.log(">>>>>call api doctor info");
         let axiosJWT = createAxiosJWT(doctor, dispatch);
@@ -127,13 +130,14 @@ export const handleApiGetDoctorInfo = async (dispatch, doctor, setDefaultValue) 
         );
         if (res.data && res.data.errCode === 0) {
             setDefaultValue(res);
+            setIsLoading(false);
         }
     } catch (err) {
         toast.error("Can't load data from server");
     }
 }
 
-export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin) => {
+export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin, setIsLoading) => {
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
         const res = await axiosJWT.put(`${process.env.REACT_APP_BACKEND_URL}/doctor/save-doctor-info`, data,
@@ -144,13 +148,16 @@ export const handleApiSaveDataDoctorInfo = async (data, dispatch, userLogin) => 
         );
         if (res.data && res.data.errCode === 0) {
             toast.success(res.data.message);
+            setIsLoading(false);
         }
     } catch (err) {
         toast.error(err.response?.data?.message);
+        setIsLoading(false);
     }
 }
 
-export const handleApiGetListAppointment = async (data, dispatch, setListAppointment, userLogin) => {
+export const handleApiGetListAppointment = async (data, dispatch, setListAppointment, userLogin, setIsLoading) => {
+    setIsLoading(true)
     try {
         let axiosJWT = createAxiosJWT(userLogin, dispatch);
         const res = await axiosJWT.get(`${process.env.REACT_APP_BACKEND_URL}/doctor/get-list-appointment`,
@@ -162,6 +169,7 @@ export const handleApiGetListAppointment = async (data, dispatch, setListAppoint
         );
         if (res.data && res.data.errCode === 0) {
             setListAppointment(res.data.data);
+            setIsLoading(false)
         }
     } catch (err) {
         toast.error("Can't load data from server");

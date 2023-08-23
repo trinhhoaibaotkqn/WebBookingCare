@@ -7,6 +7,8 @@ import { handleGetAllSpecialty } from "../../../services/userService";
 import { useDispatch } from "react-redux";
 import CommonUtils from "../../../utils/CommonUtils";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AllSpecialty = () => {
 
@@ -18,9 +20,10 @@ const AllSpecialty = () => {
     const LIMIT = 2;
 
     const [listSpecialty, setListSpecialty] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        handleGetAllSpecialty(LIMIT, currentPage, dispatch, setListSpecialty, setTotalPage);
+        handleGetAllSpecialty(LIMIT, currentPage, dispatch, setListSpecialty, setTotalPage, setIsLoading);
     }, [dispatch, currentPage]);
 
     return (
@@ -34,22 +37,35 @@ const AllSpecialty = () => {
             </div>
             <div className="all-list-container">
                 {
-                    listSpecialty && listSpecialty.length > 0 && listSpecialty.map(item => {
-                        return (
-                            <div className="element-container" key={item.id}
-                                onClick={() => navigate(`/detail-specialty/${item.name}`, {
-                                    state: {
-                                        specialty: item,
-                                    }
-                                })}>
-                                <div className="image-specialty"
-                                    style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item?.image)})` }}
-                                ></div>
-                                <div className="main-title">{item.name}</div>
-                            </div>
+                    isLoading ?
+                        <>
+                            {Array(LIMIT).fill(0).map((_, index) => {
+                                return (
+                                    <div className="element-container" key={index}>
+                                        <div className="image-specialty"><Skeleton height={"100%"} /></div>
+                                        <div className="main-title"><Skeleton width={"200px"} /></div>
+                                    </div>
+                                )
+                            })}
 
-                        )
-                    })
+                        </>
+                        :
+                        (listSpecialty && listSpecialty.length > 0 && listSpecialty.map(item => {
+                            return (
+                                <div className="element-container" key={item.id}
+                                    onClick={() => navigate(`/detail-specialty/${item.name}`, {
+                                        state: {
+                                            specialty: item,
+                                        }
+                                    })}>
+                                    <div className="image-specialty"
+                                        style={{ backgroundImage: `url(${CommonUtils.getPreviewImgfromDatabase(item?.image)})` }}
+                                    ></div>
+                                    <div className="main-title">{item.name}</div>
+                                </div>
+
+                            )
+                        }))
                 }
             </div>
             <Pagination

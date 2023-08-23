@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CommonUtils from "../../utils/CommonUtils";
 import { useState } from "react";
 import { handleApiLogOut } from "../../services/authService";
+import Loading from "../../components/Loading";
 
 const DoctorHeader = () => {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const DoctorHeader = () => {
     let avatarDoctor = CommonUtils.getPreviewImgfromDatabase(doctor?.image);
 
     const [isOpenDropDown, setIsOpenDropDown] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChangeLanguage = (lang) => {
         dispatch(CHANGE_LANGUAGE(lang));
@@ -25,6 +27,7 @@ const DoctorHeader = () => {
     }
 
     const handleClickLogOut = () => {
+        setIsLoading(true);
         handleApiLogOut(doctor, doctor.id, dispatch, navigate);
     }
 
@@ -93,6 +96,7 @@ const DoctorHeader = () => {
                     </div>
                 </div>
             </div>
+            <Loading isLoading={isLoading} />
         </div>
     )
 }

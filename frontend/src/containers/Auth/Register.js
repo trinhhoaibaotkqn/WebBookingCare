@@ -14,6 +14,7 @@ import {
 
 
 import "./Register.scss";
+import Loading from "../../components/Loading";
 
 const Register = () => {
 
@@ -28,6 +29,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [address, setAddress] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -49,7 +51,7 @@ const Register = () => {
         const isValid = checkValidDataRegister(userData, toast);
         delete userData.passwordConfirm;
         if (isValid) {
-            const registerSuccess = await handleApiRegister(userData, toast, dispatch, navigate, doctor);
+            const registerSuccess = await handleApiRegister(userData, toast, dispatch, navigate, doctor, setIsLoading);
             if (doctor && registerSuccess) {
                 navigate("/login", {
                     state: {
@@ -118,6 +120,7 @@ const Register = () => {
                     </form>
                 </div>
             </div>
+            <Loading isLoading={isLoading} />
         </div>
     );
 }

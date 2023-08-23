@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
 import { handleApiLoginUser, navigateUserAfterLogin } from "../../services/authService";
+import Loading from "../../components/Loading";
 
 const Login = () => {
 
@@ -18,12 +19,14 @@ const Login = () => {
     const [eye, setEye] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClickEye = () => {
         setEye(!eye);
     }
 
     const handleLogin = async (e) => {
+        setIsLoading(true);
         e.preventDefault();
         const userData = {
             email,
@@ -32,6 +35,7 @@ const Login = () => {
         let userLoggedIn = await handleApiLoginUser(userData, toast, dispatch);
         if (userLoggedIn)
             navigateUserAfterLogin(doctor, userLoggedIn, navigate);
+        setIsLoading(false);
     }
 
     return (
@@ -69,6 +73,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            <Loading isLoading={isLoading} />
         </div>
     );
 }

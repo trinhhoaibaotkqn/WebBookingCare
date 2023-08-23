@@ -7,7 +7,8 @@ import {
     REFRESH_TOKEN
 } from "../store/slice/authSlice";
 
-export const handleApiRegister = async (user, toast, dispatch, navigate, doctor) => {
+export const handleApiRegister = async (user, toast, dispatch, navigate, doctor, setIsLoading) => {
+    setIsLoading(true);
     dispatch(REGISTER_START());
     try {
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/register`, user);
@@ -19,8 +20,10 @@ export const handleApiRegister = async (user, toast, dispatch, navigate, doctor)
             } else {
                 return true;
             }
+            setIsLoading(false);
         }
     } catch (err) {
+        setIsLoading(false);
         dispatch(REGISTER_FAILED());
         toast.error(err.response.data.message);
     }
@@ -44,7 +47,7 @@ export const handleApiLoginUser = async (user, toast, dispatch) => {
     }
 }
 
-export const handleApiLogOut = async (user, id, dispatch, navigate,) => {
+export const handleApiLogOut = async (user, id, dispatch, navigate, setIsLoading) => {
     dispatch(LOGOUT_START());
     let axiosJWT = createAxiosJWT(user, dispatch);
     try {
@@ -54,6 +57,7 @@ export const handleApiLogOut = async (user, id, dispatch, navigate,) => {
         });
         dispatch(LOGOUT_SUCCESS());
         navigate("/");
+        setIsLoading(false);
     } catch (err) {
         dispatch(LOGOUT_FAILED());
     }
